@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root                'welcome#index'
-  get 'login'     =>  'login#login'
-  get 'callback'  =>  'login#callback'
+  get 'login'     =>  'spotify#login'
+  get 'callback'  =>  'spotify#callback'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

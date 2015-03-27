@@ -27,7 +27,7 @@ module Enumerable
 
   # Convert an enumerable to a hash.
   #
-  #   people.index_by(&:login)
+  #   people.index_by(&:spotify)
   #     => { "nextangle" => <Person ...>, "chade-" => <Person ...>, ...}
   #   people.index_by { |person| "#{person.first_name} #{person.last_name}" }
   #     => { "Chade- Fowlersburg-e" => <Person ...>, "David Heinemeier Hansson" => <Person ...>, ...}

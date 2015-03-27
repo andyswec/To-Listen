@@ -90,7 +90,7 @@ module ActiveSupport
   #      params: {"action"=>"new", "controller"=>"devise/sessions"},
   #      format: :html,
   #      method: "GET",
-  #      path: "/login/sign_in",
+  #      path: "/spotify/sign_in",
   #      status: 200,
   #      view_runtime: 279.3080806732178,
   #      db_runtime: 40.053

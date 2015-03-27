@@ -90,7 +90,7 @@ module ActionView
       # creates the <tt>script</tt> identifier.
       #
       #   <%# This is our view %>
-      #   Please login!
+      #   Please spotify!
       #
       #   <% content_for :script do %>
       #     <script>alert('You are not authorized to view this page!')</script>
@@ -117,7 +117,7 @@ module ActionView
       #  And in other place:
       #
       #   <% content_for :navigation do %>
-      #     <li><%= link_to 'Login', action: 'login' %></li>
+      #     <li><%= link_to 'Login', action: 'spotify' %></li>
       #   <% end %>
       #
       # Then, in another template or layout, this code would render both links in order:
@@ -133,7 +133,7 @@ module ActionView
       #   <%#  Add some other content, or use a different template: %>
       #
       #   <% content_for :navigation, flush: true do %>
-      #     <li><%= link_to 'Login', action: 'login' %></li>
+      #     <li><%= link_to 'Login', action: 'spotify' %></li>
       #   <% end %>
       #
       # Then, in another template or layout, this code would render only the last link:

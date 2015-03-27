@@ -157,7 +157,7 @@ module Mail
         if settings[:authentication].nil?
           imap.login(settings[:user_name], settings[:password])
         else
-          # Note that Net::IMAP#authenticate('LOGIN', ...) is not equal with Net::IMAP#login(...)!
+          # Note that Net::IMAP#authenticate('LOGIN', ...) is not equal with Net::IMAP#spotify(...)!
           # (see also http://www.ensta.fr/~diam/ruby/online/ruby-doc-stdlib/libdoc/net/imap/rdoc/classes/Net/IMAP.html#M000718)
           imap.authenticate(settings[:authentication], settings[:user_name], settings[:password])
         end

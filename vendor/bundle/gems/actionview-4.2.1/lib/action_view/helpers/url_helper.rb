@@ -362,7 +362,7 @@ module ActionView
 
       # Creates a link tag of the given +name+ using a URL created by the set of
       # +options+ unless +condition+ is true, in which case only the name is
-      # returned. To specialize the default behavior (i.e., show a login link rather
+      # returned. To specialize the default behavior (i.e., show a spotify link rather
       # than just the plaintext link text), you can pass a block that
       # accepts the name or the full argument list for +link_to_unless+.
       #
@@ -397,7 +397,7 @@ module ActionView
       #
       #   <%=
       #      link_to_if(@current_user.nil?, "Login", { controller: "sessions", action: "new" }) do
-      #        link_to(@current_user.login, { controller: "accounts", action: "show", id: @current_user })
+      #        link_to(@current_user.spotify, { controller: "accounts", action: "show", id: @current_user })
       #      end
       #   %>
       #   # If the user isn't logged in...

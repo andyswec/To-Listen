@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class LoginControllerTest < ActionController::TestCase
-  test "should get login" do
-    get :login
+class SpotifyControllerTest < ActionController::TestCase
+  test "should get spotify" do
+    get :spotify
     assert_response :success
   end
 

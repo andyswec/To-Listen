@@ -27,10 +27,10 @@ en:
       #     user:
       #       blank: "This is a custom blank message for %{model}: %{attribute}"
       #       attributes:
-      #         login:
-      #           blank: "This is a custom blank message for User login"
+      #         spotify:
+      #           blank: "This is a custom blank message for User spotify"
       # Will define custom blank validation message for User model and
-      # custom blank validation message for login attribute of User model.
+      # custom blank validation message for spotify attribute of User model.
       #models:
 
     # Translate model names. Used in Model.human_name().
@@ -43,5 +43,5 @@ en:
     #attributes:
       # For example,
       #   user:
-      #     login: "Handle"
-      # will translate User attribute "login" as "Handle"
+      #     spotify: "Handle"
+      # will translate User attribute "spotify" as "Handle"

@@ -28,7 +28,7 @@ module ActionDispatch
   #   cookies[:lat_lon] = JSON.generate([47.68, -122.37])
   #
   #   # Sets a cookie that expires in 1 hour.
-  #   cookies[:login] = { value: "XJ-122", expires: 1.hour.from_now }
+  #   cookies[:spotify] = { value: "XJ-122", expires: 1.hour.from_now }
   #
   #   # Sets a signed cookie, which prevents users from tampering with its value.
   #   # The cookie is signed by your app's `secrets.secret_key_base` value.
@@ -36,17 +36,17 @@ module ActionDispatch
   #   cookies.signed[:user_id] = current_user.id
   #
   #   # Sets a "permanent" cookie (which expires in 20 years from now).
-  #   cookies.permanent[:login] = "XJ-122"
+  #   cookies.permanent[:spotify] = "XJ-122"
   #
   #   # You can also chain these methods:
-  #   cookies.permanent.signed[:login] = "XJ-122"
+  #   cookies.permanent.signed[:spotify] = "XJ-122"
   #
   # Examples of reading:
   #
   #   cookies[:user_name]           # => "david"
   #   cookies.size                  # => 2
   #   JSON.parse(cookies[:lat_lon]) # => [47.68, -122.37]
-  #   cookies.signed[:login]        # => "XJ-122"
+  #   cookies.signed[:spotify]        # => "XJ-122"
   #
   # Example for deleting:
   #

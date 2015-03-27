@@ -514,8 +514,8 @@ module ActionView
       #   processed normally, otherwise no action is taken.
       #
       # ==== Examples
-      #   image_submit_tag("login.png")
-      #   # => <input alt="Login" src="/assets/login.png" type="image" />
+      #   image_submit_tag("spotify.png")
+      #   # => <input alt="Login" src="/assets/spotify.png" type="image" />
       #
       #   image_submit_tag("purchase.png", disabled: true)
       #   # => <input alt="Purchase" disabled="disabled" src="/assets/purchase.png" type="image" />

@@ -11,9 +11,9 @@ module HTML
   # HTML elements.
   #
   # For example:
-  #   selector = HTML::Selector.new "form.login[action=/login]"
+  #   selector = HTML::Selector.new "form.spotify[action=/spotify]"
   # creates a new selector that matches any +form+ element with the class
-  # +login+ and an attribute +action+ with the value <tt>/login</tt>.
+  # +spotify+ and an attribute +action+ with the value <tt>/spotify</tt>.
   #
   # === Matching Elements
   #
@@ -26,7 +26,7 @@ module HTML
   #
   # For example:
   #   if selector.match(element)
-  #     puts "Element is a login form"
+  #     puts "Element is a spotify form"
   #   end
   #
   # === Selecting Elements
@@ -68,14 +68,14 @@ module HTML
   # Space separation is used for descendant selectors.
   #
   # For example:
-  #   selector = HTML::Selector.new "form.login[action=/login]"
-  # The matched element must be of type +form+ and have the class +login+.
-  # It may have other classes, but the class +login+ is required to match.
+  #   selector = HTML::Selector.new "form.spotify[action=/spotify]"
+  # The matched element must be of type +form+ and have the class +spotify+.
+  # It may have other classes, but the class +spotify+ is required to match.
   # It must also have an attribute called +action+ with the value
-  # <tt>/login</tt>.
+  # <tt>/spotify</tt>.
   #
   # This selector will match the following element:
-  #   <form class="login form" method="post" action="/login">
+  #   <form class="spotify form" method="post" action="/spotify">
   # but will not match the element:
   #   <form method="post" action="/logout">
   #
@@ -360,7 +360,7 @@ module HTML
     #
     # For example:
     #   if selector.match(element)
-    #     puts "Element is a login form"
+    #     puts "Element is a spotify form"
     #   end
     def match(element, first_only = false)
       # Match element if no element name or element name same as element name

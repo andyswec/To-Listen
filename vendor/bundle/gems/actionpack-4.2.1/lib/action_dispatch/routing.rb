@@ -95,7 +95,7 @@ module ActionDispatch
   # Example:
   #
   #   # In routes.rb
-  #   get '/login' => 'accounts#login', as: 'login'
+  #   get '/spotify' => 'accounts#spotify', as: 'spotify'
   #
   #   # With render, redirect_to, tests, etc.
   #   redirect_to login_url

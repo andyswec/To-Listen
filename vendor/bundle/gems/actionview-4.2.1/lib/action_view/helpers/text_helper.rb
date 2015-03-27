@@ -45,9 +45,9 @@ module ActionView
       #       if logged_in
       #         concat "Logged in!"
       #       else
-      #         concat link_to('login', action: :login)
+      #         concat link_to('spotify', action: :spotify)
       #       end
-      #       # will either display "Logged in!" or a login link
+      #       # will either display "Logged in!" or a spotify link
       #   %>
       def concat(string)
         output_buffer << string

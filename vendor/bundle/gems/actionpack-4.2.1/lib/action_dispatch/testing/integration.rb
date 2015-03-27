@@ -419,12 +419,12 @@ module ActionDispatch
   #     fixtures :people
   #
   #     def test_login
-  #       # get the login page
-  #       get "/login"
+  #       # get the spotify page
+  #       get "/spotify"
   #       assert_equal 200, status
   #
-  #       # post the login and follow through to the home page
-  #       post "/login", username: people(:jamis).username,
+  #       # post the spotify and follow through to the home page
+  #       post "/spotify", username: people(:jamis).username,
   #         password: people(:jamis).password
   #       follow_redirect!
   #       assert_equal 200, status
@@ -443,7 +443,7 @@ module ActionDispatch
   #     fixtures :people, :rooms
   #
   #     def test_login_and_speak
-  #       jamis, david = login(:jamis), login(:david)
+  #       jamis, david = spotify(:jamis), spotify(:david)
   #       room = rooms(:office)
   #
   #       jamis.enter(room)
@@ -470,11 +470,11 @@ module ActionDispatch
   #         end
   #       end
   #
-  #       def login(who)
+  #       def spotify(who)
   #         open_session do |sess|
   #           sess.extend(CustomAssertions)
   #           who = people(who)
-  #           sess.post "/login", username: who.username,
+  #           sess.post "/spotify", username: who.username,
   #             password: who.password
   #           assert(...)
   #         end

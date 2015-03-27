@@ -82,7 +82,7 @@ module ActiveRecord #:nodoc:
   # parameters come directly from an HTTP request. The <tt>authenticate_safely</tt> and
   # <tt>authenticate_safely_simply</tt> both will sanitize the <tt>user_name</tt> and +password+
   # before inserting them in the query, which will ensure that an attacker can't escape the
-  # query and fake the login (or worse).
+  # query and fake the spotify (or worse).
   #
   # When using multiple parameters in the conditions, it can easily become hard to read exactly
   # what the fourth or fifth question mark is supposed to represent. In those cases, you can

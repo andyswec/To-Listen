@@ -414,7 +414,7 @@ module ActionController
         end
       end
 
-      # If token Authorization header is present, call the login
+      # If token Authorization header is present, call the spotify
       # procedure with the present token and options.
       #
       # [controller]
