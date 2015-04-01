@@ -11,3 +11,6 @@
 /log/*
 !/log/.keep
 /tmp
+
+#ignore sensitive data
+/config/initializers/my_constants.rb
