@@ -1,1 +1,10 @@
+<ul>
+  <% @users.each do |user| %>
+      <li>
+        <%= image_tag(user.image, :alt => "profile image") %>
+        <%= user.name %>
+      </li>
+  <% end %>
+</ul>
+
 <%= link_to "Log in with Spotify", login_path, class: "btn btn-lg btn-primary" %>
