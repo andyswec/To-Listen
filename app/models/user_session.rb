@@ -3,5 +3,7 @@ class UserSession < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :session_id, presence: true
+  validates :position, presence: true
   validates_uniqueness_of :user_id, scope: :session_id
+  validates_uniqueness_of :session_id, scope: :position
 end
