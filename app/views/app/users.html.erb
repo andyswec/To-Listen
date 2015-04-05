@@ -1,0 +1,58 @@
+<h2 class="step">Step 1:
+  <small>
+    Add at least two persons
+    <i class="glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-container="body"
+       title="Add persons" data-content="You can add persons by logging in with Spotify
+         or by entering your Last.fm user name."></i>
+  </small>
+</h2>
+
+<div class="jumbotron">
+  <ul class="users">
+    <% @users.each do |user|
+      name = !user.name.nil? ? user.name : user.spotify_id
+      image = !user.image.nil? ? user.image : "user_avatar.png"
+      image_alt = !user.image.nil? ? user.image + "'s profile image" : "Default profile image" %>
+        <li class="row-flex">
+          <div class="col-sm-2 col-xs-4"><%= image_tag(image, alt: image_alt) %></div>
+          <div class="col-sm-5 col-xs-8"><%= name %></div>
+          <div class="col-sm-5 col-xs-12">
+            <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
+          </div>
+        </li>
+    <% end %>
+    <li class="row-flex new-user">
+      <div class="col-sm-2 col-xs-12 user-num"><h3><small>#<%= @users.length + 1 %></small></h3></div>
+      <div class="col-sm-5 col-xs-12">
+        <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
+      </div>
+      <div class="col-sm-5 col-xs-12">
+        <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<h2>Step 2:
+  <small>Get your playlist</small>
+</h2>
+
+<%
+   disabled = @users.length < 2
+   if disabled
+%>
+
+    <div data-toggle="popover" data-trigger="hover" data-placement="auto" data-container="body" title="Get playlist"
+         data-content="You need to add at least two persons">
+      <%=
+          link_to "What To-Listen?", playlist_path, class: "btn btn-primary btn-lg btn-block disabled"
+      %>
+    </div>
+<% else %>
+
+    <%=
+        link_to "What To-Listen?", playlist_path, class: "btn btn-primary btn-lg btn-block"
+    %>
+
+<% end %>
+

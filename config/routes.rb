@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root                'welcome#index'
+  root                'app#users'
+  get 'playlist'  =>  'app#playlist'
   get 'login'     =>  'spotify#login'
   get 'callback'  =>  'spotify#callback'
 

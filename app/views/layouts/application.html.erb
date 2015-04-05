@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ToListen</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <title>To-Listen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <header>
-  <h1>To-Listen</h1>
+  <div class="container">
+    <h1>To-Listen<br>
+    <small>Listen together</small></h1>
+  </div>
 </header>
 <body>
-
-<%= yield %>
-
+<div class="container">
+  <%= yield %>
+</div>
 </body>
 </html>

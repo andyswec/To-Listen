@@ -1,6 +1,37 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
+/* universal */
+
 body {
-  padding: 50px;
+  padding-bottom: 10px;
+}
+
+/* header */
+
+/* people */
+
+ul.users li {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+
+  div {
+    margin-bottom: 15px;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      text-align: inherit;
+    }
+
+    * {
+      max-height: 50px;
+      max-width: 100%;
+    }
+  }
+
+  .user-num h3 {
+    margin: 0;
+  }
 }

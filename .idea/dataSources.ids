@@ -2380,8 +2380,8 @@
     </table>
     <table name="users" schema="public" catalog="To-Listen_development" type="TABLE">
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
-      <column name="name" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="image" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
+      <column name="image" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_access_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_refresh_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
@@ -22419,8 +22419,8 @@
     </table>
     <table name="users" schema="public" catalog="To-Listen_test" type="TABLE">
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
-      <column name="name" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="image" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="name" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
+      <column name="image" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_access_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="spotify_refresh_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>

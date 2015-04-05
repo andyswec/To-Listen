@@ -42,16 +42,18 @@ class SpotifyController < ApplicationController
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     response = http.request_get(uri.path, "Authorization" => "Bearer #{user.spotify_access_token}")
-    # puts "Response: " + response.body
+    puts "Response: " + response.body
 
     return unless response.kind_of? Net::HTTPSuccess
 
     json = JSON.parse(response.body)
     user.name = json['display_name']
-    user.image = json['images'].first['url']
+    user.image = json['images'].first['url'] unless json['images'].first.nil?
     user.spotify_id = json['id']
 
-    user.save
+    unless user.save
+      user = User.find_by(spotify_id: user.spotify_id)
+    end
 
     user_session = UserSession.new(user_id: user.id, session_id: current_session.id)
     user_session.save

@@ -1,5 +1,3 @@
 class User < ActiveRecord::Base
-  validates :name, presence: true
-  validates :image, presence: true
-  validates :spotify_id, uniqueness: true
+  validates :spotify_id, presence: true, uniqueness: true
 end

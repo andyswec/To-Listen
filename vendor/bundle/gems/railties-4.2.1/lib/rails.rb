@@ -26,7 +26,7 @@ module Rails
   autoload :Info
   autoload :InfoController
   autoload :MailersController
-  autoload :WelcomeController
+  autoload :AppController
 
   class << self
     @application = @app_class = nil

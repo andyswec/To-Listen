@@ -7,16 +7,10 @@ class UserTest < ActiveSupport::TestCase
     @user = User.new(name: "Andy", image: "http://localhost/image", spotify_id: "123456")
   end
 
-  test "name should be present" do
-    @user.name = nil
+  test "spotify id should be present" do
+    @user.spotify_id = nil
     assert_not @user.valid?
   end
-
-  test "image should be present" do
-    @user.image = nil
-    assert_not @user.valid?
-  end
-
 
   test "spotify ids should be unique" do
     duplicate_user = @user.dup
