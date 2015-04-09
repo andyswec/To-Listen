@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
-  root                'app#users'
-  get 'playlist'  =>  'app#playlist'
+  root                'users#index'
+  get 'playlist'  =>  'playlist#index'
   get 'login'     =>  'spotify#login'
   get 'callback'  =>  'spotify#callback'
+
+  resources :users_sessions, only: [:create, :destroy]
+
+  # resources :sessions, :only => [] do
+  #   member do
+  #     post "user" => 'user_sessions#create'
+  #     delete "user/:id" => 'user_sessions#destroy'
+  #   end
+  # end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

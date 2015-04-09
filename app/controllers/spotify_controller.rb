@@ -35,10 +35,10 @@ class SpotifyController < ApplicationController
     current_session = Session.new
     current_session.id = session[:session_id]
     Session.connection.execute("BEGIN")
-    if current_session.valid? && Session.connection.execute("SELECT COUNT(*) FROM sessions s WHERE s.id = #{Session
-                                                                                                                .sanitize(current_session.id)}").count == 0
-      Session.connection.execute("INSERT INTO sessions (id, created_at, updated_at) VALUES ('#{Session.sanitize
-          (current_session.id)}', '$NOW', '$NOW')")
+    if current_session.valid? && Session.connection.execute("SELECT COUNT(*) FROM sessions s WHERE s.id =
+#{Session.sanitize(current_session.id)}").first['count'].to_i == 0
+      Session.connection.execute("INSERT INTO sessions (id, created_at, updated_at) VALUES (
+#{Session.sanitize(current_session.id)}, '$NOW', '$NOW')")
       Session.connection.execute("COMMIT")
     else
       Session.connection.execute("ROLLBACK")

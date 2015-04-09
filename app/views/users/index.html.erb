@@ -8,25 +8,31 @@
 </h2>
 
 <div class="jumbotron">
-  <ul class="users">
+  <ul class="users list-unstyled">
     <% @users.each do |user|
       name = !user.name.nil? ? user.name : user.spotify_id
       image = !user.image.nil? ? user.image : "user_avatar.png"
       image_alt = !user.image.nil? ? user.image + "'s profile image" : "Default profile image" %>
         <li class="row-flex">
           <div class="col-sm-2 col-xs-4"><%= image_tag(image, alt: image_alt) %></div>
-          <div class="col-sm-5 col-xs-8"><%= name %></div>
-          <div class="col-sm-5 col-xs-12">
+          <div class="col-sm-4 col-xs-8"><%= name %></div>
+          <div class="col-sm-4 col-xs-12">
             <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
           </div>
+          <div class="col-sm-2 col-xs-12"><%= link_to "Delete", users_session_path(user),
+                  method: :delete, class: "btn btn-danger btn-block" %></div>
         </li>
     <% end %>
     <li class="row-flex new-user">
-      <div class="col-sm-2 col-xs-12 user-num"><h3><small>#<%= @users.length + 1 %></small></h3></div>
-      <div class="col-sm-5 col-xs-12">
+      <div class="col-sm-2 col-xs-12 user-num">
+        <h3>
+          <small>#<%= @users.length + 1 %></small>
+        </h3>
+      </div>
+      <div class="col-sm-4 col-xs-12">
         <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
       </div>
-      <div class="col-sm-5 col-xs-12">
+      <div class="col-sm-4 col-xs-12">
         <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
       </div>
     </li>

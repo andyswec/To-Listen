@@ -1,4 +1,7 @@
 class UserSession < ActiveRecord::Base
+  belongs_to :user, class_name: "User"
+  belongs_to :session, class_name: "Session"
+
   self.table_name = :users_sessions
 
   validates :user_id, presence: true

@@ -1,5 +1,5 @@
-class AppController < ApplicationController
-  def users
+class UsersController < ApplicationController
+  def index
     sql = "SELECT * FROM users u JOIN users_sessions us ON us.user_id = u.id WHERE us.session_id = #{User.sanitize(session[:session_id])} ORDER BY us.position ASC"
     result = ActiveRecord::Base.connection.execute(sql)
 
