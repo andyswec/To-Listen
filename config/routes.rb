@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'login'     =>  'spotify#login'
   get 'callback'  =>  'spotify#callback'
 
-  resources :users_sessions, only: [:create, :destroy]
+  resources :users_sessions, only: [:create, :destroy, :update]
 
   # resources :sessions, :only => [] do
   #   member do

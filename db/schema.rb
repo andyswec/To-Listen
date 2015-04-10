@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150405193715) do
+ActiveRecord::Schema.define(version: 20150411075630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,8 +29,11 @@ ActiveRecord::Schema.define(version: 20150405193715) do
     t.string   "spotify_refresh_token"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+    t.string   "last_fm_username"
   end
 
+  add_index "users", ["last_fm_username"], name: "index_users_on_last_fm_username", using: :btree
+  add_index "users", ["spotify_id", "last_fm_username"], name: "index_users_on_spotify_id_and_last_fm_username", unique: true, using: :btree
   add_index "users", ["spotify_id"], name: "index_users_on_spotify_id", using: :btree
 
   create_table "users_sessions", id: false, force: :cascade do |t|
@@ -38,11 +41,8 @@ ActiveRecord::Schema.define(version: 20150405193715) do
     t.string   "session_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "position",   null: false
   end
 
-  add_index "users_sessions", ["position"], name: "index_users_sessions_on_position", using: :btree
-  add_index "users_sessions", ["session_id", "position"], name: "index_users_sessions_on_session_id_and_position", unique: true, using: :btree
   add_index "users_sessions", ["session_id"], name: "index_users_sessions_on_session_id", using: :btree
   add_index "users_sessions", ["user_id", "session_id"], name: "index_users_sessions_on_user_id_and_session_id", unique: true, using: :btree
   add_index "users_sessions", ["user_id"], name: "index_users_sessions_on_user_id", using: :btree

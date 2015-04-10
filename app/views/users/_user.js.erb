@@ -1,0 +1,3 @@
+//var $form = $(this);
+$("#new-user-form")[0].reset();
+$('ul#users li:last').before('<%= escape_javascript( render partial: 'users/user', formats: [ :html ], locals: {user: @user}) %>')

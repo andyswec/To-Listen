@@ -2387,8 +2387,11 @@
       <column name="spotify_refresh_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
+      <column name="last_fm_username" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="users_pkey" columns="id"/>
       <exported-key name="fk_rails_93af82f827" table="users_sessions" schema="public" catalog="To-Listen_development" columns="user_id"/>
+      <index name="index_users_on_spotify_id_and_last_fm_username" unique="true" columns="spotify_id,last_fm_username"/>
+      <index name="index_users_on_last_fm_username" unique="false" columns="last_fm_username"/>
       <index name="index_users_on_spotify_id" unique="false" columns="spotify_id"/>
     </table>
     <table name="users_id_seq" schema="public" catalog="To-Listen_development" type="SEQUENCE">
@@ -2408,12 +2411,9 @@
       <column name="session_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="position" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <foreign-key name="fk_rails_699bbf13fd" columns="session_id" ref-table="sessions" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_rails_93af82f827" columns="user_id" ref-table="users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="index_users_sessions_on_session_id_and_position" unique="true" columns="session_id,position"/>
       <index name="index_users_sessions_on_user_id_and_session_id" unique="true" columns="user_id,session_id"/>
-      <index name="index_users_sessions_on_position" unique="false" columns="position"/>
       <index name="index_users_sessions_on_session_id" unique="false" columns="session_id"/>
       <index name="index_users_sessions_on_user_id" unique="false" columns="user_id"/>
     </table>
@@ -22429,8 +22429,11 @@
       <column name="spotify_refresh_token" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
+      <column name="last_fm_username" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="users_pkey" columns="id"/>
       <exported-key name="fk_rails_93af82f827" table="users_sessions" schema="public" catalog="To-Listen_test" columns="user_id"/>
+      <index name="index_users_on_spotify_id_and_last_fm_username" unique="true" columns="spotify_id,last_fm_username"/>
+      <index name="index_users_on_last_fm_username" unique="false" columns="last_fm_username"/>
       <index name="index_users_on_spotify_id" unique="false" columns="spotify_id"/>
     </table>
     <table name="users_id_seq" schema="public" catalog="To-Listen_test" type="SEQUENCE">
@@ -22450,12 +22453,9 @@
       <column name="session_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="position" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <foreign-key name="fk_rails_699bbf13fd" columns="session_id" ref-table="sessions" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_rails_93af82f827" columns="user_id" ref-table="users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="index_users_sessions_on_session_id_and_position" unique="true" columns="session_id,position"/>
       <index name="index_users_sessions_on_user_id_and_session_id" unique="true" columns="user_id,session_id"/>
-      <index name="index_users_sessions_on_position" unique="false" columns="position"/>
       <index name="index_users_sessions_on_session_id" unique="false" columns="session_id"/>
       <index name="index_users_sessions_on_user_id" unique="false" columns="user_id"/>
     </table>
