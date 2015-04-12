@@ -36,4 +36,13 @@ updated_at) VALUES (#{UserSession.sanitize (session_id)},#{id}, '$NOW', '$NOW')"
 
     redirect_to root_path
   end
+
+  def update
+    id = params[:user_id]
+    last_fm_id = params[:last_fm_username]
+
+    User.connection.execute("UPDATE users SET last_fm_username = #{User.sanitize(last_fm_id)} WHERE id = #{User.sanitize(id)}")
+
+    render nothing: true
+  end
 end

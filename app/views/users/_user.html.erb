@@ -10,6 +10,7 @@
                                                                                alt: "Log in with Spotify"), login_path) : name %></div>
   <div class="col-sm-4 col-xs-12">
     <%= form_tag users_session_path(user), :method => :put, remote: true, class: "new_user", id: "new_user" do %>
+        <%= hidden_field_tag(:user_id, user.id) %>
         <%= text_field_tag(:last_fm_username, last_fm, class: "form-control", placeholder: "Last.fm username") %>
         <%= submit_tag "", :style => "display: none;" %>
     <% end %>
