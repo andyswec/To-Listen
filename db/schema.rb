@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150411075630) do
+ActiveRecord::Schema.define(version: 20150412130946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 20150411075630) do
     t.string   "last_fm_username"
   end
 
-  add_index "users", ["last_fm_username"], name: "index_users_on_last_fm_username", using: :btree
+  add_index "users", ["last_fm_username"], name: "index_users_on_last_fm_username", unique: true, where: "(spotify_id IS NULL)", using: :btree
   add_index "users", ["spotify_id", "last_fm_username"], name: "index_users_on_spotify_id_and_last_fm_username", unique: true, using: :btree
-  add_index "users", ["spotify_id"], name: "index_users_on_spotify_id", using: :btree
+  add_index "users", ["spotify_id"], name: "index_users_on_spotify_id", unique: true, where: "(last_fm_username IS NULL)", using: :btree
 
   create_table "users_sessions", id: false, force: :cascade do |t|
     t.integer  "user_id",    null: false

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root                'users#index'
   get 'playlist'  =>  'playlist#index'
   get 'login'     =>  'spotify#login'
+  get 'login/:id' =>  'spotify#login', as: :login_user
   get 'callback'  =>  'spotify#callback'
 
   resources :users_sessions, only: [:create, :destroy, :update]

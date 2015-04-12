@@ -2,10 +2,13 @@ require 'json'
 
 class SpotifyController < ApplicationController
   def login
-    url = URI.parse "https://accounts.spotify.com/authorize"
-    params = { client_id: "#{CLIENT_ID}", response_type: "code", redirect_uri: "#{REDIRECT_URI}",
-        show_dialog: true } #TODO
-    # supply scope and state
+    user_id = params[:id]
+    state = !user_id.nil? ? {'user_id' => user_id} : nil
+
+    url = URI.parse 'https://accounts.spotify.com/authorize'
+    params = {client_id: CLIENT_ID, response_type: 'code', redirect_uri: REDIRECT_URI, show_dialog: true} #TODO supply scope
+    params[:state] = state unless (state.nil?)
+
     url.query = URI.encode_www_form(params)
     redirect_to url.to_s
   end
@@ -13,6 +16,8 @@ class SpotifyController < ApplicationController
   def callback
     error = params[:error]
     code = params[:code]
+    state = params[:state]
+    user_id = eval(state)['user_id'].to_i
 
     return if code.nil?
 
@@ -28,21 +33,27 @@ class SpotifyController < ApplicationController
     # puts "Response: " + response.body
     return unless response.kind_of? Net::HTTPSuccess
 
-    user = User.new
+    # Parse response
+    User.connection.execute('BEGIN')
+    result = User.connection.execute("SELECT * FROM users WHERE id = #{User.sanitize(user_id)}");
+    if result.count > 0
+      User.connection.execute('COMMIT')
+      result = result.first
+      user = User.new(id: result['id'], name: result['name'], image: result['image'],
+                      spotify_id: result['spotify_id'], spotify_access_token: result['spotify_access_token'],
+                      spotify_refresh_token: result['spotify_refresh_token'], created_at: result['created_at'],
+                      updated_at: result['updated_at'], last_fm_username: result['last_fm_username'])
+    else
+      User.connection.execute('ROLLBACK')
+      user = User.new
+    end
+
 
     json = JSON.parse(response.body)
 
     current_session = Session.new
     current_session.id = session[:session_id]
-    Session.connection.execute("BEGIN")
-    if current_session.valid? && Session.connection.execute("SELECT COUNT(*) FROM sessions s WHERE s.id =
-#{Session.sanitize(current_session.id)}").first['count'].to_i == 0
-      Session.connection.execute("INSERT INTO sessions (id, created_at, updated_at) VALUES (
-#{Session.sanitize(current_session.id)}, '$NOW', '$NOW')")
-      Session.connection.execute("COMMIT")
-    else
-      Session.connection.execute("ROLLBACK")
-    end
+    view_context.save_session(current_session.id)
 
     user.spotify_access_token = json['access_token']
     user.spotify_refresh_token = json['refresh_token']
@@ -60,18 +71,10 @@ class SpotifyController < ApplicationController
     user.image = json['images'].first['url'] unless json['images'].first.nil?
     user.spotify_id = json['id']
 
-    unless user.save
-      user = User.find_by(spotify_id: user.spotify_id)
-    end
+    user = view_context.save_user(user)
 
     user_session = UserSession.new(user_id: user.id, session_id: current_session.id)
-    UserSession.connection.execute("BEGIN")
-    sql = "INSERT INTO users_sessions (user_id, session_id, created_at, updated_at) VALUES
-(#{UserSession.sanitize(user_session.user_id)}, #{UserSession.sanitize(user_session.session_id)}, '$NOW', '$NOW')"
-    if user_session.valid?
-      UserSession.connection.execute(sql)
-    end
-    UserSession.connection.execute("COMMIT")
+    view_context.save_user_session(user_session)
 
     redirect_to root_path
   end

@@ -5,24 +5,13 @@ class UsersSessionsController < ApplicationController
 
     @user = User.new
     @user.last_fm_username = last_fm_id
+    @user = view_context.save_user(@user)
 
-    User.connection.execute("BEGIN")
-    if (@user.valid?)
-      id = User.connection.insert_sql("INSERT INTO users (last_fm_username, created_at, updated_at) VALUES (
-#{User.sanitize(@user.last_fm_username)}, '$NOW', '$NOW')")
+    session = Session.new(id: session_id)
+    view_context.save_session(session)
 
-      if (Session.connection.execute("SELECT COUNT(*) FROM sessions WHERE id = #{Session.sanitize(session_id)}").first['count'] == 0)
-        Session.connection.insert_sql("INSERT INTO sessions (id, created_at, updated_at) VALUES (
-#{Session.sanitize(session_id)}, '$NOW', '$NOW')")
-      end
-
-      UserSession.connection.insert_sql("INSERT INTO users_sessions (session_id, user_id, created_at,
-updated_at) VALUES (#{UserSession.sanitize (session_id)},#{id}, '$NOW', '$NOW')")
-      User.connection.execute("COMMIT")
-      @user.id = id
-    else
-      User.connection.execute("ROLLBACK")
-    end
+    user_session = UserSession.new(user_id: @user.id, session_id: session_id)
+    view_context.save_user_session(user_session)
 
     render partial: 'users/user', locals: {user: @user}
   end
