@@ -5,15 +5,19 @@ class UsersSessionsController < ApplicationController
 
     @user = User.new
     @user.last_fm_username = last_fm_id
-    @user = view_context.save_user(@user)
+    view_context.save_user(@user)
+
 
     session = Session.new(id: session_id)
     view_context.save_session(session)
 
     user_session = UserSession.new(user_id: @user.id, session_id: session_id)
-    view_context.save_user_session(user_session)
 
-    render partial: 'users/user', locals: {user: @user}
+    if !view_context.save_user_session(user_session) # TODO send error message
+      render nothing: true
+    else
+      render partial: 'users/user', locals: {user: @user}
+    end
   end
 
   def destroy

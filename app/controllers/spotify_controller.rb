@@ -17,7 +17,7 @@ class SpotifyController < ApplicationController
     error = params[:error]
     code = params[:code]
     state = params[:state]
-    user_id = eval(state)['user_id'].to_i
+    user_id = state.nil? ? nil : eval(state)['user_id'].to_i
 
     return if code.nil?
 
@@ -35,14 +35,14 @@ class SpotifyController < ApplicationController
 
     # Parse response
     User.connection.execute('BEGIN')
-    result = User.connection.execute("SELECT * FROM users WHERE id = #{User.sanitize(user_id)}");
+    result = User.connection.execute("SELECT * FROM users WHERE id = #{User.sanitize(user_id)}")
     if result.count > 0
       User.connection.execute('COMMIT')
       result = result.first
       user = User.new(id: result['id'], name: result['name'], image: result['image'],
-                      spotify_id: result['spotify_id'], spotify_access_token: result['spotify_access_token'],
-                      spotify_refresh_token: result['spotify_refresh_token'], created_at: result['created_at'],
-                      updated_at: result['updated_at'], last_fm_username: result['last_fm_username'])
+          spotify_id: result['spotify_id'], spotify_access_token: result['spotify_access_token'],
+          spotify_refresh_token: result['spotify_refresh_token'], created_at: result['created_at'],
+          updated_at: result['updated_at'], last_fm_username: result['last_fm_username'])
     else
       User.connection.execute('ROLLBACK')
       user = User.new
@@ -71,10 +71,26 @@ class SpotifyController < ApplicationController
     user.image = json['images'].first['url'] unless json['images'].first.nil?
     user.spotify_id = json['id']
 
-    user = view_context.save_user(user)
+    old_id = user.id
+    view_context.save_user(user)
 
     user_session = UserSession.new(user_id: user.id, session_id: current_session.id)
+
+    if !old_id.nil? && user.id != old_id
+      UserSession.connection.execute('BEGIN')
+      result = UserSession.connection.execute("SELECT created_at FROM users_sessions WHERE session_id =
+#{UserSession.sanitize(current_session.id)} AND user_id = #{UserSession.sanitize(old_id)}")
+      if result.count > 0
+        user_session.created_at = result.first['created_at']
+
+        # Remove old user_session
+        UserSession.connection.execute("DELETE FROM users_sessions WHERE session_id =
+#{UserSession.sanitize(current_session.id)} AND user_id = #{UserSession.sanitize(old_id)}")
+      end
+    end
+
     view_context.save_user_session(user_session)
+
 
     redirect_to root_path
   end
