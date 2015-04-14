@@ -1,6 +1,8 @@
 class PlaylistController < ApplicationController
   def playlist
     session_id = session[:session_id]
-    Session.connection.execute("UPDATE sessions SET playlist_generated = true WHERE id = #{Session.sanitize(session_id)}")
+    session = Session.find(session_id)
+    session.playlist_generated = true
+    session.save
   end
 end

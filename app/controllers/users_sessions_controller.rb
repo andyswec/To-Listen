@@ -3,17 +3,14 @@ class UsersSessionsController < ApplicationController
     session_id = session[:session_id]
     last_fm_id = params[:last_fm_username]
 
-    @user = User.new
-    @user.last_fm_username = last_fm_id
-    view_context.save_user(@user)
-
+    @user = User.new(last_fm_username: last_fm_id) # TODO get name and image from last.fm
+    @user.save
 
     session = Session.new(id: session_id)
-    view_context.save_session(session)
+    session.save
 
     user_session = UserSession.new(user_id: @user.id, session_id: session_id)
-
-    if !view_context.save_user_session(user_session) # TODO send error message
+    if !user_session.save # TODO send error message
       render nothing: true
     else
       render partial: 'users/user', locals: {user: @user}
@@ -24,8 +21,7 @@ class UsersSessionsController < ApplicationController
     session_id = session[:session_id]
     user_id = params[:id]
 
-    UserSession.connection.execute("DELETE FROM users_sessions WHERE session_id =
-#{UserSession.sanitize(session_id)} AND user_id = #{UserSession.sanitize(user_id)}")
+    UserSession.find_by(user_id: user_id, session_id: session_id).first.destroy()
 
     redirect_to root_path
   end
@@ -34,7 +30,9 @@ class UsersSessionsController < ApplicationController
     id = params[:user_id]
     last_fm_id = params[:last_fm_username]
 
-    User.connection.execute("UPDATE users SET last_fm_username = #{User.sanitize(last_fm_id)} WHERE id = #{User.sanitize(id)}")
+    user = User.find(id)
+    user.last_fm_username = last_fm_id
+    user.save
 
     render nothing: true
   end

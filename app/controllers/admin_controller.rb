@@ -1,25 +1,26 @@
 class AdminController < ApplicationController
   def stats
-    result = Session.connection.execute("SELECT generated_playlist as value, COUNT(*) FROM sessions GROUP BY
-generated_playlist ORDER BY value DESC")
+    result = Session.group(:generated_playlist).count
 
     if result.count == 2
-      true_count = result.first['count'].to_i
-      false_count = result.last['count'].to_i
-    else
-      result = result.first
-      if (result['value'] == 't')
-        true_count = result['count'].to_i
+      true_count = result[true].to_i
+      false_count = result[false].to_i
+    elsif result.count == 1
+      if (!result[true].nil?)
+        true_count = result[true].to_i
         false_count = 0
       else
         true_count = 0
-        false_count = result['count'].to_i
+        false_count = result[false].to_i
       end
+    else
+      true_count = 0
+      false_count = 0
     end
 
     total = true_count + false_count
 
-    @stats = {:true => {absolute: true_count, percent: 100 * true_count / total}, :false => {absolute: false_count,
-        percent: 100 * false_count / total}}
+    @stats = {:true => {absolute: true_count, percent: (total > 0 ? 100 * true_count / total : 0)}, :false =>
+        {absolute: false_count, percent: (total > 0 ? 100 * false_count / total : 0)}}
   end
 end

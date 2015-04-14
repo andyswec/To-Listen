@@ -34,26 +34,15 @@ class SpotifyController < ApplicationController
     return unless response.kind_of? Net::HTTPSuccess
 
     # Parse response
-    User.connection.execute('BEGIN')
-    result = User.connection.execute("SELECT * FROM users WHERE id = #{User.sanitize(user_id)}")
-    if result.count > 0
-      User.connection.execute('COMMIT')
-      result = result.first
-      user = User.new(id: result['id'], name: result['name'], image: result['image'],
-          spotify_id: result['spotify_id'], spotify_access_token: result['spotify_access_token'],
-          spotify_refresh_token: result['spotify_refresh_token'], created_at: result['created_at'],
-          updated_at: result['updated_at'], last_fm_username: result['last_fm_username'])
-    else
-      User.connection.execute('ROLLBACK')
-      user = User.new
-    end
-
+    user = User.new(id: result['id'], name: result['name'], image: result['image'],
+        spotify_id: result['spotify_id'], spotify_access_token: result['spotify_access_token'],
+        spotify_refresh_token: result['spotify_refresh_token'], created_at: result['created_at'],
+        updated_at: result['updated_at'], last_fm_username: result['last_fm_username'])
 
     json = JSON.parse(response.body)
 
-    current_session = Session.new
-    current_session.id = session[:session_id]
-    view_context.save_session(current_session.id)
+    current_session = Session.new(id: session[:session_id])
+    current_session.save
 
     user.spotify_access_token = json['access_token']
     user.spotify_refresh_token = json['refresh_token']
@@ -71,26 +60,14 @@ class SpotifyController < ApplicationController
     user.image = json['images'].first['url'] unless json['images'].first.nil?
     user.spotify_id = json['id']
 
-    old_id = user.id
-    view_context.save_user(user)
-
-    user_session = UserSession.new(user_id: user.id, session_id: current_session.id)
-
-    if !old_id.nil? && user.id != old_id
-      UserSession.connection.execute('BEGIN')
-      result = UserSession.connection.execute("SELECT created_at FROM users_sessions WHERE session_id =
-#{UserSession.sanitize(current_session.id)} AND user_id = #{UserSession.sanitize(old_id)}")
-      if result.count > 0
-        user_session.created_at = result.first['created_at']
-
-        # Remove old user_session
-        UserSession.connection.execute("DELETE FROM users_sessions WHERE session_id =
-#{UserSession.sanitize(current_session.id)} AND user_id = #{UserSession.sanitize(old_id)}")
-      end
+    if !user.save
+      id = User.find_by(spotify_id: user.spotify_id, last_fm_username: user.last_fm_username).first.id
+      user.id = id
+      user.save
     end
 
-    view_context.save_user_session(user_session)
-
+    user_session = UserSession.new(user_id: user.id, session_id: current_session.id)
+    user_session.save
 
     redirect_to root_path
   end
