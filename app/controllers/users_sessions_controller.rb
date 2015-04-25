@@ -27,7 +27,7 @@ class UsersSessionsController < ApplicationController
   end
 
   def update
-    id = params[:user_id]
+    id = params[:user_id] # TODO id is in fact a position
     last_fm_id = params[:last_fm_username]
 
     user = User.find(id)

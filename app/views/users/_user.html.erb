@@ -1,28 +1,31 @@
 <%
-   has_spotify = !user.spotify_id.nil?
-   has_last_fm = !user.last_fm_username.nil?
+   require 'json'
 
-   name = !user.name.nil? ? user.name : user.spotify_id
-   image = !user.image.nil? ? user.image : "user_avatar.png"
-   image_alt = !user.image.nil? ? user.image + "'s profile image" : "Default profile image"
-   last_fm = user.last_fm_username
+   rspotify_hash = JSON.parse(user_session.spotify_user.rspotify_hash)
+   spotify_user = RSpotify::User.new(rspotify_hash)
+   last_fm_user = user_session.last_fm_user
+
+   name = !spotify_user.nil? ? spotify_user.display_name : !last_fm_user.nil? ? last_fm_user.name : nil
+   image =!spotify_user.nil? && !spotify_user.images[0].nil? ? spotify_user.images[0]['url'] : "user_avatar.png"
+   image_alt = !spotify_user.images.nil? ? spotify_user.display_name + "'s profile image" : "Default profile image"
+   last_fm = !last_fm_user.nil? ? last_fm_user.name : nil
 %>
 
 <li class="row-flex">
   <div class="col-sm-2 col-xs-4"><%= image_tag(image, alt: image_alt) %></div>
   <div class="col-sm-4 col-xs-8">
-    <%= has_spotify ? name : (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),
-                                      login_user_path(user.id)) %>
+    <%= !spotify_user.nil? ? name : (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),
+                                      login_user_path(position)) %>
   </div>
   <div class="col-sm-4 col-xs-12">
-    <%= form_tag users_session_path(user), :method => :put, remote: true, class: "new_user", id: "new_user" do %>
-        <%= hidden_field_tag(:user_id, user.id) %>
+    <%= form_tag users_session_path(position), :method => :put, remote: true, class: "new_user", id: "new_user" do %>
+        <%= hidden_field_tag(:position, position) %>
         <%= text_field_tag(:last_fm_username, last_fm, class: "form-control", placeholder: "Last.fm username") %>
         <%= submit_tag "", :style => "display: none;" %>
     <% end %>
   </div>
   <div class="col-sm-2 col-xs-12">
-    <%= link_to "Delete", users_session_path(user), method: :delete, class: "btn btn-danger btn-block",
+    <%= link_to "Delete", users_session_path(position), method: :delete, class: "btn btn-danger btn-block",
                 data: {confirm: "Are you sure?"} %>
   </div>
 </li>

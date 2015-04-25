@@ -13,4 +13,4 @@
 /tmp
 
 #ignore sensitive data
-/config/initializers/my_constants.rb
+/config/spotify.yml

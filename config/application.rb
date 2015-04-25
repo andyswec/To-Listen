@@ -4,7 +4,6 @@ require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
 
 module ToListen
   class Application < Rails::Application
@@ -22,5 +21,12 @@ module ToListen
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    Bundler.require(*Rails.groups)
+
+    YAML.load_file("#{::Rails.root}/config/spotify.yml")[::Rails.env].each {|k,v| ENV[k] = v }
+    # puts 'Spotify id: ' + ENV['spotify_client_id'].to_s
+    # puts 'Spotify secret: ' + ENV['spotify_client_secret'].to_s
+    RSpotify::authenticate(ENV['spotify_client_id'], ENV['spotify_client_secret'])
   end
 end

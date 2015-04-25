@@ -1,5 +1,5 @@
 //var $form = $(this);
 $("#new-user-form")[0].reset();
-$('ul#users li:last').before('<%= escape_javascript( render partial: 'users/user', formats: [ :html ], locals: {user: @user}) %>')
+$('ul#users li:last').before('<%= j( render partial: 'users/user', formats: [ :html ], locals: {user: @user}) %>')
 //TODO increment users number on new-user
 //TODO enable button if users.count >= 2

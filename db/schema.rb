@@ -11,43 +11,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412144507) do
+ActiveRecord::Schema.define(version: 20150425190808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "sessions", force: :cascade do |t|
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.boolean  "generated_playlist", default: true
-  end
-
-  create_table "users", force: :cascade do |t|
+  create_table "last_fm_users", force: :cascade do |t|
     t.string   "name"
-    t.string   "image"
-    t.string   "spotify_id"
-    t.string   "spotify_access_token"
-    t.string   "spotify_refresh_token"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.string   "last_fm_username"
-  end
-
-  add_index "users", ["last_fm_username"], name: "index_users_on_last_fm_username", unique: true, where: "(spotify_id IS NULL)", using: :btree
-  add_index "users", ["spotify_id", "last_fm_username"], name: "index_users_on_spotify_id_and_last_fm_username", unique: true, using: :btree
-  add_index "users", ["spotify_id"], name: "index_users_on_spotify_id", unique: true, where: "(last_fm_username IS NULL)", using: :btree
-
-  create_table "users_sessions", id: false, force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.string   "session_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "users_sessions", ["session_id"], name: "index_users_sessions_on_session_id", using: :btree
-  add_index "users_sessions", ["user_id", "session_id"], name: "index_users_sessions_on_user_id_and_session_id", unique: true, using: :btree
-  add_index "users_sessions", ["user_id"], name: "index_users_sessions_on_user_id", using: :btree
+  create_table "sessions", force: :cascade do |t|
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.boolean  "generated_playlist", default: false
+  end
 
-  add_foreign_key "users_sessions", "sessions"
-  add_foreign_key "users_sessions", "users"
+  create_table "spotify_users", force: :cascade do |t|
+    t.string   "rspotify_hash"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  create_table "users_sessions", id: false, force: :cascade do |t|
+    t.string   "session_id", null: false
+    t.string   "spotify_id"
+    t.string   "last_fm_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "users_sessions", ["session_id", "spotify_id", "last_fm_id"], name: "index_users_sessions_on_all_columns", unique: true, using: :btree
+
+  add_foreign_key "users_sessions", "last_fm_users", column: "last_fm_id"
+  add_foreign_key "users_sessions", "spotify_users", column: "spotify_id"
 end

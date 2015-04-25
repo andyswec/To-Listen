@@ -3,7 +3,7 @@ require 'test_helper'
 class SessionTest < ActiveSupport::TestCase
 
   def setup
-    @session = Session.new(id: "abcdefgh")
+    @session = Session.new(id: 'abcdefgh')
   end
 
   test "ids should be unique" do
