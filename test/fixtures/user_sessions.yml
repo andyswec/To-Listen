@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 #
 #one:
-#  session: one
-#  spotify_user: one
-#  last_fm_user: one
+#  session_id: 'aaa'
+#  spotify_id: 'andy'
+#  last_fm_id: 'andy'

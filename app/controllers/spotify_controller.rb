@@ -15,7 +15,6 @@ class SpotifyController < ApplicationController
 
   def callback
     spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
-    puts spotify_user.display_name
 
     state = params[:state]
     position = state.nil? ? nil : eval(state)['position'].to_i
@@ -23,13 +22,15 @@ class SpotifyController < ApplicationController
     user = SpotifyUser.new(id: spotify_user.id, rspotify_hash: JSON.generate(spotify_user.to_hash))
     user.save
 
+    current_session = Session.new(id: session[:session_id])
+    current_session.save
+
     if position.nil?
-      current_session = Session.new(id: session[:session_id])
-      current_session.spotify_users << user
-      current_session.save
+      user_session = UserSession.new(session_id: session[:session_id], spotify_user: user)
+      user_session.save
     else
       user_session = UserSession.where(session_id: session[:session_id]).order(:created_at)[position - 1]
-      user_session.spotify_id = spotify_user.id
+      user_session.spotify_user = user
       user_session.save
     end
 

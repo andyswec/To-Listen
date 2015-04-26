@@ -19,10 +19,11 @@ class UsersSessionsController < ApplicationController
 
   def destroy
     session_id = session[:session_id]
-    user_id = params[:id]
+    position = params[:id].to_i
 
-    UserSession.find_by(user_id: user_id, session_id: session_id).first.destroy()
-
+    user_session = UserSession.where(session_id: session_id).order(:created_at)[position]
+    UserSession.delete_all(session_id: session_id, spotify_id: user_session.spotify_id, last_fm_id: user_session
+                                                                                                        .last_fm_id)
     redirect_to root_path
   end
 

@@ -6,7 +6,12 @@ class SessionTest < ActiveSupport::TestCase
     @session = Session.new(id: 'abcdefgh')
   end
 
-  test "ids should be unique" do
+  test 'id should be present' do
+    @session.id = nil
+    assert_not @session.valid?
+  end
+
+  test 'ids should be unique' do
     duplicate_session = @session.dup
     duplicate_session.id = @session.id
     @session.save

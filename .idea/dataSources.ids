@@ -2383,12 +2383,12 @@
       <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="generated_playlist" sqlType="bool" precision="1" scale="0" nullable="true" jdbcType="-7" def="dHJ1ZQ=="/>
+      <column name="generated_playlist" sqlType="bool" precision="1" scale="0" nullable="true" jdbcType="-7" def="ZmFsc2U="/>
       <primary-key name="sessions_pkey" columns="id"/>
     </table>
     <table name="spotify_users" schema="public" catalog="To-Listen_development" type="TABLE">
       <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="hash" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
+      <column name="rspotify_hash" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <primary-key name="spotify_users_pkey" columns="id"/>
@@ -22395,43 +22395,6 @@
       <column name="viewname" sqlType="name" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="viewowner" sqlType="name" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="definition" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-    </table>
-    <table name="last_fm_users" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="name" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <primary-key name="last_fm_users_pkey" columns="id"/>
-      <exported-key name="fk_rails_4c8e1881bb" table="users_sessions" schema="public" catalog="To-Listen_test" columns="last_fm_id"/>
-    </table>
-    <table name="schema_migrations" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="version" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <index name="unique_schema_migrations" unique="true" columns="version"/>
-    </table>
-    <table name="sessions" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="generated_playlist" sqlType="bool" precision="1" scale="0" nullable="true" jdbcType="-7" def="dHJ1ZQ=="/>
-      <primary-key name="sessions_pkey" columns="id"/>
-    </table>
-    <table name="spotify_users" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="hash" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <primary-key name="spotify_users_pkey" columns="id"/>
-      <exported-key name="fk_rails_c2aa19b6c2" table="users_sessions" schema="public" catalog="To-Listen_test" columns="spotify_id"/>
-    </table>
-    <table name="users_sessions" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="session_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="spotify_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="last_fm_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <foreign-key name="fk_rails_4c8e1881bb" columns="last_fm_id" ref-table="last_fm_users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <foreign-key name="fk_rails_c2aa19b6c2" columns="spotify_id" ref-table="spotify_users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="index_users_sessions_on_all_columns" unique="true" columns="session_id,spotify_id,last_fm_id"/>
     </table>
     <procedure name="_pg_char_max_length" schema="information_schema" catalog="To-Listen_test" type="2">
       <prototype>

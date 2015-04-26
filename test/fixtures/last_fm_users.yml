@@ -5,10 +5,10 @@
 # below each fixture, per the syntax in the comments below
 #
 #
-#one:
-#  id: andy
-#  name: andy_name
-#
-#two:
-#  id: luci
-#  name: luci_name
+one:
+  id: andy
+  name: andy_name
+
+two:
+  id: luci
+  name: luci_name

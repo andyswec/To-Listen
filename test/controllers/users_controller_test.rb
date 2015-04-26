@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class AppControllerTest < ActionController::TestCase
+class UsersControllerTest < ActionController::TestCase
   test "should get users" do
-    get root
+    get :users
     assert_response :success
   end
 
