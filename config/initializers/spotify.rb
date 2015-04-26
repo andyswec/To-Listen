@@ -5,5 +5,7 @@ CLIENT_SECRET = ENV['spotify_client_secret']
 REDIRECT_URI = ENV['spotify_callback']
 
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :spotify, CLIENT_ID, CLIENT_SECRET, scope: 'user-read-email', show_dialog: true, provider_ignores_state: true
+  provider :spotify, CLIENT_ID, CLIENT_SECRET, scope: 'user-library-read playlist-read-private playlist-modify-public
+ playlist-modify-private', show_dialog: true,
+      provider_ignores_state: true
 end

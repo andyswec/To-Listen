@@ -1,0 +1,19 @@
+<%
+   artists = track.artists.first.name
+   title = track.name
+   image = track.album.images.last['url']
+   alt = track.album.name + ' cover image'
+%>
+
+<li class="row">
+  <div class="col-sm-2">
+    <%= image_tag image, alt: alt %>
+  </div>
+  <div class="col-sm-5">
+    <%= artists %>
+  </div>
+  <div class="col-sm-5">
+    <%= title %>
+  </div>
+
+</li>
