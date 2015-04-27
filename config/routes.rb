@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root                            'users#users'
   get 'playlist'              =>  'playlist#playlist'
+  post 'play'                 =>  'playlist#play'
   get 'login'                 =>  'spotify#login'
   get 'login/:id'             =>  'spotify#login', as: :login_user
   get 'auth/spotify/callback' => 'spotify#callback'

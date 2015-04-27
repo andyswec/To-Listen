@@ -12,7 +12,7 @@
    last_fm = !last_fm_user.nil? ? last_fm_user.name : nil
 %>
 
-<li class="row-flex">
+<li class="row row-flex">
   <div class="col-sm-2 col-xs-4"><%= image_tag(image, alt: image_alt) %></div>
   <div class="col-sm-4 col-xs-8">
     <%= !spotify_user.nil? ? name : (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),

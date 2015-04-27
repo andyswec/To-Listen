@@ -1,7 +1,13 @@
 <h2>Playlist</h2>
 
-<ul class="list-unstyled tracks">
-  <% @tracks.each do |track| %>
-      <%= render partial: 'playlist/track', locals: {track: track} %>
-  <% end %>
-</ul>
+<div class="text-center play">
+  <%= link_to image_tag('spotify_listen-desktop.png', alt: 'Listen on Spotify'), play_path, method: :post %>
+</div>
+
+<div class="jumbotron">
+  <ul class="list-unstyled tracks">
+    <% @tracks.each do |track| %>
+        <%= render partial: 'playlist/track', locals: {track: track} %>
+    <% end %>
+  </ul>
+</div>

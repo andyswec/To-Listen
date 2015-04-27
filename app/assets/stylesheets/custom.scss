@@ -7,14 +7,20 @@ body {
   padding-bottom: 10px;
 }
 
-/* header */
-
-/* people */
-
-ul.users li {
+.row-flex {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+  &:before, &.after {
+    content: none;
+  }
+}
+
+/* header */
+
+/* users */
+
+ul.users li {
   margin-bottom: 25px;
 
   div {
@@ -33,5 +39,32 @@ ul.users li {
 
   .user-num h3 {
     margin: 0;
+  }
+}
+
+/* tracks */
+
+div.play {
+  margin-bottom: 25px;
+  max-height: 50px;
+
+  * {
+    max-height: inherit;
+  }
+}
+
+ul.tracks li {
+  margin-bottom: 25px;
+
+  .image {
+    padding-right: 0px;
+  }
+
+  .title {
+    font-weight: bold;
+  }
+
+  *{
+    max-width: 100%;
   }
 }
