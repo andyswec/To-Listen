@@ -6,4 +6,8 @@ class SpotifyUser < ActiveRecord::Base
       foreign_key: 'spotify_id', association_foreign_key: 'last_fm_id'
 
   validates :id, presence: true
+
+  def to_rspotify_user
+    RSpotify::User.new(JSON.parse(rspotify_hash))
+  end
 end

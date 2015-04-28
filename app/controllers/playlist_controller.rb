@@ -33,4 +33,14 @@ class PlaylistController < ApplicationController
     session.generated_playlist = true
     session.save
   end
+
+  def play
+    user = UserSession.where(session_id: session[:session_id]).order(:created_at).first.spotify_user
+    user = user.to_rspotify_user
+    playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
+
+    playlist()
+    playlist.add_tracks!(@tracks)
+    redirect_to playlist.external_urls['spotify']
+  end
 end
