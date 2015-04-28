@@ -25,7 +25,6 @@ class SpotifyController < ApplicationController
       user = SpotifyUser.new(id: spotify_user.id, rspotify_hash: JSON.generate(spotify_user.to_hash)) if user.nil?
       user.save
     else
-      user = user.first
       user.rspotify_hash = JSON.generate(spotify_user.to_hash)
       user.save
     end
