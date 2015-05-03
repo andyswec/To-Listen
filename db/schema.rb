@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20150425190808) do
     t.datetime "updated_at",    null: false
   end
 
-  create_table "users_sessions", id: false, force: :cascade do |t|
+  create_table "users_sessions", force: :cascade do |t|
     t.string   "session_id", null: false
     t.string   "spotify_id"
     t.string   "last_fm_id"

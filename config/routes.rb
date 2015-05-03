@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
-  root                            'users#users'
-  get 'playlist'              =>  'playlist#playlist'
-  post 'play'                 =>  'playlist#play'
-  get 'login'                 =>  'spotify#login'
-  get 'login/:id'             =>  'spotify#login', as: :login_user
-  get 'auth/spotify/callback' => 'spotify#callback'
-  get 'callback'              =>  'spotify#callback'
-  get 'stats'                 =>  'admin#stats'
+  get 'users_sessions/destroy'
 
-  resources :users_sessions, only: [:create, :destroy, :update]
+  root 'users#users'
+  get 'playlist' => 'playlist#playlist'
+  post 'play' => 'playlist#play'
+  get 'login' => 'spotify#login'
+  get 'login/:id' => 'spotify#login', as: :login_user
+  get 'auth/spotify/callback' => 'spotify#callback'
+  get 'callback' => 'spotify#callback'
+  get 'stats' => 'admin#stats'
+
+  resources :users_sessions, only: [:destroy]
+  resources :last_fm_users, only: [:create, :update], controller: 'last_fm'
 
   # resources :sessions, :only => [] do
   #   member do

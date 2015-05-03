@@ -22,7 +22,7 @@
         <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
       </div>
       <div class="col-sm-4 col-xs-12">
-        <%= form_tag users_sessions_path, :method => 'post', remote: true, id: "new-user-form" do %>
+        <%= form_tag last_fm_users_path, :method => 'post', remote: true, id: "new-user-form" do %>
             <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
             <%= submit_tag "", :style => "display: none;" %>
         <% end %>

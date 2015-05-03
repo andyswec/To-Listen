@@ -2,7 +2,7 @@ require 'json'
 
 class SpotifyController < ApplicationController
   def login
-    position = params[:position]
+    position = params[:id] # TODO change id to position as it is a position in fact
     state = !position.nil? ? {'position' => position} : nil
 
     url = URI.parse 'https://accounts.spotify.com/authorize'
@@ -36,7 +36,7 @@ class SpotifyController < ApplicationController
       user_session = UserSession.new(session_id: session[:session_id], spotify_user: user)
       user_session.save
     else
-      user_session = UserSession.where(session_id: session[:session_id]).order(:created_at)[position - 1]
+      user_session = UserSession.where(session_id: session[:session_id]).order(:created_at)[position]
       user_session.spotify_user = user
       user_session.save
     end

@@ -17,8 +17,7 @@ class SeparateLastFmAndSpotifyFromUsers < ActiveRecord::Migration
       t.timestamps null:false
     end
 
-    create_table :users_sessions, id: false do |t|
-
+    create_table :users_sessions do |t|
       t.references :session, type: :string, null: false, references: :sessions
       t.references :spotify, type: :string, references: :spotify_users
       t.references :last_fm, type: :string, references: :last_fm_users
