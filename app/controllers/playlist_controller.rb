@@ -1,34 +1,57 @@
 require 'rspotify'
+require 'lastfm'
 
 class PlaylistController < ApplicationController
   def playlist
+    lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
+
     session_id = session[:session_id]
     session = Session.find(session_id)
 
-    spotify_users = session.spotify_users
+    user_sessions = session.user_sessions
 
-    tracks = []
-    spotify_users.each do |user|
-      user = RSpotify::User.new(JSON.parse(user.rspotify_hash))
+    spotify_tracks = []
+    last_fm_tracks = []
+    user_sessions.each do |us|
 
-      i = 0
+      spotify = RSpotify::User.new(JSON.parse(us.spotify_user.rspotify_hash)) unless us.spotify_user.nil?
+      lastfm = us.last_fm_user
+      lastfm.last_fm_hash = lastfm.to_hash unless lastfm.nil?
 
-      begin
-        added_tracks = user.saved_tracks(limit: 50, offset: i)
-        tracks += added_tracks
-        i += 50
-      end while added_tracks.count > 0
+      # Get spotify tracks
+      if !spotify.nil?
+        i = 0
+        begin
+          added_tracks = spotify.saved_tracks(limit: 50, offset: i)
+          spotify_tracks += added_tracks
+          i += 50
+        end while added_tracks.count == 50
+      end
+
+      # Get Last.fm tracks
+      if !lastfm.nil?
+        i = 1
+        begin
+          added_tracks = lastfm_api.user.get_top_tracks(user: lastfm['id'], period: '3month', page: i)
+          last_fm_tracks += added_tracks
+          i += 50
+        end while added_tracks.count == 50
+      end
+    end
+
+    last_fm_tracks.each do |t|
+      puts t['name']
     end
 
     h = Hash.new(0)
-    tracks.each { |t| h.store(t.id, h[t.id]+1) }
-    tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! {|t| t.id}
+    spotify_tracks.each { |t| h.store(t.id, h[t.id]+1) }
+    spotify_tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! { |t| t.id }
 
-    tracks.each do |t|
+    spotify_tracks.each do |t|
       puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.id + ' ' + t.name
     end
 
-    @tracks = tracks[0..19]
+    @tracks = spotify_tracks[0..19]
 
     session.generated_playlist = true
     session.save
