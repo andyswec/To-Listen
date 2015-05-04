@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425190808) do
+ActiveRecord::Schema.define(version: 20150504123118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,8 @@ ActiveRecord::Schema.define(version: 20150425190808) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "users_sessions", ["session_id", "spotify_id", "last_fm_id"], name: "index_users_sessions_on_all_columns", unique: true, using: :btree
+  add_index "users_sessions", ["session_id", "last_fm_id"], name: "index_users_sessions_on_session_id_and_last_fm_id", unique: true, using: :btree
+  add_index "users_sessions", ["session_id", "spotify_id"], name: "index_users_sessions_on_session_id_and_spotify_id", unique: true, using: :btree
 
   add_foreign_key "users_sessions", "last_fm_users", column: "last_fm_id"
   add_foreign_key "users_sessions", "spotify_users", column: "spotify_id"
