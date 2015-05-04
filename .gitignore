@@ -13,4 +13,4 @@
 /tmp
 
 #ignore sensitive data
-/config/spotify.yml
+/config/api_secrets.yml

@@ -1,9 +1,15 @@
+require 'lastfm'
+
 class LastFmController < ApplicationController
   def create
     session_id = session[:session_id]
     last_fm_id = params[:last_fm_username]
 
-    user = LastFmUser.new(id: last_fm_id) # TODO get name and image from last.fm
+    user = LastFmUser.new
+    lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
+    user_info = lastfm.user.get_info(user: last_fm_id)
+    user.id = user_info['id']
+    user.last_fm_hash = JSON.generate(user_info)
     user.save
 
     session = Session.find_by(id: session_id)
@@ -32,15 +38,18 @@ class LastFmController < ApplicationController
       session.save
     end
 
-    user = LastFmUser.find_by(id: last_fm_id)
-    if user.nil?
-      user = LastFmUser.new(id: last_fm_id) if user.nil?
-      user.id = last_fm_id
-      user.save
-    end
+    lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
+    user_info = lastfm.user.get_info(user: last_fm_id)
+    user = LastFmUser.find_by(id: user_info['id'])
+    user = LastFmUser.new(user_info['id']) if user.nil?
+    user.last_fm_hash = JSON.generate(user_info)
+    user.save
 
     us = UserSession.where(session_id: session_id).order(:created_at)[position]
     us.last_fm_user = user
     us.save
+
+    @position = position
+    @name = user_info['realname']
   end
 end

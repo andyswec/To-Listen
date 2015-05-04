@@ -5,6 +5,9 @@ class LastFmUser < ActiveRecord::Base
   has_and_belongs_to_many :spotify_users, class_name: 'SpotifyUser', join_table: 'users_sessions', foreign_key:
           'last_fm_id', association_foreign_key: 'spotify_id'
 
-
   validates :id, presence: true, uniqueness: true
+
+  def to_hash
+    return JSON.parse(last_fm_hash)
+  end
 end

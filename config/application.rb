@@ -25,7 +25,7 @@ module ToListen
     Bundler.require(*Rails.groups)
 
     # in production set ENV variables
-    YAML.load_file("#{::Rails.root}/config/spotify.yml")[::Rails.env].each { |k, v| ENV[k] = v } if !Rails.env.production?
+    YAML.load_file("#{::Rails.root}/config/api_secrets.yml")[::Rails.env].each { |k, v| ENV[k] = v } if !Rails.env.production?
     RSpotify::authenticate(ENV['spotify_client_id'], ENV['spotify_client_secret'])
   end
 end

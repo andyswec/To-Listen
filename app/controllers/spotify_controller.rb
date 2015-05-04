@@ -6,7 +6,7 @@ class SpotifyController < ApplicationController
     state = !position.nil? ? {'position' => position} : nil
 
     url = URI.parse 'https://accounts.spotify.com/authorize'
-    params = {client_id: CLIENT_ID, response_type: 'code', redirect_uri: REDIRECT_URI, show_dialog: true, scope:
+    params = {client_id: SPOTIFY_CLIENT_ID, response_type: 'code', redirect_uri: SPOTIFY_REDIRECT_URI, show_dialog: true, scope:
         'user-library-read playlist-read-private playlist-modify-public playlist-modify-private'}
     params[:state] = state unless (state.nil?)
 

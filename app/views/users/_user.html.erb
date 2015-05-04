@@ -4,12 +4,13 @@
    rspotify_hash = JSON.parse(user_session.spotify_user.rspotify_hash) if !user_session.spotify_user.nil?
    spotify_user = RSpotify::User.new(rspotify_hash) if !rspotify_hash.nil?
    last_fm_user = user_session.last_fm_user
+   last_fm_hash = !last_fm_user.nil? ? last_fm_user.to_hash : nil
 
    name = !spotify_user.nil? ? (!spotify_user.display_name.nil? ? spotify_user.display_name : spotify_user.id) :
-           !last_fm_user.nil? ? last_fm_user.name : nil
+           !last_fm_hash.nil? ? last_fm_hash['realname'] : nil
    image =!spotify_user.nil? && !spotify_user.images[0].nil? ? spotify_user.images[0]['url'] : "user_avatar.png"
    image_alt = !spotify_user.nil? && !spotify_user.images.nil? ? name + "'s profile image" : "Default profile image"
-   last_fm = !last_fm_user.nil? ? (!last_fm_user.name.nil? ? last_fm_user.name : last_fm_user.id) : nil
+   last_fm = !last_fm_hash.nil? ? (!last_fm_hash['realname'].nil? ? last_fm_hash['realname'] : last_fm_user.id) : nil
 %>
 
 <li class="row row-flex">
@@ -19,10 +20,17 @@
                                              login_user_path(position)) %>
   </div>
   <div class="col-sm-4 col-xs-12">
-    <%= form_tag last_fm_user_path(position), :method => :put, remote: true, class: "new_user", id: "new_user" do %>
-        <!--<%= hidden_field_tag(:position, position) %>-->
-        <%= text_field_tag(:last_fm_username, last_fm, class: "form-control", placeholder: "Last.fm username") %>
-        <%= submit_tag "", :style => "display: none;" %>
+    <% if !last_fm_user.nil?
+    %>
+        <%= last_fm %>
+    <%
+       else
+    %>
+        <%= form_tag last_fm_user_path(position), :method => :put, remote: true, class: "new_user", id: "new_user" do %>
+            <!--<%= hidden_field_tag(:position, position) %>-->
+            <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
+            <%= submit_tag "", :style => "display: none;" %>
+        <% end %>
     <% end %>
   </div>
   <div class="col-sm-2 col-xs-12">

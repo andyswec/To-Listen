@@ -25,7 +25,7 @@ class PlaylistController < ApplicationController
     tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! {|t| t.id}
 
     tracks.each do |t|
-      puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.name
+      puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.id + ' ' + t.name
     end
 
     @tracks = tracks[0..19]
