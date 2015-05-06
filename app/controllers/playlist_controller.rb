@@ -2,6 +2,7 @@ require 'rspotify'
 require 'lastfm'
 
 class PlaylistController < ApplicationController
+  include PlaylistHelper
   def playlist
     lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
 
@@ -10,38 +11,18 @@ class PlaylistController < ApplicationController
 
     user_sessions = session.user_sessions
 
-    spotify_tracks = []
-    last_fm_tracks = []
+    users = []
     user_sessions.each do |us|
-
-      spotify = RSpotify::User.new(JSON.parse(us.spotify_user.rspotify_hash)) unless us.spotify_user.nil?
-      lastfm = us.last_fm_user
-      lastfm.last_fm_hash = lastfm.to_hash unless lastfm.nil?
-
-      # Get spotify tracks
-      if !spotify.nil?
-        i = 0
-        begin
-          added_tracks = spotify.saved_tracks(limit: 50, offset: i)
-          spotify_tracks += added_tracks
-          i += 50
-        end while added_tracks.count == 50
-      end
-
-      # Get Last.fm tracks
-      if !lastfm.nil?
-        i = 1
-        begin
-          added_tracks = lastfm_api.user.get_top_tracks(user: lastfm['id'], period: '3month', page: i)
-          last_fm_tracks += added_tracks
-          i += 50
-        end while added_tracks.count == 50
-      end
+      users << SpotifyLastFmUser.new(user_session: us)
     end
 
-    last_fm_tracks.each do |t|
-      puts t['name']
-    end
+    # last_fm_tracks.each do |t|
+    #   query = 'artist:"' + t['artist']['name'] + '"&track:"' + t['name'] +'"'
+    #   spotify_track = RSpotify::Track.search(query, limit: 1)[0]
+    #   puts 'LastFm: ' + t['artist']['name'] + ' - ' + t['name']
+    #   puts 'Spotify: ' + spotify_track.artists[0].name + ' - ' +  spotify_track.name
+    #   spotify_tracks << spotify_track
+    # end
 
     h = Hash.new(0)
     spotify_tracks.each { |t| h.store(t.id, h[t.id]+1) }
