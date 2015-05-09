@@ -21,13 +21,9 @@ class SpotifyController < ApplicationController
     position = state.nil? ? nil : eval(state)['position'].to_i
 
     user = SpotifyUser.find_by(id: spotify_user.id)
-    if (user.nil?)
-      user = SpotifyUser.new(id: spotify_user.id, rspotify_hash: JSON.generate(spotify_user.to_hash)) if user.nil?
-      user.save
-    else
-      user.rspotify_hash = JSON.generate(spotify_user.to_hash)
-      user.save
-    end
+    user = SpotifyUser.new(id: spotify_user.id) if user.nil?
+    user.rspotify_hash = spotify_user.to_hash
+    user.save
 
     current_session = Session.new(id: session[:session_id])
     current_session.save

@@ -7,9 +7,8 @@ class LastFmController < ApplicationController
 
     user = LastFmUser.new
     lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-    user_info = lastfm.user.get_info(user: last_fm_id)
-    user.id = user_info['id']
-    user.last_fm_hash = JSON.generate(user_info)
+    user.last_fm_hash = lastfm.user.get_info(user: last_fm_id)
+    user.id = user.last_fm_hash['id']
     user.save
 
     session = Session.find_by(id: session_id)
@@ -22,14 +21,15 @@ class LastFmController < ApplicationController
     if !user_session.save # TODO send error message
       render nothing: true
     else
-      count = session.user_sessions.count
-      render partial: 'users/user', locals: {user_session: user_session, users_count: count, position: (count-1)}
+      @users_count = session.user_sessions.count
+      @position = @users_count - 1
+      @user_session = user_session
     end
   end
 
   def update
     position = params[:id].to_i # TODO user_id is in fact a position
-    last_fm_id = params[:last_fm_username]
+    last_fm_username = params[:last_fm_username]
     session_id = session[:session_id]
 
     session = Session.find_by(id: session_id)
@@ -39,17 +39,17 @@ class LastFmController < ApplicationController
     end
 
     lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-    user_info = lastfm.user.get_info(user: last_fm_id)
-    user = LastFmUser.find_by(id: user_info['id'])
-    user = LastFmUser.new(user_info['id']) if user.nil?
-    user.last_fm_hash = JSON.generate(user_info)
+    last_fm_hash = lastfm.user.get_info(user: last_fm_username)
+    user = LastFmUser.find_by(id: last_fm_hash['id'])
+    user = LastFmUser.new(id: last_fm_hash['id']) if user.nil?
+    user.last_fm_hash = last_fm_hash
     user.save
 
     us = UserSession.where(session_id: session_id).order(:created_at)[position]
     us.last_fm_user = user
-    us.save
+    us.save # TODO send fail if !us.save
 
     @position = position
-    @name = user_info['realname']
+    @name = user.last_fm_hash['realname']
   end
 end

@@ -1,0 +1,10 @@
+$("#new-user-form")[0].reset();
+$('ul#users li:last').before('<%= j( render partial: 'users/user', formats: [ :html ], locals: {user_session: @user_session, position: @position}) %>')
+$('ul#users li.new-user div:first h3 small').text('<%= j("##{@users_count + 1}")%>');
+
+<% if @users_count >= 2
+%>
+$('a#playlist').removeClass('disabled').parent().popover('disable');
+<%
+end
+%>

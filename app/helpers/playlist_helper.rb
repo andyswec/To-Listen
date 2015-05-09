@@ -13,29 +13,30 @@ module PlaylistHelper
     def initialize(args)
       if !args[:user_session].nil?
         user_session = args[:user_session]
-        @spotify_user = RSpotify::User.new(JSON.parse(user_session.spotify_user.rspotify_hash)) unless user_session.spotify_user.nil?
-        @last_fm_user = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
+        @spotify_user = RSpotify::User.new(user_session.spotify_user.rspotify_hash) unless user_session.spotify_user.nil?
+        @last_fm_hash = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
       else
-        @spotify_user = RSpotify::User.new(JSON.parse(args[:spotify_user].rspotify_hash)) unless spotify_user.nil?
-        @last_fm_user = args[:last_fm_user].last_fm_hash unless last_fm_user.nil?
+        @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless spotify_user.nil?
+        @last_fm_hash = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
       end
 
       @spotify_tracks = []
-      unless spotify_user.nil?
+      unless @spotify_user.nil?
         i = 0
         begin
-          added_tracks = spotify.saved_tracks(limit: 50, offset: i)
-          spotify_tracks += added_tracks
+          added_tracks = @spotify_user.saved_tracks(limit: 50, offset: i)
+          @spotify_tracks += added_tracks
           i += 50
         end while added_tracks.count == 50
       end
 
+      lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
       @last_fm_tracks = []
       unless last_fm_user.nil?
         i = 1
         begin
-          added_tracks = lastfm_api.user.get_top_tracks(user: lastfm['id'], period: '7day', page: i)
-          last_fm_tracks += added_tracks
+          added_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_hash['id'], period: '7day', page: i)
+          @last_fm_tracks += added_tracks
           i += 50
         end while added_tracks.count == 50
       end

@@ -5,7 +5,7 @@ class StoreLastFmUserHash < ActiveRecord::Migration
 
     create_table :last_fm_users, id: false do |t|
       t.string :id, null: false, primary_key: true
-      t.string :last_fm_hash
+      t.text :last_fm_hash
 
       t.timestamps null:false
     end

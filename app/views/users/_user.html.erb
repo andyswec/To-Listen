@@ -1,10 +1,10 @@
 <%
    require 'json'
 
-   rspotify_hash = JSON.parse(user_session.spotify_user.rspotify_hash) if !user_session.spotify_user.nil?
+   rspotify_hash = user_session.spotify_user.rspotify_hash if !user_session.spotify_user.nil?
    spotify_user = RSpotify::User.new(rspotify_hash) if !rspotify_hash.nil?
    last_fm_user = user_session.last_fm_user
-   last_fm_hash = !last_fm_user.nil? ? last_fm_user.to_hash : nil
+   last_fm_hash = !last_fm_user.nil? ? last_fm_user.last_fm_hash : nil
 
    name = !spotify_user.nil? ? (!spotify_user.display_name.nil? ? spotify_user.display_name : spotify_user.id) :
            !last_fm_hash.nil? ? last_fm_hash['realname'] : nil

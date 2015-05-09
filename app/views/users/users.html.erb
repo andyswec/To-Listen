@@ -43,13 +43,13 @@
     <div data-toggle="popover" data-trigger="hover" data-placement="auto" data-container="body" title="Get playlist"
          data-content="You need to add at least two persons">
       <%=
-          link_to "What To-Listen?", playlist_path, class: "btn btn-primary btn-lg btn-block disabled"
+          link_to "What To-Listen?", playlist_path, id: 'playlist',class: 'btn btn-primary btn-lg btn-block disabled'
       %>
     </div>
 <% else %>
 
     <%=
-        link_to "What To-Listen?", playlist_path, class: "btn btn-primary btn-lg btn-block"
+        link_to "What To-Listen?", playlist_path, id: 'playlist', class: 'btn btn-primary btn-lg btn-block'
     %>
 
 <% end %>

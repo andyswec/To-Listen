@@ -2326,7 +2326,7 @@
     </table>
     <table name="last_fm_users" schema="public" catalog="To-Listen_development" type="TABLE">
       <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="last_fm_hash" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
+      <column name="last_fm_hash" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <primary-key name="last_fm_users_pkey" columns="id"/>

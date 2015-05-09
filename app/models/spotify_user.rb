@@ -7,7 +7,5 @@ class SpotifyUser < ActiveRecord::Base
 
   validates :id, presence: true, uniqueness: true
 
-  def to_rspotify_user
-    RSpotify::User.new(JSON.parse(rspotify_hash))
-  end
+  serialize :rspotify_hash, Hash
 end

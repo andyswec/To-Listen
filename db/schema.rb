@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20150504160002) do
   enable_extension "plpgsql"
 
   create_table "last_fm_users", force: :cascade do |t|
-    t.string   "last_fm_hash"
+    t.text     "last_fm_hash"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
