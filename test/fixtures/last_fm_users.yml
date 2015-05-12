@@ -7,8 +7,8 @@
 #
 one:
   id: andy
-  name: andy_name
+  last_fm_hash: andy_hash
 
 two:
   id: luci
-  name: luci_name
+  last_fm_hash: luci_hash

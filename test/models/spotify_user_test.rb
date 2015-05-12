@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SpotifyUserTest < ActiveSupport::TestCase
   def setup
-    @user = SpotifyUser.new(id: 1234, rspotify_hash: 'spotify_hash')
+    @user = SpotifyUser.new(id: 1234, rspotify_hash: {displayName: '1234_display_name'})
   end
 
   test 'id should be present' do

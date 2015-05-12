@@ -5,8 +5,8 @@ class UserSession < ActiveRecord::Base
   self.table_name = :users_sessions
 
   validates :session_id, presence: true
-  validates_uniqueness_of :session_id, scope: [:spotify_id]
-  validates_uniqueness_of :session_id, scope: [:last_fm_id]
+  validates_uniqueness_of :spotify_id, scope: [:session_id], allow_nil: true, allow_blank: true
+  validates_uniqueness_of :last_fm_id, scope: [:session_id], allow_nil: true, allow_blank: true
   validate :has_a_user
 
   def has_a_user

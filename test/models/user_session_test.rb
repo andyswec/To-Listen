@@ -39,4 +39,12 @@ class UserSessionTest < ActiveSupport::TestCase
     @user_session.save
     assert_not duplicate.valid?
   end
+
+  test "user with different spotify_id should be allowed in the same session" do
+    @user_session.last_fm_user = nil
+    duplicate = @user_session.dup
+    @user_session.save
+    duplicate.spotify_id = 'luci'
+    assert duplicate.valid?
+  end
 end

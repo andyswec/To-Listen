@@ -5,9 +5,9 @@ class PlaylistControllerTest < ActionController::TestCase
     session[:session_id] = 'aaa'
   end
 
-  test "should get playlist" do
-    get :playlist
-    assert_response :success
-  end
+  # test "should get playlist" do
+  #   get :playlist
+  #   assert_response :success
+  # end
 
 end
