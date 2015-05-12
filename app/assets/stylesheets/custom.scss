@@ -31,14 +31,28 @@ ul.users li {
     margin-bottom: 15px;
     text-align: center;
 
-    @media (min-width: 768px) {
-      text-align: inherit;
+    &:not(.user-num):not(.img) {
+      @media (min-width: 768px) {
+        text-align: inherit;
+      }
     }
 
     * {
       max-height: 50px;
       max-width: 100%;
     }
+  }
+
+  div.user-num {
+    min-height: 50px;
+
+    div {
+      width: 100%;
+    }
+  }
+
+  div.form-group {
+    margin: 0px;
   }
 
   .user-num h3 {
@@ -68,7 +82,7 @@ ul.tracks li {
     font-weight: bold;
   }
 
-  *{
+  * {
     max-width: 100%;
   }
 }

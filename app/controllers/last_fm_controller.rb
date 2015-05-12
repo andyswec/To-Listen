@@ -2,28 +2,39 @@ require 'lastfm'
 
 class LastFmController < ApplicationController
   def create
-    session_id = session[:session_id]
-    last_fm_id = params[:last_fm_username]
+    begin
 
-    user = LastFmUser.new
-    lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-    user.last_fm_hash = lastfm.user.get_info(user: last_fm_id)
-    user.id = user.last_fm_hash['id']
-    user.save
+      session_id = session[:session_id]
+      last_fm_id = params[:last_fm_username]
 
-    session = Session.find_by(id: session_id)
-    if (session.nil?)
-      session = Session.new(id: session_id)
-      session.save
-    end
+      user = LastFmUser.new
+      lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
+      user.last_fm_hash = lastfm.user.get_info(user: last_fm_id)
+      user.id = user.last_fm_hash['id']
+      user.save
 
-    user_session = UserSession.new(last_fm_id: user.id, session_id: session_id)
-    if !user_session.save # TODO send error message
-      render nothing: true
-    else
-      @users_count = session.user_sessions.count
-      @position = @users_count - 1
-      @user_session = user_session
+      session = Session.find_by(id: session_id)
+      if (session.nil?)
+        session = Session.new(id: session_id)
+        session.save
+      end
+
+      user_session = UserSession.new(last_fm_id: user.id, session_id: session_id)
+      if !user_session.save # TODO send error message
+        render nothing: true
+      else
+        @users_count = session.user_sessions.count
+        @position = @users_count - 1
+        @user_session = user_session
+      end
+
+    rescue Lastfm::ApiError => e
+      if e.code == 6
+        @error = e.message
+        render 'error'
+      else
+        raise e
+      end
     end
   end
 
