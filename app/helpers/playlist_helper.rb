@@ -44,12 +44,34 @@ module PlaylistHelper
   end
 
   class Recommender
+    attr_reader :tracks
+
     def initialize(users)
       @users = users
     end
 
+    def tracks
+      @tracks ||= get_recommended_tracks
+    end
+
+    private
     def get_recommended_tracks
-      # TODO
+      # TODO :)
+
+      h = Hash.new(0)
+      spotify_tracks = []
+      @users.each do |user|
+        user.spotify_tracks.each { |t| h.store(t.id, h[t.id]+1) }
+        spotify_tracks += user.spotify_tracks
+      end
+
+      spotify_tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! { |t| t.id }
+
+      spotify_tracks.each do |t|
+        puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.id + ' ' + t.name
+      end
+
+      spotify_tracks[0..19]
     end
   end
 end

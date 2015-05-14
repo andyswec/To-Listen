@@ -23,15 +23,7 @@ class PlaylistController < ApplicationController
     #   spotify_tracks << spotify_track
     # end
 
-    h = Hash.new(0)
-    spotify_tracks.each { |t| h.store(t.id, h[t.id]+1) }
-    spotify_tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! { |t| t.id }
-
-    spotify_tracks.each do |t|
-      puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.id + ' ' + t.name
-    end
-
-    @tracks = spotify_tracks[0..19]
+    @tracks = Recommender.new(users).tracks
 
     session.generated_playlist = true
     session.save
@@ -39,7 +31,7 @@ class PlaylistController < ApplicationController
 
   def play
     user = UserSession.where(session_id: session[:session_id]).order(:created_at).first.spotify_user
-    user = user.to_rspotify_user
+    user = RSpotify::User.new(user.rspotify_hash)
     playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
 
     playlist()
