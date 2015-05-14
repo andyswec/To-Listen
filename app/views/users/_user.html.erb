@@ -1,27 +1,12 @@
-<%
-   require 'json'
-
-   rspotify_hash = user_session.spotify_user.rspotify_hash if !user_session.spotify_user.nil?
-   spotify_user = RSpotify::User.new(rspotify_hash) if !rspotify_hash.nil?
-   last_fm_user = user_session.last_fm_user
-   last_fm_hash = !last_fm_user.nil? ? last_fm_user.last_fm_hash : nil
-
-   name = !spotify_user.nil? ? (!spotify_user.display_name.nil? ? spotify_user.display_name : spotify_user.id) :
-           !last_fm_hash.nil? ? last_fm_hash['realname'] : nil
-   image =!spotify_user.nil? && !spotify_user.images[0].nil? ? spotify_user.images[0]['url'] : "user_avatar.png"
-   image_alt = !spotify_user.nil? && !spotify_user.images.nil? ? name + "'s profile image" : "Default profile image"
-   last_fm = !last_fm_hash.nil? ? (!last_fm_hash['realname'].nil? ? last_fm_hash['realname'] : last_fm_user.id) : nil
-%>
-
 <li class="row row-flex">
-  <div class="col-sm-2 col-xs-4 img"><%= image_tag(image, alt: image_alt) %></div>
+  <div class="col-sm-2 col-xs-4 img"><%= image_tag(user.image, alt: user.image_alt) %></div>
   <div class="col-sm-4 col-xs-8">
-    <%= !spotify_user.nil? ? name : (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),
+    <%= user.name || (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),
                                              login_user_path(position)) %>
   </div>
   <div class="col-sm-4 col-xs-12">
-    <% if !last_fm_user.nil? %>
-        <%= last_fm %>
+    <% if !user.last_fm.nil? %>
+        <%= user.last_fm %>
     <%
        else
     %>

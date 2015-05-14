@@ -9,14 +9,14 @@
 
 <div class="jumbotron">
   <ul class="users list-unstyled" id="users">
-    <% @users_sessions.each_with_index { |user_session, position| %>
-        <%= render partial: 'users/user', locals: {user_session: user_session, position: position} %>
+    <% @display_users.each_with_index { |user, position| %>
+        <%= render partial: 'users/user', locals: {user: user, position: position} %>
     <% } %>
     <li class="row row-flex new-user">
       <div class="col-sm-2 col-xs-4 user-num row-flex">
         <div>
           <h3>
-            <small>#<%= @users_sessions.length + 1 %></small>
+            <small>#<%= @display_users.length + 1 %></small>
           </h3>
         </div>
       </div>
@@ -41,7 +41,7 @@
 </h2>
 
 <%
-   disabled = @users_sessions.length < 2
+   disabled = @display_users.length < 2
    if disabled
 %>
 

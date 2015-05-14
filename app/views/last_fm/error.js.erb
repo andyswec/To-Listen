@@ -1,5 +1,5 @@
 <% if @position.nil? %>
-$('ul#users li.new-user div:last').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
+$('ul#users li.new-user div.form-group').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
 <% else %>
-$('ul#users li:nth-child(<%= @position %>) div:last').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
+$('ul#users li:nth-child(<%= @position + 1 %>) div.form-group').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
 <% end %>
