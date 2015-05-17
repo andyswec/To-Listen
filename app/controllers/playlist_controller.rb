@@ -3,6 +3,7 @@ require 'lastfm'
 
 class PlaylistController < ApplicationController
   include PlaylistHelper
+
   def playlist
     session_id = session[:session_id]
     session = Session.find(session_id)
@@ -27,15 +28,20 @@ class PlaylistController < ApplicationController
 
     session.generated_playlist = true
     session.save
+
+    session.track_sessions.delete_all
+    session.tracks += @tracks.collect { |t| Track.new(id: t.id, rspotify_hash: t) }
   end
 
   def play
-    user = UserSession.where(session_id: session[:session_id]).order(:created_at).first.spotify_user
+    session_id = session[:session_id]
+    user = UserSession.where(session_id: session_id).order(:created_at).first.spotify_user
     user = RSpotify::User.new(user.rspotify_hash)
     playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
-
-    playlist()
-    playlist.add_tracks!(@tracks)
+    
+    session = Session.find_by(id: session_id)
+    tracks = session.tracks.order(:created_at)
+    playlist.add_tracks!(tracks.collect { |t| t.rspotify_hash })
     redirect_to playlist.external_urls['spotify']
   end
 end
