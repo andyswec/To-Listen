@@ -21,11 +21,11 @@ class LastFmController < ApplicationController
 
       user_session = UserSession.new(last_fm_id: user.id, session_id: session_id)
       if !user_session.save # TODO send error message
-        render nothing: true
+        render 'error'
       else
         @users_count = session.user_sessions.count
         @position = @users_count - 1
-        @user_session = user_session
+        @user = DisplayUser.new(user_session)
       end
 
     rescue Lastfm::ApiError => e
@@ -64,7 +64,7 @@ class LastFmController < ApplicationController
         render 'error'
       end
 
-      @name = user.last_fm_hash['realname']
+      @name = user.last_fm_hash['name']
 
     rescue Lastfm::ApiError => e
       if e.code == 6

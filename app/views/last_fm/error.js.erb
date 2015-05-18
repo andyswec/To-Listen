@@ -1,5 +1,9 @@
 <% if @position.nil? %>
+deleteIcons.call($('ul#users li.new-user div.form-group'));
+enableInput.call($('ul#users li.new-user div.form-group input#last_fm_username[type=text]'));
 $('ul#users li.new-user div.form-group').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
 <% else %>
+deleteIcons.call($('ul#users li:nth-child(<%= @position + 1 %>) div.form-group'));
+enableInput.call($('ul#users li:nth-child(<%= @position + 1 %>) div.form-group input#last_fm_username[type=text]'));
 $('ul#users li:nth-child(<%= @position + 1 %>) div.form-group').addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true">').append('<span id="inputError2Status" class="sr-only">(error)</span>');
 <% end %>
