@@ -20,8 +20,7 @@ class SpotifyController < ApplicationController
     state = params[:state]
     position = state.nil? ? nil : eval(state)['position'].to_i
 
-    user = SpotifyUser.find_by(id: spotify_user.id)
-    user = SpotifyUser.new(id: spotify_user.id) if user.nil?
+    user = SpotifyUser.find_by(id: spotify_user.id) || SpotifyUser.new(id: spotify_user.id)
     user.rspotify_hash = spotify_user.to_hash
     user.save
 
@@ -30,13 +29,21 @@ class SpotifyController < ApplicationController
 
     if position.nil?
       user_session = UserSession.new(session_id: session[:session_id], spotify_user: user)
-      user_session.save
     else
       user_session = UserSession.where(session_id: session[:session_id]).order(:created_at)[position]
       user_session.spotify_user = user
-      user_session.save
     end
 
+    if !user_session.save
+      failure 'Failed to add user. User already added.'
+      return
+    end
+
+    redirect_to root_path
+  end
+
+  def failure(message = nil)
+    flash[:alert] = message || 'Failed to add user.'
     redirect_to root_path
   end
 end

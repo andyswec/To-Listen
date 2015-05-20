@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get 'login' => 'spotify#login'
   get 'login/:id' => 'spotify#login', as: :login_user
   get 'auth/spotify/callback' => 'spotify#callback'
-  get 'callback' => 'spotify#callback'
+  get 'auth/failure' => 'spotify#failure'
   get 'stats' => 'admin#stats'
 
   resources :users_sessions, only: [:destroy]
