@@ -30,7 +30,9 @@ class PlaylistController < ApplicationController
     session.save
 
     session.track_sessions.delete_all
-    session.tracks += @tracks.collect { |t| Track.new(id: t.id, rspotify_hash: t) }
+    session.tracks += @tracks.collect do |t|
+      Track.find_by(id: t.id) || Track.new(id: t.id, rspotify_hash: t)
+    end
   end
 
   def play
@@ -38,7 +40,7 @@ class PlaylistController < ApplicationController
     user = UserSession.where(session_id: session_id).order(:created_at).first.spotify_user
     user = RSpotify::User.new(user.rspotify_hash)
     playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
-    
+
     session = Session.find_by(id: session_id)
     tracks = session.tracks.order(:created_at)
     playlist.add_tracks!(tracks.collect { |t| t.rspotify_hash })
