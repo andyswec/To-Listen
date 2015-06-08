@@ -5,40 +5,64 @@ module PlaylistHelper
   class SpotifyLastFmUser
     attr_reader :spotify_user
     attr_reader :last_fm_user
-    attr_reader :spotify_tracks
-    attr_reader :last_fm_tracks
+    attr_reader :tracks
 
-    # Creates a SpotifyLastFmUser
+    # Creates a SpotifyLastFmUser and fetches the songs
     # @param args hash containing :user_session or :spotify_user and last_fm_user
     def initialize(args)
       if !args[:user_session].nil?
         user_session = args[:user_session]
         @spotify_user = RSpotify::User.new(user_session.spotify_user.rspotify_hash) unless user_session.spotify_user.nil?
-        @last_fm_hash = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
+        @last_fm_user = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
       else
         @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless spotify_user.nil?
-        @last_fm_hash = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
+        @last_fm_user = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
       end
 
-      @spotify_tracks = []
+      # Fetch spotify tracks
+      @tracks = []
       unless @spotify_user.nil?
         i = 0
         begin
           added_tracks = @spotify_user.saved_tracks(limit: 50, offset: i)
-          @spotify_tracks += added_tracks
+          added_at = @spotify_user.tracks_added_at
+          @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id]) }
           i += 50
         end while added_tracks.count == 50
-      end
 
+        i = 0
+        playlists = []
+        begin
+          added_playlists = @spotify_user.playlists(limit: 50, offset: i)
+          playlists += added_playlists
+          i += 50
+        end while added_playlists.count == 50
+
+        playlists.each do |p|
+          i = 0
+          begin
+            added_tracks = p.tracks(limit: 100, offset: i)
+            added_at = p.tracks_added_at
+            @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id]) }
+            i += 100
+          end while added_tracks.count == 100
+        end
+      end
+      @tracks.sort_by! { |t| t.object.id.to_s }.reverse!.uniq! { |t| [t.object.artists.collect { |a| a.name }, t.object.name] }
+
+      # Fetch last.fm tracks
       lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
       @last_fm_tracks = []
-      unless last_fm_user.nil?
-        i = 1
-        begin
-          added_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_hash['id'], period: '7day', page: i)
-          @last_fm_tracks += added_tracks
-          i += 50
-        end while added_tracks.count == 50
+      unless @last_fm_user.nil?
+        @last_fm_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_user['id'], period: '7day')
+        added_tracks.each do |lt|
+          index = @tracks.index { |st| st.object.name == lt['name'] && st.object.artists.any? { |sa| sa.name == lt['artist']['name'] } }
+          if index.nil?
+            puts 'Not found: ' + lt['artist']['name'] + ' - ' + lt['name']
+          else
+            puts 'Found: ' + @tracks[index].artists.first.name + ' - ' + @tracks[index].name
+          end
+        end
       end
     end
   end
@@ -58,20 +82,34 @@ module PlaylistHelper
     def get_recommended_tracks
       # TODO :)
 
-      h = Hash.new(0)
+      tracks_hash = Hash.new(0)
       spotify_tracks = []
+      artists = []
       @users.each do |user|
-        user.spotify_tracks.each { |t| h.store(t.id, h[t.id]+1) }
-        spotify_tracks += user.spotify_tracks
+        user.tracks.each do |t|
+          tracks_hash.store(t.object.id, tracks_hash[t.object.id]+1)
+          artists += t.object.artists
+        end
+        spotify_tracks += user.tracks
       end
 
-      spotify_tracks.sort_by! { |t| [h[t.id], t.popularity] }.reverse!.uniq! { |t| t.id }
+      spotify_tracks.sort_by! { |t| [tracks_hash[t.object.id], t.object.popularity] }.reverse!.uniq! { |t| t.object.id }
 
+      puts 'Tracks'
       spotify_tracks.each do |t|
-        puts h[t.id].to_s + ' ' + t.popularity.to_s + ' ' + t.id + ' ' + t.name
+        puts tracks_hash[t.object.id].to_s + ' ' + t.object.popularity.to_s + ' ' + t.object.id.to_s + ' ' + t.object.name.to_s
       end
 
       spotify_tracks[0..19]
+    end
+  end
+
+  class Track
+    attr_reader :object, :added_at
+
+    def initialize(object:, added_at:)
+      @object = object
+      @added_at = added_at
     end
   end
 end

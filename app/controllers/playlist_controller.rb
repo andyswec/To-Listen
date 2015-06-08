@@ -2,7 +2,6 @@ require 'rspotify'
 require 'lastfm'
 
 class PlaylistController < ApplicationController
-  include PlaylistHelper
 
   def playlist
     session_id = session[:session_id]
@@ -12,7 +11,7 @@ class PlaylistController < ApplicationController
 
     users = []
     user_sessions.each do |us|
-      users << SpotifyLastFmUser.new(user_session: us)
+      users << PlaylistHelper::SpotifyLastFmUser.new(user_session: us)
     end
 
     # Get spotify ids for tracks
@@ -24,12 +23,20 @@ class PlaylistController < ApplicationController
     #   spotify_tracks << spotify_track
     # end
 
-    @tracks = Recommender.new(users).tracks
+    @tracks = PlaylistHelper::Recommender.new(users).tracks.collect { |t| t.object }
+    @tracks.collect! do |t|
+      if t.id.nil?
+        query = "artist:#{t.artists.collect { |a| a.name }.join(' ')} track:#{t.name}"
+        RSpotify::Track.search(query, limit: 1).first
+      else
+        t
+      end
+    end
 
     session.generated_playlist = true
     session.save
 
-    session.track_sessions.delete_all
+    session.track_sessions.destroy_all
     session.tracks += @tracks.collect do |t|
       Track.find_by(id: t.id) || Track.new(id: t.id, rspotify_hash: t)
     end

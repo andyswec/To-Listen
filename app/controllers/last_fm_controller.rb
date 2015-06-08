@@ -9,7 +9,7 @@ class LastFmController < ApplicationController
 
       user = LastFmUser.new
       lastfm = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-      user.last_fm_hash = lastfm.user.get_info(user: last_fm_id)
+      user.last_fm_user = lastfm.user.get_info(user: last_fm_id)
       user.id = user.last_fm_hash['id']
       user.save
 
