@@ -87,6 +87,12 @@ module PlaylistHelper
 
       return 0
     end
+
+    def self.time_coefficient(date)
+      weeks = (Time.now.to_i - date.to_i) / (3600 * 24 * 7).to_f
+      return 1 if weeks / 2 <= 0
+      [1 / (weeks / 2), 1].min
+    end
   end
 
   class Recommender
