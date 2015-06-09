@@ -14,15 +14,6 @@ class PlaylistController < ApplicationController
       users << PlaylistHelper::SpotifyLastFmUser.new(user_session: us)
     end
 
-    # Get spotify ids for tracks
-    # last_fm_tracks.each do |t|
-    #   query = 'artist:"' + t['artist']['name'] + '"&track:"' + t['name'] +'"'
-    #   spotify_track = RSpotify::Track.search(query, limit: 1)[0]
-    #   puts 'LastFm: ' + t['artist']['name'] + ' - ' + t['name']
-    #   puts 'Spotify: ' + spotify_track.artists[0].name + ' - ' +  spotify_track.name
-    #   spotify_tracks << spotify_track
-    # end
-
     @tracks = PlaylistHelper::Recommender.new(users).tracks
 
     session.generated_playlist = true

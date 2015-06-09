@@ -26,7 +26,7 @@ module PlaylistHelper
         begin
           added_tracks = @spotify_user.saved_tracks(limit: 50, offset: i)
           added_at = @spotify_user.tracks_added_at
-          @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id]) }
+          @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: true) }
           i += 50
         end while added_tracks.count == 50
 
@@ -43,7 +43,8 @@ module PlaylistHelper
           begin
             added_tracks = p.tracks(limit: 100, offset: i)
             added_at = p.tracks_added_at
-            @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id]) }
+            added_by = p.tracks_added_by
+            @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: added_by[o.id].id == @spotify_user.id) }
             i += 100
           end while added_tracks.count == 100
         end
@@ -69,22 +70,18 @@ module PlaylistHelper
     end
 
     def relevance(track)
-      relationship = relationship(track)
-      return 0 if relationship.value == 0
-      return relationship.value * self.class.time_coefficient(relationship.added_at)
+      best = 0
+      @tracks.each do |t|
+        similarity = t.object.similarity(track)
+        time = self.class.time_coefficient(t.added_at)
+        mine = t.added_by_user ? 1 : 0
+        best = [best, similarity * time * mine].max
+      end
+
+      return best
     end
 
     private
-    def relationship(track)
-      best = nil
-      @tracks.each do |t|
-        r = t.object.relationship(track)
-        best = Relationship.new(value: r, added_at: t.added_at) if best.nil? || r > best.value || r == best.value && t.added_at < best.added_at
-      end
-
-      best
-    end
-
     def self.time_coefficient(date)
       weeks = (Time.now.to_i - date.to_i) / (3600 * 24 * 7).to_f
       return 1 if weeks / 2 <= 0
@@ -153,20 +150,12 @@ module PlaylistHelper
   end
 
   class Track
-    attr_reader :object, :added_at
+    attr_reader :object, :added_at, :added_by_user
 
-    def initialize(object:, added_at:)
+    def initialize(object:, added_at:, added_by_user:)
       @object = object
       @added_at = added_at
-    end
-  end
-
-  class Relationship
-    attr_reader :value, :added_at
-
-    def initialize(value:, added_at: nil)
-      @value = value
-      @added_at = added_at
+      @added_by_user = added_by_user
     end
   end
 
@@ -181,7 +170,7 @@ module PlaylistHelper
       state.hash
     end
 
-    def relationship(o)
+    def similarity(o)
       return 1 if self == o
       return 0.67 if self.artists == o.artists
       return 0.33 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
