@@ -86,4 +86,11 @@ class PlaylistHelperTest < ActionView::TestCase
     assert_not_nil @@user.relevance(@@track_with_one_artist)
     assert_not_nil @@user.relevance(@@random_track)
   end
+
+  test 'should convert track to string' do
+    assert_not_empty @@user_track.to_s
+    assert_not_empty @@track_with_all_artists.to_s
+    assert_not_empty @@track_with_one_artist.to_s
+    assert_not_empty @@random_track.to_s
+  end
 end

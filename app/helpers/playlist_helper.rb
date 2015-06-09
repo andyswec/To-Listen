@@ -48,22 +48,24 @@ module PlaylistHelper
           end while added_tracks.count == 100
         end
       end
-      @tracks.sort_by! { |t| t.object.id.to_s }.reverse!.uniq! { |t| [t.object.artists.collect { |a| a.name }, t.object.name] }
 
       # Fetch last.fm tracks
-      lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-      @last_fm_tracks = []
-      unless @last_fm_user.nil?
-        @last_fm_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_user['id'], period: '7day')
-        added_tracks.each do |lt|
-          index = @tracks.index { |st| st.object.name == lt['name'] && st.object.artists.any? { |sa| sa.name == lt['artist']['name'] } }
-          if index.nil?
-            puts 'Not found: ' + lt['artist']['name'] + ' - ' + lt['name']
-          else
-            puts 'Found: ' + @tracks[index].artists.first.name + ' - ' + @tracks[index].name
-          end
-        end
-      end
+      # lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
+      # @last_fm_tracks = []
+      # unless @last_fm_user.nil?
+      #   @last_fm_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_user['id'], period: '7day')
+      #   added_tracks.each do |lt|
+      #     index = @tracks.index { |st| st.object.name == lt['name'] && st.object.artists.any? { |sa| sa.name == lt['artist']['name'] } }
+      #     if index.nil?
+      #       puts 'Not found: ' + lt['artist']['name'] + ' - ' + lt['name']
+      #     else
+      #       puts 'Found: ' + @tracks[index].artists.first.name + ' - ' + @tracks[index].name
+      #     end
+      #   end
+      # end
+
+      @tracks
+
     end
 
     def relevance(track)
@@ -74,23 +76,13 @@ module PlaylistHelper
 
     private
     def relationship(track)
-      tracks = @tracks.select do |t|
-        !t.object.id.nil? && t.object.id == track.id || t.object.name == track.name &&
-            t.object.artists.collect { |a| a.name } == track.artists.collect { |a| a.name }
+      best = nil
+      @tracks.each do |t|
+        r = t.object.relationship(track)
+        best = Relationship.new(value: r, added_at: t.added_at) if best.nil? || r > best.value || r == best.value && t.added_at < best.added_at
       end
-      return Relationship.new(value: 1, added_at: tracks.first.added_at) unless tracks.empty?
 
-      tracks =  @tracks.select do |t|
-        track.artists.collect { |a| a.name } == t.object.artists.collect { |a| a.name }
-      end
-      return Relationship.new(value: 0.67, added_at: tracks.first.added_at) unless tracks.empty?
-
-      tracks = @tracks.select do |t|
-        track.artists.collect { |a| a.name }.any? { |a1| t.object.artists.collect { |a2| a2.name }.any? { |a2| a1 == a2 } }
-      end
-      return Relationship.new(value: 0.33, added_at: tracks.first.added_at) unless tracks.empty?
-
-      return Relationship.new(value: 0)
+      best
     end
 
     def self.time_coefficient(date)
@@ -113,27 +105,50 @@ module PlaylistHelper
 
     private
     def get_recommended_tracks
-      # TODO :)
-
-      tracks_hash = Hash.new(0)
-      spotify_tracks = []
-      artists = []
+      tracks = Set.new
       @users.each do |user|
-        user.tracks.each do |t|
-          tracks_hash.store(t.object.id, tracks_hash[t.object.id]+1)
-          artists += t.object.artists
+        tracks.merge user.tracks.collect { |t| t.object }
+      end
+
+      tracks = tracks.to_a.sort_by do |t|
+        sum = 0
+        @users.each { |u| sum += u.relevance(t) }
+        sum
+      end.reverse
+
+      # puts "\nTracks"
+      # tracks.each do |t|
+      #   sum = 0
+      #   values = []
+      #   @users.each do |u|
+      #     r = u.relevance(t)
+      #     values += [r]
+      #     sum += r
+      #   end
+      #   puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
+      # end
+
+      i = 0
+      until i >= 20 do
+        t = tracks[i]
+        break if t.nil?
+
+        if t.id.nil?
+          query = "artist:#{t.artists.join(' ')} track:#{t}"
+          result = RSpotify::Track.search(query, limit: 1)
+          if result.empty?
+            tracks.delete_at i
+          else
+            tracks[i] = result.first
+            i += 1
+          end
+        else
+
+          i += 1
         end
-        spotify_tracks += user.tracks
       end
 
-      spotify_tracks.sort_by! { |t| [tracks_hash[t.object.id], t.object.popularity] }.reverse!.uniq! { |t| t.object.id }
-
-      puts 'Tracks'
-      spotify_tracks.each do |t|
-        puts tracks_hash[t.object.id].to_s + ' ' + t.object.popularity.to_s + ' ' + t.object.id.to_s + ' ' + t.object.name.to_s
-      end
-
-      spotify_tracks[0..19]
+      tracks[0..19]
     end
   end
 
@@ -152,6 +167,55 @@ module PlaylistHelper
     def initialize(value:, added_at: nil)
       @value = value
       @added_at = added_at
+    end
+  end
+
+  class RSpotify::Track
+    alias_method :eql?, :==
+
+    def ==(o)
+      o.class == self.class && o.state == state
+    end
+
+    def hash
+      state.hash
+    end
+
+    def relationship(o)
+      return 1 if self == o
+      return 0.67 if self.artists == o.artists
+      return 0.33 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
+      return 0
+    end
+
+    def to_s
+      return @artists.join(',') + ' - ' + @name
+    end
+
+    protected
+    def state
+      [@name, @artists]
+    end
+  end
+
+  class RSpotify::Artist
+    alias_method :eql?, :==
+
+    def ==(o)
+      o.class == self.class && o.state == state
+    end
+
+    def hash
+      state.hash
+    end
+
+    def to_s
+      return @name
+    end
+
+    protected
+    def state
+      @name
     end
   end
 end

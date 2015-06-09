@@ -23,15 +23,7 @@ class PlaylistController < ApplicationController
     #   spotify_tracks << spotify_track
     # end
 
-    @tracks = PlaylistHelper::Recommender.new(users).tracks.collect { |t| t.object }
-    @tracks.collect! do |t|
-      if t.id.nil?
-        query = "artist:#{t.artists.collect { |a| a.name }.join(' ')} track:#{t.name}"
-        RSpotify::Track.search(query, limit: 1).first
-      else
-        t
-      end
-    end
+    @tracks = PlaylistHelper::Recommender.new(users).tracks
 
     session.generated_playlist = true
     session.save
