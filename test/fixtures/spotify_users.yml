@@ -1,9 +1,32 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  id: andy
-  rspotify_hash: andy_hash
+andy:
+  id: "11139755313"
+  rspotify_hash: <%= {'birthdate' => nil, 'country' => nil, 'display_name' => 'Andrej Švec', 'email' => 'andy.swec@gmail.com',
+'followers' => OmniAuth::AuthHash.new('href' => nil, 'total' => 11),
+'images': OmniAuth::AuthHash.new('height' => nil, 'url' => 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpf1/v/t1.0-1/p200x200/10374523_835794569774868_7632684120703909562_n.jpg?oh=e2fec5b10bb2476e9f67fe73502f22d1&oe=56041BF7&__gda__=1441683473_5912a2908d167b4099c7ab153f1f816b', 'width' => nil),
+'product' => nil,
+'external_urls' => OmniAuth::AuthHash.new('spotify' => 'https://open.spotify.com/user/11139755313'),
+'href' => 'https://api.spotify.com/v1/users/11139755313',
+'id' => '11139755313',
+'type' => 'user',
+'uri' => 'spotify:user:11139755313',
+'credentials' => OmniAuth::AuthHash.new('token' => 'BQAcY_RrKEmxhffevJdjXQGtxEuqKOL_Kc4U9lZwwjPel2pxnW_IS5QhtdnYUf1SXP7KXpOT2n5YiRKGWFnL6eAQDk7qAP2wIUT1EdcNLyAyFJZxIdrMLnB8pejIni-IrZXlfzMuMWsbYVTxFAwfp06amf5pzdqii4ftxJKb2NfTR_WiJdqeHVtFzFvQ4c3d-UQP6n08mWXV0vt-KUX4HpZFBNFKLOuPLyD37bd0Vg7NP8CAlVD7817dAgFhnrem_BmY',
+'refresh_token' => 'AQBl08qA9PqTOvmNcmMoX1-D8WOZY8LdqxwcsnTeqoBKMfCH7SRWTaHuVaZoy2E1e1mYoq1EH3yaadAf1ZkONrL4CJsdleKTlOzyulpQk8n6Tc7cBuV9LTAl25_8bxsOg9s',
+'expires_at'=> 1433844518,
+'expires' => true)}.to_yaml.inspect %>
 
-two:
-  id: luci
-  rspotify_hash: luci_hash
+luci:
+  id: "luciaofelia"
+  rspotify_hash: <%= {'birthdate' => nil, 'country' => nil, 'display_name' => nil, 'email' => nil,
+'followers' => OmniAuth::AuthHash.new('href' => nil, 'total' => 0),
+'images' => [],
+'product' => nil,
+'external_urls' => OmniAuth::AuthHash.new('spotify' => 'https://open.spotify.com/user/luciaofelia'),
+'href' => 'https://api.spotify.com/v1/users/luciaofelia',
+'id' => 'luciaofelia',
+'type' => 'user',
+'uri' => 'spotify:user:luciaofelia',
+'credentials' => OmniAuth::AuthHash.new('token' => 'BQDA8Ydg-CpMRdOkALiWV7OEJwIwM0khG8cy4u1MqFyflXfphlLzmoxXjLn09yGhZyT1pq9qbesT5uLyCYScbpHrBof4v0eKqdScc/u113Te7qzv3YWLUH9ye5F-bNkgS1GijnI_7lS2zA3M0Z2elqj_CGaG3Nboy1iONnaaV4tyW0-ic2pfUODMs56X4-Bhyy4cKakOxRSfZcxs_aMccdCvA7cdXomm-d1LrVJloT-qObZmpocyYIofncEOj',
+'refresh_token' => 'AQBLkwmJn98sPncJzSu_fdTFGjvN2wH7KA3I_KM_QsBxi-sjkkE1j884RqQCKAOpQxiSYZgOCFNQ4Tzl_KGQ4xvahViQ4UBu-__s3JHCqNdsyrestCoVbaWgLQDHvSkhfqU',
+'expires_at' => '1433788931', 'expires' => true)}.to_yaml.inspect %>

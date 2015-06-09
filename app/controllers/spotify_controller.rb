@@ -1,4 +1,3 @@
-require 'json'
 
 class SpotifyController < ApplicationController
   def login

@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserSessionTest < ActiveSupport::TestCase
   def setup
-    @user_session = UserSession.new(session_id: 'bbb', spotify_id: 'andy', last_fm_id: 'andy')
+    @user_session = UserSession.new(session_id: 'bbb', spotify_user: spotify_users(:andy), last_fm_id: 'andy')
   end
 
   test 'spotify_id or last_fm_id should be present' do
@@ -44,7 +44,7 @@ class UserSessionTest < ActiveSupport::TestCase
     @user_session.last_fm_user = nil
     duplicate = @user_session.dup
     @user_session.save
-    duplicate.spotify_id = 'luci'
+    duplicate.spotify_user = spotify_users(:luci)
     assert duplicate.valid?
   end
 end

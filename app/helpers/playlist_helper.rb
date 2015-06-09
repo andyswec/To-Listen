@@ -15,7 +15,7 @@ module PlaylistHelper
         @spotify_user = RSpotify::User.new(user_session.spotify_user.rspotify_hash) unless user_session.spotify_user.nil?
         @last_fm_user = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
       else
-        @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless spotify_user.nil?
+        @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless args[:spotify_user].nil?
         @last_fm_user = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
       end
 
@@ -64,6 +64,28 @@ module PlaylistHelper
           end
         end
       end
+    end
+
+    def relevance(track)
+
+    end
+
+    private
+    def relationship(track)
+      return 1 if @tracks.any? do |t|
+        !t.object_id.nil? && t.object.id == track.object.id || t.object.name == track.object.name &&
+            t.object.artists.collect { |a| a.name } == track.object.artists.collect { |a| a.name }
+      end
+
+      return 0.67 if @tracks.any? do |t|
+        track.object.artists.collect { |a| a.name } == t.object.artists.collect { |a| a.name }
+      end
+
+      return 0.33 if @tracks.any? do |t|
+        track.object.artists.collect { |a| a.name }.any? { |a1| t.object.artists.collect { |a2| a2.name }.any? { |a2| a1 == a2 } }
+      end
+
+      return 0
     end
   end
 
