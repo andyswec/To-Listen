@@ -67,25 +67,30 @@ module PlaylistHelper
     end
 
     def relevance(track)
-
+      relationship = relationship(track)
+      return 0 if relationship.value == 0
+      return relationship.value * self.class.time_coefficient(relationship.added_at)
     end
 
     private
     def relationship(track)
-      return 1 if @tracks.any? do |t|
+      tracks = @tracks.select do |t|
         !t.object.id.nil? && t.object.id == track.id || t.object.name == track.name &&
             t.object.artists.collect { |a| a.name } == track.artists.collect { |a| a.name }
       end
+      return Relationship.new(value: 1, added_at: tracks.first.added_at) unless tracks.empty?
 
-      return 0.67 if @tracks.any? do |t|
+      tracks =  @tracks.select do |t|
         track.artists.collect { |a| a.name } == t.object.artists.collect { |a| a.name }
       end
+      return Relationship.new(value: 0.67, added_at: tracks.first.added_at) unless tracks.empty?
 
-      return 0.33 if @tracks.any? do |t|
+      tracks = @tracks.select do |t|
         track.artists.collect { |a| a.name }.any? { |a1| t.object.artists.collect { |a2| a2.name }.any? { |a2| a1 == a2 } }
       end
+      return Relationship.new(value: 0.33, added_at: tracks.first.added_at) unless tracks.empty?
 
-      return 0
+      return Relationship.new(value: 0)
     end
 
     def self.time_coefficient(date)
@@ -137,6 +142,15 @@ module PlaylistHelper
 
     def initialize(object:, added_at:)
       @object = object
+      @added_at = added_at
+    end
+  end
+
+  class Relationship
+    attr_reader :value, :added_at
+
+    def initialize(value:, added_at: nil)
+      @value = value
       @added_at = added_at
     end
   end

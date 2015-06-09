@@ -40,23 +40,23 @@ class PlaylistHelperTest < ActionView::TestCase
     @@random_track = RSpotify::Track.find('6AJlcxjEO2baFC24GPsJjg') # Bonnie Tyler - Holding Out for a Hero
   end
 
-  test 'should return 1 as relationship between user and his song' do
-    value = @@user.send(:relationship, @@user_track)
+  test 'should return 1 as relationship value between user and his song' do
+    value = @@user.send(:relationship, @@user_track).value
     assert value == 1, 'Expected 1 but found ' + value.to_s
   end
 
   test 'should return 0.67 as relationship between user and song sang by his artist' do
-    value = @@user.send(:relationship, @@track_with_all_artists)
+    value = @@user.send(:relationship, @@track_with_all_artists).value
     assert value == 0.67, 'Expected 0.67 but found ' + value.to_s
   end
 
   test 'should return 0.33 as relationship between user and song where his artist is involved' do
-    value = @@user.send(:relationship, @@track_with_one_artist)
+    value = @@user.send(:relationship, @@track_with_one_artist).value
     assert value == 0.33, 'Expected 0.33 but found ' + value.to_s
   end
 
   test 'should return 0 as relationship between user and song not within his songs and sang by artists not within his artists' do
-    value = @@user.send(:relationship, @@random_track)
+    value = @@user.send(:relationship, @@random_track).value
     assert value == 0, 'Expected 0 but found ' + value.to_s
   end
 
@@ -78,5 +78,12 @@ class PlaylistHelperTest < ActionView::TestCase
   test 'should return 0.25 as time coefficient for a date 6 weeks ago' do
     value = SpotifyLastFmUser.time_coefficient(Time.now.advance weeks: -6)
     assert value == 1/3.to_f, 'Expected ' + (1/3.to_f).to_s + ' but found ' + value.to_s
+  end
+
+  test 'should get relevance' do
+    assert_not_nil @@user.relevance(@@user_track)
+    assert_not_nil @@user.relevance(@@track_with_all_artists)
+    assert_not_nil @@user.relevance(@@track_with_one_artist)
+    assert_not_nil @@user.relevance(@@random_track)
   end
 end
