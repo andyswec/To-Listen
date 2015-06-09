@@ -15,7 +15,7 @@ class PlaylistHelperTest < ActionView::TestCase
 
     RSpotify::authenticate(ENV['spotify_client_id'], ENV['spotify_client_secret'])
     @@user = SpotifyLastFmUser.new(spotify_user: spotify_users(:andy))
-    @@user_track = @@user.tracks.first
+    @@user_track = @@user.tracks.first.object
 
     solo_artist_tracks = @@user.tracks.select { |t| t.object.artists.count == 1 }
     raise 'Unable to find track with only one artist' if solo_artist_tracks.empty?
@@ -25,10 +25,10 @@ class PlaylistHelperTest < ActionView::TestCase
         tracks = a.tracks
         tracks.each do |t|
           if @@track_with_all_artists.nil? && t.artists.count == 1 && @@user.tracks.find_index { |t2| t2.object.name == t.name }.nil?
-            @@track_with_all_artists = Track.new(object: t, added_at: nil)
+            @@track_with_all_artists = t
           end
           if @@track_with_one_artist.nil? && t.artists.count > 1 && @@user.tracks.find_index { |t2| t2.object.name == t.name && t2.object.artists.collect { |art| art.name } == t.artists.collect { |art| art.name } }.nil?
-            @@track_with_one_artist = Track.new(object: t, added_at: nil)
+            @@track_with_one_artist = t
           end
           break unless @@track_with_all_artists.nil? || @@track_with_one_artist.nil?
         end
@@ -37,7 +37,7 @@ class PlaylistHelperTest < ActionView::TestCase
       break unless @@track_with_all_artists.nil? || @@track_with_one_artist.nil?
     end
 
-    @@random_track = Track.new(object: RSpotify::Track.find('6AJlcxjEO2baFC24GPsJjg'), added_at: nil) # Bonnie Tyler - Holding Out for a Hero
+    @@random_track = RSpotify::Track.find('6AJlcxjEO2baFC24GPsJjg') # Bonnie Tyler - Holding Out for a Hero
   end
 
   test 'should return 1 as relationship between user and his song' do

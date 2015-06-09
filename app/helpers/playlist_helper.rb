@@ -73,16 +73,16 @@ module PlaylistHelper
     private
     def relationship(track)
       return 1 if @tracks.any? do |t|
-        !t.object_id.nil? && t.object.id == track.object.id || t.object.name == track.object.name &&
-            t.object.artists.collect { |a| a.name } == track.object.artists.collect { |a| a.name }
+        !t.object.id.nil? && t.object.id == track.id || t.object.name == track.name &&
+            t.object.artists.collect { |a| a.name } == track.artists.collect { |a| a.name }
       end
 
       return 0.67 if @tracks.any? do |t|
-        track.object.artists.collect { |a| a.name } == t.object.artists.collect { |a| a.name }
+        track.artists.collect { |a| a.name } == t.object.artists.collect { |a| a.name }
       end
 
       return 0.33 if @tracks.any? do |t|
-        track.object.artists.collect { |a| a.name }.any? { |a1| t.object.artists.collect { |a2| a2.name }.any? { |a2| a1 == a2 } }
+        track.artists.collect { |a| a.name }.any? { |a1| t.object.artists.collect { |a2| a2.name }.any? { |a2| a1 == a2 } }
       end
 
       return 0
