@@ -129,17 +129,17 @@ module PlaylistHelper
         sum
       end.reverse
 
-      puts "\nTracks"
-      tracks.each do |t|
-        sum = 0
-        values = []
-        @users.each do |u|
-          r = u.relevances[t]
-          values += [r]
-          sum += r
-        end
-        puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
-      end
+      # puts "\nTracks"
+      # tracks.each do |t|
+      #   sum = 0
+      #   values = []
+      #   @users.each do |u|
+      #     r = u.relevances[t]
+      #     values += [r]
+      #     sum += r
+      #   end
+      #   puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
+      # end
 
       i = 0
       until i >= 20 do
