@@ -16,37 +16,50 @@ module PlaylistHelper
         @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless args[:spotify_user].nil?
         @last_fm_user = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
       end
+    end
 
+    def tracks
+      @tracks ||= fetchTracks
+    end
+
+    def fetchTracks
       # Fetch spotify tracks
-      @tracks = []
+      tracks = []
+      threads = []
       unless @spotify_user.nil?
-        i = 0
-        begin
-          added_tracks = @spotify_user.saved_tracks(limit: 50, offset: i)
-          added_at = @spotify_user.tracks_added_at
-          @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: true) }
-          i += 50
-        end while added_tracks.count == 50
+        threads << Thread.new {
+          i = 0
+          begin
+            added_tracks = @spotify_user.saved_tracks(limit: 50, offset: i)
+            added_at = @spotify_user.tracks_added_at
+            tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: true) }
+            i += 50
+          end while added_tracks.count == 50
+        }
 
-        i = 0
+        j = 0
         playlists = []
         begin
-          added_playlists = @spotify_user.playlists(limit: 50, offset: i)
+          added_playlists = @spotify_user.playlists(limit: 50, offset: j)
           playlists += added_playlists
-          i += 50
+          j += 50
         end while added_playlists.count == 50
 
         playlists.each do |p|
-          i = 0
-          begin
-            added_tracks = p.tracks(limit: 100, offset: i)
-            added_at = p.tracks_added_at
-            added_by = p.tracks_added_by
-            @tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: added_by[o.id].id == @spotify_user.id) }
-            i += 100
-          end while added_tracks.count == 100
+          threads << Thread.new {
+            i = 0
+            begin
+              added_tracks = p.tracks(limit: 100, offset: i)
+              added_at = p.tracks_added_at
+              added_by = p.tracks_added_by
+              tracks += added_tracks.collect { |o| Track.new(object: o, added_at: added_at[o.id], added_by_user: added_by[o.id].id == @spotify_user.id) }
+              i += 100
+            end while added_tracks.count == 100
+          }
         end
       end
+
+      threads.each { |t| t.join }
 
       # Fetch last.fm tracks
       # lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
@@ -63,8 +76,7 @@ module PlaylistHelper
       #   end
       # end
 
-      @tracks
-
+      tracks
     end
 
     def calculateRelevances(tracks)
@@ -118,20 +130,32 @@ module PlaylistHelper
     private
     def get_recommended_tracks
       tracks = Set.new
+      threads = []
+
       @users.each do |user|
-        tracks.merge user.tracks.collect { |t| t.object }
+        threads << Thread.new {
+          tracks.merge user.tracks.collect { |t| t.object }
+        }
       end
+      threads.each { |t| t.join }
 
-      puts 'Users tracks loaded'
+      puts Time.now.to_s + 'Users tracks loaded'
+      threads = []
+      @users.each do |user|
+        # threads << Thread.new {
+          user.calculateRelevances(tracks)
+        # }
+      end
+      threads.each { |t| t.join }
 
-      @users.each { |user| user.calculateRelevances(tracks) }
+      puts Time.now.to_s + 'Relevances calculated'
       tracks = tracks.to_a.sort_by do |t|
         sum = 0
         @users.each { |u| sum += u.relevances[t] }
         sum
       end.reverse
 
-      puts 'Relevances calculated'
+      puts Time.now.to_s + 'Relevances sums calculated'
 
       # puts "\nTracks"
       # tracks.each do |t|
@@ -223,7 +247,7 @@ module PlaylistHelper
     end
 
     alias_method :eql?, :==
-    
+
     protected
     def state
       @name
