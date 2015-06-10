@@ -5,58 +5,39 @@ class PlaylistHelperTest < ActionView::TestCase
   include PlaylistHelper
 
   @@user = nil
-  @@user_track = nil
+  @@track = nil
   @@track_with_all_artists = nil
   @@track_with_one_artist = nil
-  @@random_track = nil
+  @@other_track = nil
 
   def setup
-    return unless @@user.nil? || @@user_track.nil? || @@track_with_all_artists.nil? || @@track_with_one_artist.nil? || @@random_track.nil?
+    return unless @@user.nil? || @@track.nil? || @@track_with_all_artists.nil? || @@track_with_one_artist.nil? || @@other_track.nil?
 
     RSpotify::authenticate(ENV['spotify_client_id'], ENV['spotify_client_secret'])
     @@user = SpotifyLastFmUser.new(spotify_user: spotify_users(:andy))
-    @@user_track = @@user.tracks.first.object
-
-    solo_artist_tracks = @@user.tracks.select { |t| t.object.artists.count == 1 }
-    raise 'Unable to find track with only one artist' if solo_artist_tracks.empty?
-    solo_artist_tracks.each do |sat|
-      albums = sat.object.artists.first.albums
-      albums.each do |a|
-        tracks = a.tracks
-        tracks.each do |t|
-          if @@track_with_all_artists.nil? && t.artists.count == 1 && @@user.tracks.find_index { |t2| t2.object.name == t.name }.nil?
-            @@track_with_all_artists = t
-          end
-          if @@track_with_one_artist.nil? && t.artists.count > 1 && @@user.tracks.find_index { |t2| t2.object.name == t.name && t2.object.artists.collect { |art| art.name } == t.artists.collect { |art| art.name } }.nil?
-            @@track_with_one_artist = t
-          end
-          break unless @@track_with_all_artists.nil? || @@track_with_one_artist.nil?
-        end
-        break unless @@track_with_all_artists.nil? || @@track_with_one_artist.nil?
-      end
-      break unless @@track_with_all_artists.nil? || @@track_with_one_artist.nil?
-    end
-
-    @@random_track = RSpotify::Track.find('6AJlcxjEO2baFC24GPsJjg') # Bonnie Tyler - Holding Out for a Hero
+    @@track = RSpotify::Track.find('3OwPSJu609AMzotCEyoMiO') # Avicii - The Nights
+    @@track_with_all_artists = RSpotify::Track.find('7HW01sQy5UOxyezzZg98nd') # Avicii - The Days
+    @@track_with_one_artist = RSpotify::Track.find('007lsEHi6fP9LoYB7czYUa') # Wycleaf, Avicii - Divine Sorrow
+    @@other_track = RSpotify::Track.find('6AJlcxjEO2baFC24GPsJjg') # Bonnie Tyler - Holding Out for a Hero
   end
 
-  test 'should return 1 as relationship value between user and his song' do
-    value = @@user.send(:relationship, @@user_track).value
+  test 'should return 1 as similarity between identical songs' do
+    value = @@track.similarity(@@track)
     assert value == 1, 'Expected 1 but found ' + value.to_s
   end
 
-  test 'should return 0.67 as relationship between user and song sang by his artist' do
-    value = @@user.send(:relationship, @@track_with_all_artists).value
+  test 'should return 0.67 as similarity between songs sang by the same artists' do
+    value = @@track.similarity(@@track_with_all_artists)
     assert value == 0.67, 'Expected 0.67 but found ' + value.to_s
   end
 
-  test 'should return 0.33 as relationship between user and song where his artist is involved' do
-    value = @@user.send(:relationship, @@track_with_one_artist).value
+  test 'should return 0.33 as similarity between songs where at least one artist is the same' do
+    value = @@track.similarity(@@track_with_one_artist)
     assert value == 0.33, 'Expected 0.33 but found ' + value.to_s
   end
 
-  test 'should return 0 as relationship between user and song not within his songs and sang by artists not within his artists' do
-    value = @@user.send(:relationship, @@random_track).value
+  test 'should return 0 as similarity between songs sang by other artists' do
+    value = @@track.similarity(@@other_track)
     assert value == 0, 'Expected 0 but found ' + value.to_s
   end
 
@@ -81,16 +62,16 @@ class PlaylistHelperTest < ActionView::TestCase
   end
 
   test 'should get relevance' do
-    assert_not_nil @@user.relevance(@@user_track)
-    assert_not_nil @@user.relevance(@@track_with_all_artists)
-    assert_not_nil @@user.relevance(@@track_with_one_artist)
-    assert_not_nil @@user.relevance(@@random_track)
+    assert_not_nil @@user.send(:relevance, @@track)
+    assert_not_nil @@user.send(:relevance, @@track_with_all_artists)
+    assert_not_nil @@user.send(:relevance, @@track_with_one_artist)
+    assert_not_nil @@user.send(:relevance, @@other_track)
   end
 
   test 'should convert track to string' do
-    assert_not_empty @@user_track.to_s
+    assert_not_empty @@track.to_s
     assert_not_empty @@track_with_all_artists.to_s
     assert_not_empty @@track_with_one_artist.to_s
-    assert_not_empty @@random_track.to_s
+    assert_not_empty @@other_track.to_s
   end
 end

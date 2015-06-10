@@ -3,9 +3,7 @@ require 'lastfm'
 
 module PlaylistHelper
   class SpotifyLastFmUser
-    attr_reader :spotify_user
-    attr_reader :last_fm_user
-    attr_reader :tracks
+    attr_reader :spotify_user, :last_fm_user, :tracks, :relevances
 
     # Creates a SpotifyLastFmUser and fetches the songs
     # @param args hash containing :user_session or :spotify_user and last_fm_user
@@ -69,6 +67,24 @@ module PlaylistHelper
 
     end
 
+    def calculateRelevances(tracks)
+      @relevances = {}
+      min = nil
+      max = nil
+
+      tracks.each do |t|
+        r = relevance(t)
+        min = r if min.nil? || r < min
+        max = r if max.nil? || r > max
+        @relevances.store(t, r)
+      end
+
+      old_range = (max - min)
+      new_range = 1
+      @relevances = Hash[@relevances.map { |k, v| [k, new_value = ((v - min) * new_range) / old_range] }]
+    end
+
+    private
     def relevance(track)
       best = 0
       @tracks.each do |t|
@@ -81,7 +97,6 @@ module PlaylistHelper
       return best
     end
 
-    private
     def self.time_coefficient(date)
       weeks = (Time.now.to_i - date.to_i) / (3600 * 24 * 7).to_f
       return 1 if weeks / 2 <= 0
@@ -107,23 +122,24 @@ module PlaylistHelper
         tracks.merge user.tracks.collect { |t| t.object }
       end
 
+      @users.each { |user| user.calculateRelevances(tracks) }
       tracks = tracks.to_a.sort_by do |t|
         sum = 0
-        @users.each { |u| sum += u.relevance(t) }
+        @users.each { |u| sum += u.relevances[t] }
         sum
       end.reverse
 
-      # puts "\nTracks"
-      # tracks.each do |t|
-      #   sum = 0
-      #   values = []
-      #   @users.each do |u|
-      #     r = u.relevance(t)
-      #     values += [r]
-      #     sum += r
-      #   end
-      #   puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
-      # end
+      puts "\nTracks"
+      tracks.each do |t|
+        sum = 0
+        values = []
+        @users.each do |u|
+          r = u.relevances[t]
+          values += [r]
+          sum += r
+        end
+        puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
+      end
 
       i = 0
       until i >= 20 do
