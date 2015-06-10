@@ -176,7 +176,6 @@ module PlaylistHelper
   end
 
   class RSpotify::Track
-    alias_method :eql?, :==
 
     def ==(o)
       o.class == self.class && o.state == state
@@ -190,12 +189,14 @@ module PlaylistHelper
       return 1 if self == o
       return 0.67 if self.artists == o.artists
       return 0.33 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
-      return 0
+      0
     end
 
     def to_s
-      return @artists.join(',') + ' - ' + @name
+      @artists.join(',') + ' - ' + @name
     end
+
+    alias_method :eql?, :==
 
     protected
     def state
@@ -204,7 +205,6 @@ module PlaylistHelper
   end
 
   class RSpotify::Artist
-    alias_method :eql?, :==
 
     def ==(o)
       o.class == self.class && o.state == state
@@ -215,9 +215,11 @@ module PlaylistHelper
     end
 
     def to_s
-      return @name
+      @name
     end
 
+    alias_method :eql?, :==
+    
     protected
     def state
       @name
