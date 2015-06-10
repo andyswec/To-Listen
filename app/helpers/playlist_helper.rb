@@ -122,12 +122,16 @@ module PlaylistHelper
         tracks.merge user.tracks.collect { |t| t.object }
       end
 
+      puts 'Users tracks loaded'
+
       @users.each { |user| user.calculateRelevances(tracks) }
       tracks = tracks.to_a.sort_by do |t|
         sum = 0
         @users.each { |u| sum += u.relevances[t] }
         sum
       end.reverse
+
+      puts 'Relevances calculated'
 
       # puts "\nTracks"
       # tracks.each do |t|
