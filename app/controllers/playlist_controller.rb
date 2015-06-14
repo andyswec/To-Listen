@@ -33,7 +33,11 @@ class PlaylistController < ApplicationController
   def percentage
     job_id = params[:job_id]
     data = Sidekiq::Status::get_all(job_id)
-    percent = 100 * data['at'].to_i / data['total'].to_i
+    if (data['total'] == 0)
+      percent = 0
+    else
+      percent = 100 * data['at'].to_i / data['total'].to_i
+    end
     message = data['message']
     render :json => {:percent => percent, :message => message}.to_json
   end
