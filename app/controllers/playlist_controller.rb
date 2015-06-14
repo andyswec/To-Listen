@@ -3,26 +3,19 @@ require 'lastfm'
 
 class PlaylistController < ApplicationController
 
-  def playlist
+  def new
     session_id = session[:session_id]
     session = Session.find(session_id)
-
-    user_sessions = session.user_sessions
-
-    users = []
-    user_sessions.each do |us|
-      users << PlaylistHelper::SpotifyLastFmUser.new(user_session: us)
-    end
-
-    @tracks = PlaylistHelper::Recommender.new(users).tracks
-
     session.generated_playlist = true
     session.save
 
-    session.track_sessions.destroy_all
-    session.tracks += @tracks.collect do |t|
-      Track.find_by(id: t.id) || Track.new(id: t.id, rspotify_hash: t)
-    end
+    @job_id = PlaylistHelper::PlaylistWorker.perform_async(session_id)
+  end
+
+  def playlist
+    session_id = session[:session_id]
+    session = Session.find_by(id: session_id)
+    @tracks = session.tracks.order(:created_at).collect { |t| t.rspotify_hash }
   end
 
   def play
@@ -35,5 +28,13 @@ class PlaylistController < ApplicationController
     tracks = session.tracks.order(:created_at)
     playlist.add_tracks!(tracks.collect { |t| t.rspotify_hash })
     redirect_to playlist.external_urls['spotify']
+  end
+
+  def percentage
+    job_id = params[:job_id]
+    data = Sidekiq::Status::get_all(job_id)
+    percent = 100 * data['at'].to_i / data['total'].to_i
+    message = data['message']
+    render :json => {:percent => percent, :message => message}.to_json
   end
 end

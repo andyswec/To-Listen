@@ -48,6 +48,8 @@
   <small>Get your playlist</small>
 </h2>
 
+<div class="playlist-progress hidden"></div>
+
 <%
    disabled = @display_users.length < 2
    if disabled
@@ -62,7 +64,7 @@
 <% else %>
 
     <%=
-        link_to "What To-Listen?", playlist_path, id: 'playlist', class: 'btn btn-primary btn-lg btn-block'
+        link_to "What To-Listen?", playlist_path, id: 'playlist', remote: true, method: :post, class: 'btn btn-primary btn-lg btn-block'
     %>
 
 <% end %>

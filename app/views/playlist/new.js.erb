@@ -1,0 +1,30 @@
+var queryForPercentage = function () {
+    $.ajax('percentage?job_id=<%=@job_id%>')
+            .done(function (data) {
+                if (data['percent'] < 100) {
+                    var progress = $('div.playlist-progress');
+                    if (progress.children().length == 0) {
+                        $('a#playlist').addClass('disabled');
+                        progress.append('<div class="message"></div><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div>');
+                        progress.removeClass('hidden');
+                    }
+                }
+                else {
+                    window.location.href = '<%=playlist_path%>';
+                }
+                setProgress(data['percent'], data['message']);
+            });
+    setTimeout(queryForPercentage, 500);
+};
+
+function setProgress(percent, message) {
+    var messageDiv = $('div.playlist-progress div.message');
+    var progress = $('div.playlist-progress div.progress div.progress-bar');
+
+    if (message != undefined && message != null) messageDiv.text(message);
+    progress.attr('aria-valuenow', percent + '.0');
+    progress.css('width', percent + '%');
+    progress.text(percent + '%');
+}
+
+setTimeout(queryForPercentage, 500);
