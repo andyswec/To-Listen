@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3023302170">
+  <component name="DataSourceManagerImpl" format="xml" hash="943306455">
     <data-source source="LOCAL" name="Rails To-Listen: development" uuid="e4442e61-40f6-4684-bcfa-6a874f3d5902">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -33,7 +33,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql:To-Listen_production</jdbc-url>
+      <jdbc-url>jdbc:postgresql://&lt;%= ENV[&quot;OPENSHIFT_POSTGRESQL_DB_HOST&quot;] %&gt;:&lt;%= ENV[&quot;OPENSHIFT_POSTGRESQL_DB_PORT&quot;] %&gt;/&lt;%= ENV[&quot;OPENSHIFT_APP_NAME&quot;] %&gt;</jdbc-url>
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/postgresql-driver-license.txt</url>

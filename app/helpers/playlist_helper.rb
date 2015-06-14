@@ -196,10 +196,10 @@ module PlaylistHelper
   class Track
     attr_reader :object, :added_at, :added_by_user
 
-    def initialize(object:, added_at:, added_by_user:)
-      @object = object
-      @added_at = added_at
-      @added_by_user = added_by_user
+    def initialize(options)
+      @object = options[:object]
+      @added_at = options[:added_at]
+      @added_by_user = options[:added_by_user]
     end
   end
 
