@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'users_sessions/destroy'
 
   root 'users#users'
+  post 'playlist' => 'playlist#new'
   get 'playlist' => 'playlist#playlist'
   post 'play' => 'playlist#play'
   get 'login' => 'spotify#login'
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   get 'auth/spotify/callback' => 'spotify#callback'
   get 'auth/failure' => 'spotify#failure'
   get 'stats' => 'admin#stats'
+  get 'percentage' => 'playlist#percentage'
 
   resources :users_sessions, only: [:destroy]
   resources :last_fm_users, only: [:create, :update], controller: 'last_fm'
