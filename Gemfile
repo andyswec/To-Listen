@@ -31,7 +31,7 @@ gem 'lastfm'
 gem 'sidekiq-status'
 
 # Openshift
-gem 'turbo-sprockets-rails3'
+# gem 'turbo-sprockets-rails3'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

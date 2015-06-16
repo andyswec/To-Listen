@@ -9,7 +9,7 @@ class PlaylistController < ApplicationController
     session.generated_playlist = true
     session.save
 
-    @job_id = PlaylistHelper::PlaylistWorker.perform_async(session_id)
+    @job_id = PlaylistWorker.perform_async(session_id)
   end
 
   def playlist
@@ -33,7 +33,7 @@ class PlaylistController < ApplicationController
   def percentage
     job_id = params[:job_id]
     data = Sidekiq::Status::get_all(job_id)
-    if (data['total'] == 0)
+    if (data['total'].to_i == 0)
       percent = 0
     else
       percent = 100 * data['at'].to_i / data['total'].to_i
