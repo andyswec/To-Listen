@@ -1,0 +1,4 @@
+rhc env set spotify_client_id='943f699bf587440f8a32e3fd925b87c7' spotify_client_secret='4144652d5b0943f79f36234cd1858cf1' spotify_callback='http://tolisten-andyswec.rhcloud.com/auth/spotify/callback' lastfm_api_id='22376b9820dd3055d0d00ffb6218984f' lastfm_api_secret='77d193a260c59f16c52098f54f70d75c' RAILS_ENV=production -a tolisten
+rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/reflect?github=smarterclayton/openshift-redis-cart --app tolisten
+rhc add-cartridge http://cartreflect-claytondev.rhcloud.com/github/pranavpr/openshift-origin-cartridge-sidekiq --app tolisten
+rhc app restart tolisten
