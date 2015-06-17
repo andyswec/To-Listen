@@ -15,7 +15,7 @@ class PlaylistController < ApplicationController
   def playlist
     session_id = session[:session_id]
     session = Session.find_by(id: session_id)
-    @tracks = session.tracks.order(:created_at).collect { |t| t.rspotify_hash }
+    @tracks = session.track_sessions.order(:position).collect { |ts| ts.track.rspotify_hash }
   end
 
   def play
@@ -25,8 +25,8 @@ class PlaylistController < ApplicationController
     playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
 
     session = Session.find_by(id: session_id)
-    tracks = session.tracks.order(:created_at)
-    playlist.add_tracks!(tracks.collect { |t| t.rspotify_hash })
+    tracks = session.track_sessions.order(:position).collect { |ts| ts.track.rspotify_hash }
+    playlist.add_tracks!(tracks)
     redirect_to playlist.external_urls['spotify']
   end
 

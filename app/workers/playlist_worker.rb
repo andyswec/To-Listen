@@ -98,9 +98,12 @@ class PlaylistWorker
     tracks = tracks[0..19]
 
     session.track_sessions.destroy_all
-    session.tracks += tracks.collect do |t|
-      Track.find_by(id: t.id) || Track.new(id: t.id, rspotify_hash: t)
+    tracks = tracks.each_with_index do |t, i|
+      track = Track.find_by(id: t.id) || Track.new(id: t.id, rspotify_hash: t)
+      ts = TrackSession.new(session: session, track: track, position: i)
+      ts.save
     end
+
 
     at 100, 'Done'
   end

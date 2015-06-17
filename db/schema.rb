@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150517132120) do
+ActiveRecord::Schema.define(version: 20150617205428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,11 +41,12 @@ ActiveRecord::Schema.define(version: 20150517132120) do
   end
 
   create_table "tracks_sessions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.string "track_id",   null: false
+    t.string  "session_id", null: false
+    t.string  "track_id",   null: false
+    t.integer "position"
   end
 
-  add_index "tracks_sessions", ["session_id", "track_id"], name: "index_tracks_sessions_on_all_columns", unique: true, using: :btree
+  add_index "tracks_sessions", ["session_id", "track_id", "position"], name: "index_tracks_sessions_on_all_columns", unique: true, using: :btree
 
   create_table "users_sessions", force: :cascade do |t|
     t.string   "session_id", null: false
