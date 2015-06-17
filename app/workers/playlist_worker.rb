@@ -1,4 +1,3 @@
-
 class PlaylistWorker
   include Sidekiq::Worker
   include Sidekiq::Status::Worker
@@ -40,22 +39,38 @@ class PlaylistWorker
 
     at 70, 'Applying black magic to create your playlist'
 
-    tracks = tracks.to_a.sort_by do |t|
+    sums = Hash.new
+    tracks.each do |t|
       sum = 0
-      users.each { |u| sum += u.relevances[t] }
-      sum
+      min = nil
+      users.each do |u|
+        r = u.relevances[t]
+        sum += r
+        min = min.nil? || r < min ? r : min
+      end
+      sum /= users.count
+      sum += min
+      sums[t] = sum
+    end
+
+    tracks = tracks.to_a.sort_by do |t|
+      sums[t]
     end.reverse
 
     # puts "\nTracks"
     # tracks.each do |t|
     #   sum = 0
+    #   min = nil
     #   values = []
-    #   @users.each do |u|
+    #   users.each do |u|
     #     r = u.relevances[t]
-    #     values += [r]
     #     sum += r
+    #     values << r
+    #     min = min.nil? || r < min ? r : min
     #   end
-    #   puts sum.to_s + ' ' + values.join(' ') + ' ' + t.to_s
+    #   sum /= users.count
+    #   sum  += min
+    #   puts sum.to_s + ' ' + values.join(' ') + ' ' + min.to_s + ' ' + t.to_s
     # end
 
     at 95, 'Finalizing'
