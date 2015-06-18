@@ -2364,10 +2364,11 @@
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndHJhY2tzX3Nlc3Npb25zX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
       <column name="session_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="track_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="position" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="tracks_sessions_pkey" columns="id"/>
       <foreign-key name="fk_rails_44f1efaeaa" columns="session_id" ref-table="sessions" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_rails_10848f3ec3" columns="track_id" ref-table="tracks" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="index_tracks_sessions_on_all_columns" unique="true" columns="session_id,track_id"/>
+      <index name="index_tracks_sessions_on_all_columns" unique="true" columns="session_id,track_id,position"/>
     </table>
     <table name="tracks_sessions_id_seq" schema="public" catalog="To-Listen_development" type="SEQUENCE">
       <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>

@@ -4,6 +4,8 @@ class PlaylistWorker
   sidekiq_options retry: false
 
   def perform(session_id)
+    RSpotify::authenticate(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
+
     total 100
     at 0, 'Fetching your tracks'
 
