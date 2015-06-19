@@ -97,8 +97,20 @@ ul.users li {
   }
 }
 
-div.progress div.progress-bar {
-  min-width: 2em;
+div.playlist-progress {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  
+  -webkit-transition: max-height 0.2s ease-in, opacity 0.2s ease;
+  -moz-transition: max-height 0.2s ease-in, opacity 0.2s ease;
+  -ms-transition: max-height 0.2s ease-in, opacity 0.2s ease;
+  -o-transition: max-height 0.2s ease-in, opacity 0.2s ease;
+  transition: max-height 0.2s ease-in, opacity 0.2s ease;
+
+  div.progress div.progress-bar {
+    min-width: 2em;
+  }
 }
 
 /* tracks */

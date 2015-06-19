@@ -6,7 +6,13 @@ var queryForPercentage = function () {
                     if (progress.children().length == 0) {
                         $('a#playlist').addClass('disabled');
                         progress.append('<div class="message"></div><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div>');
-                        progress.removeClass('hidden');
+                        $(progress).removeClass('hidden');
+                        $(progress).css('max-height');
+                        $(progress).css('opacity');
+                        $(progress).css({
+                            'max-height': 100,
+                            'opacity': 1
+                        });
                     }
                 }
                 else {
