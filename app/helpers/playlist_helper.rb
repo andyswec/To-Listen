@@ -143,8 +143,8 @@ module PlaylistHelper
 
     def similarity(o)
       return 1 if self == o
-      return 0.67 if self.artists == o.artists
-      return 0.33 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
+      return 0.5 if self.artists == o.artists
+      return 0.25 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
       0
     end
 

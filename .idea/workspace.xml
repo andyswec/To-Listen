@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="91995bdb-c299-4054-95e8-ccbbf31dd82f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/custom.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/custom.scss" />
+    <list default="true" id="91995bdb-c299-4054-95e8-ccbbf31dd82f" name="Default" comment="Reduce identical artist influence on relevance">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.rakeTasks" afterPath="$PROJECT_DIR$/.idea/.rakeTasks" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/To-Listen.iml" afterPath="$PROJECT_DIR$/.idea/To-Listen.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/playlist/new.js.erb" afterPath="$PROJECT_DIR$/app/views/playlist/new.js.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/playlist_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/playlist_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/helpers/playlist_helper.rb" afterPath="$PROJECT_DIR$/app/helpers/playlist_helper.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/helpers/playlist_helper_test.rb" afterPath="$PROJECT_DIR$/test/helpers/playlist_helper_test.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="To-Listen.iws" />
@@ -23,9 +27,9 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/To-Listen@PlaylistHelperTest.coverage" NAME="PlaylistHelperTest Coverage Results" MODIFIED="1433802002644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test/helpers" MODULE_NAME="To-Listen" />
     <SUITE FILE_PATH="coverage/To-Listen@Run_test__PlaylistHelperTest___To_Listen.coverage" NAME="Run test 'PlaylistHelperTest': To-Listen Coverage Results" MODIFIED="1433861754346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
-    <SUITE FILE_PATH="coverage/To-Listen@test__To_Listen.coverage" NAME="test: To-Listen Coverage Results" MODIFIED="1433934891505" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
-    <SUITE FILE_PATH="coverage/To-Listen@db_migrate__To_Listen.coverage" NAME="db:migrate: To-Listen Coverage Results" MODIFIED="1434574783980" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
-    <SUITE FILE_PATH="coverage/To-Listen@Development__To_Listen.coverage" NAME="Development: To-Listen Coverage Results" MODIFIED="1434754646355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
+    <SUITE FILE_PATH="coverage/To-Listen@test__To_Listen.coverage" NAME="test: To-Listen Coverage Results" MODIFIED="1434755857176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
+    <SUITE FILE_PATH="coverage/To-Listen@db_migrate__To_Listen.coverage" NAME="db:migrate: To-Listen Coverage Results" MODIFIED="1434755799169" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
+    <SUITE FILE_PATH="coverage/To-Listen@Development__To_Listen.coverage" NAME="Development: To-Listen Coverage Results" MODIFIED="1434756359829" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="rcov" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" MODULE_NAME="To-Listen" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -96,23 +100,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="playlist_helper.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/helpers/playlist_helper.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="107" column="30" selection-start-line="107" selection-start-column="30" selection-end-line="107" selection-end-column="30" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="new.js.erb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/playlist/new.js.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.48387095">
-              <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.36231884">
+              <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
               <folding>
-                <marker date="1434755445036" expanded="true" signature="557:567" placeholder="..." />
+                <marker date="1434756581864" expanded="true" signature="578:588" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="custom.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/custom.scss">
+      <file leaf-file-name="playlist_controller.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/playlist_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.5">
-              <caret line="102" column="13" selection-start-line="102" selection-start-column="13" selection-end-line="102" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -144,8 +158,8 @@
       </map>
     </option>
     <push-targets>
-      <push-target-info repo="$PROJECT_DIR$" source="development" target-remote="origin" target-branch="development" />
       <push-target-info repo="$PROJECT_DIR$" source="master" target-remote="origin" target-branch="master" />
+      <push-target-info repo="$PROJECT_DIR$" source="development" target-remote="github" target-branch="development" />
     </push-targets>
   </component>
   <component name="IdeDocumentHistory">
@@ -161,21 +175,21 @@
         <option value="dbtable:/e9e18e5d/e4442e61-40f6-4684-bcfa-6a874f3d5902/To-Listen_development.public.spotify_users" />
         <option value="$PROJECT_DIR$/app/controllers/spotify_controller.rb" />
         <option value="$PROJECT_DIR$/test/fixtures/spotify_users.yml" />
-        <option value="$PROJECT_DIR$/test/helpers/playlist_helper_test.rb" />
         <option value="$PROJECT_DIR$/config/database.yml" />
         <option value="$PROJECT_DIR$/config/application.rb" />
         <option value="$PROJECT_DIR$/config/initializers/redis.rb" />
-        <option value="$PROJECT_DIR$/app/helpers/playlist_helper.rb" />
         <option value="$PROJECT_DIR$/config/initializers/sidekiq.rb" />
         <option value="$PROJECT_DIR$/config/api_secrets.yml" />
         <option value="$PROJECT_DIR$/db/migrate/20150617205428_add_position_to_track_session.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/playlist_controller.rb" />
         <option value="$PROJECT_DIR$/openshift_setup.sh" />
         <option value="$PROJECT_DIR$/Gemfile" />
         <option value="$PROJECT_DIR$/app/workers/playlist_worker.rb" />
         <option value="$PROJECT_DIR$/app/assets/javascripts/custom.js" />
-        <option value="$PROJECT_DIR$/app/views/playlist/new.js.erb" />
         <option value="$PROJECT_DIR$/app/assets/stylesheets/custom.scss" />
+        <option value="$PROJECT_DIR$/test/helpers/playlist_helper_test.rb" />
+        <option value="$PROJECT_DIR$/app/helpers/playlist_helper.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/playlist_controller.rb" />
+        <option value="$PROJECT_DIR$/app/views/playlist/new.js.erb" />
       </list>
     </option>
   </component>
@@ -243,6 +257,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="To-Listen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="To-Listen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="To-Listen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="To-Listen" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -292,7 +338,7 @@
       <RAKE_RUN_CONFIG_SETTINGS_ID NAME="ALTERN_SDK_NAME" VALUE="" />
       <RAKE_RUN_CONFIG_SETTINGS_ID NAME="myPassParentEnvs" VALUE="true" />
       <envs>
-        <env name="RAILS_ENV" value="development" />
+        <env name="RAILS_ENV" value="test" />
       </envs>
       <EXTENSION ID="BundlerRunConfigurationExtension" bundleExecEnabled="false" />
       <EXTENSION ID="JRubyRunConfigurationExtension" NailgunExecEnabled="false" />
@@ -587,9 +633,9 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Test::Unit/Shoulda/Minitest.Run test 'PlaylistHelperTest': To-Listen" />
-        <item index="1" class="java.lang.String" itemvalue="Ruby.PlaylistHelperTest" />
-        <item index="2" class="java.lang.String" itemvalue="Rake.db:migrate: To-Listen" />
+        <item index="0" class="java.lang.String" itemvalue="Rake.db:migrate: To-Listen" />
+        <item index="1" class="java.lang.String" itemvalue="Test::Unit/Shoulda/Minitest.Run test 'PlaylistHelperTest': To-Listen" />
+        <item index="2" class="java.lang.String" itemvalue="Ruby.PlaylistHelperTest" />
         <item index="3" class="java.lang.String" itemvalue="Rake.routes: To-Listen" />
       </list>
     </recent_temporary>
@@ -803,20 +849,27 @@
       <option name="project" value="LOCAL" />
       <updated>1434665454616</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Apply transition when showing progress bar">
+      <created>1434755562324</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1434755562324</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="252" width="1301" height="772" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23111111" sideWeight="0.49721116" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23111111" sideWeight="0.49721116" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32908365" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29721117" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29860365" sideWeight="0.49101797" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29777777" sideWeight="0.49101797" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32592592" sideWeight="0.49083665" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22222222" sideWeight="0.50278884" order="7" side_tool="true" content_ui="tabs" />
@@ -826,7 +879,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32867885" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24978614" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -866,7 +918,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Refactor - fetch tracks in helper" />
     <MESSAGE value="Calculate relationship between user and a song" />
     <MESSAGE value="Calculate time coefficient" />
     <MESSAGE value="Fix bug in relationship calculation + refactor" />
@@ -891,7 +942,8 @@
     <MESSAGE value="Persist position in playlist" />
     <MESSAGE value="Use newest rails" />
     <MESSAGE value="Authenticate with Spotify in Sidekiq" />
-    <option name="LAST_COMMIT_MESSAGE" value="Authenticate with Spotify in Sidekiq" />
+    <MESSAGE value="Apply transition when showing progress bar" />
+    <option name="LAST_COMMIT_MESSAGE" value="Apply transition when showing progress bar" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -906,7 +958,7 @@
           <properties />
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="77" />
+      <option name="time" value="78" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1040,13 +1092,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/helpers/playlist_helper_test.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73770493">
-          <caret line="30" column="65" selection-start-line="30" selection-start-column="65" selection-end-line="30" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/bundle/gems/thor-0.19.1/spec/rake_compat_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.105882354">
@@ -1113,13 +1158,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/helpers/playlist_helper.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Procfile">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1161,6 +1199,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1219,13 +1258,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/playlist_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5813953">
-          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/api_secrets.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1237,21 +1269,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="334" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Gemfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3612403">
-          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/workers/playlist_worker.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61349696">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1293,18 +1310,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/assets/stylesheets/custom.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.5">
-          <caret line="102" column="13" selection-start-line="102" selection-start-column="13" selection-end-line="102" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.38709676">
+          <caret line="102" column="13" selection-start-line="102" selection-start-column="12" selection-end-line="102" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/workers/playlist_worker.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.24539877">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/helpers/playlist_helper_test.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2576687">
+          <caret line="30" column="38" selection-start-line="30" selection-start-column="38" selection-end-line="30" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gemfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.36196318">
+          <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/playlist_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="23" selection-start-line="45" selection-start-column="23" selection-end-line="45" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/helpers/playlist_helper.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="107" column="30" selection-start-line="107" selection-start-column="30" selection-end-line="107" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/playlist/new.js.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.48387095">
-          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.36231884">
+          <caret line="15" column="40" selection-start-line="15" selection-start-column="40" selection-end-line="15" selection-end-column="40" />
           <folding>
-            <marker date="1434755445036" expanded="true" signature="557:567" placeholder="..." />
+            <marker date="1434756581864" expanded="true" signature="578:588" placeholder="..." />
           </folding>
         </state>
       </provider>

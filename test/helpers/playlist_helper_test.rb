@@ -26,14 +26,14 @@ class PlaylistHelperTest < ActionView::TestCase
     assert value == 1, 'Expected 1 but found ' + value.to_s
   end
 
-  test 'should return 0.67 as similarity between songs sang by the same artists' do
+  test 'should return 0.5 as similarity between songs sang by the same artists' do
     value = @@track.similarity(@@track_with_all_artists)
-    assert value == 0.67, 'Expected 0.67 but found ' + value.to_s
+    assert value == 0.5, 'Expected 0.5 but found ' + value.to_s
   end
 
-  test 'should return 0.33 as similarity between songs where at least one artist is the same' do
+  test 'should return 0.25 as similarity between songs where at least one artist is the same' do
     value = @@track.similarity(@@track_with_one_artist)
-    assert value == 0.33, 'Expected 0.33 but found ' + value.to_s
+    assert value == 0.25, 'Expected 0.25 but found ' + value.to_s
   end
 
   test 'should return 0 as similarity between songs sang by other artists' do
