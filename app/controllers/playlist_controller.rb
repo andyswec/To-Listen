@@ -1,5 +1,4 @@
 require 'rspotify'
-require 'lastfm'
 
 class PlaylistController < ApplicationController
 

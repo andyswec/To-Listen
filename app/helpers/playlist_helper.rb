@@ -1,5 +1,4 @@
 require 'rspotify'
-require 'lastfm'
 require 'sidekiq'
 require 'sidekiq-status'
 

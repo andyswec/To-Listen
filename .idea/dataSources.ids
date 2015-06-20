@@ -21222,14 +21222,6 @@
       <column name="viewowner" sqlType="name" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="definition" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
     </table>
-    <table name="last_fm_users" schema="public" catalog="To-Listen_test" type="TABLE">
-      <column name="id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
-      <column name="last_fm_hash" sqlType="text" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
-      <primary-key name="last_fm_users_pkey" columns="id"/>
-      <exported-key name="fk_rails_4c8e1881bb" table="users_sessions" schema="public" catalog="To-Listen_test" columns="last_fm_id"/>
-    </table>
     <table name="schema_migrations" schema="public" catalog="To-Listen_test" type="TABLE">
       <column name="version" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <index name="unique_schema_migrations" unique="true" columns="version"/>
@@ -21284,13 +21276,10 @@
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcnNfc2Vzc2lvbnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
       <column name="session_id" sqlType="varchar" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="spotify_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
-      <column name="last_fm_id" sqlType="varchar" precision="2147483647" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="false" jdbcType="93"/>
       <primary-key name="users_sessions_pkey" columns="id"/>
-      <foreign-key name="fk_rails_4c8e1881bb" columns="last_fm_id" ref-table="last_fm_users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="fk_rails_c2aa19b6c2" columns="spotify_id" ref-table="spotify_users" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <index name="index_users_sessions_on_session_id_and_last_fm_id" unique="true" columns="session_id,last_fm_id"/>
       <index name="index_users_sessions_on_session_id_and_spotify_id" unique="true" columns="session_id,spotify_id"/>
     </table>
     <table name="users_sessions_id_seq" schema="public" catalog="To-Listen_test" type="SEQUENCE">
