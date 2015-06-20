@@ -1,9 +1,0 @@
-$('ul#users li.new-user #last-fm-form')[0].reset();
-enableInput.call($('ul#users li.new-user #last-fm-form div.form-group input#last_fm_username[type=text]'));
-deleteIcons.call($('ul#users li.new-user #last-fm-form div.form-group'));
-$('ul#users li:last').before('<%= j( render partial: 'users/user', formats: [ :html ], locals: {user: @user, position: @position}) %>');
-$('ul#users li.new-user div:first h3 small').text('<%= j("##{@users_count + 1}")%>');
-
-<% if @users_count >= 2 %>
-$('a#playlist').removeClass('disabled').parent().popover('disable');
-<% end %>

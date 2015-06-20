@@ -16,9 +16,9 @@ body {
   }
 }
 
-.container {
-  max-width: 860px;
-}
+//.container {
+//  max-width: 860px;
+//}
 
 .glyphicon-spin {
   //-webkit-transform-origin: 50% 50%;
@@ -59,40 +59,69 @@ body {
 
 /* header */
 
+header {
+  position: relative;
+  overflow: hidden;
+
+  img {
+    max-width: 100%;
+    min-height: 150px;
+    object-fit: cover;
+    object-position: 100% 0;
+    right: 0;
+  }
+
+  div.title {
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    padding: 15px;
+    left: 0;
+    right: 0;
+
+    color: #EEEEEE;
+  }
+}
+
 /* users */
+
+ul.users {
+  margin-bottom: 0;
+}
 
 ul.users li {
   margin-bottom: 25px;
 
-  div {
+  > div {
     margin-bottom: 15px;
-    text-align: center;
-
-    &:not(.user-num):not(.img) {
-      @media (min-width: 768px) {
-        text-align: inherit;
-      }
-    }
 
     * {
       max-height: 50px;
       max-width: 100%;
     }
+
+    &.name {
+      font-size: 16px;
+    }
+
+    &.delete span {
+      font-size: 25px;
+    }
   }
 
   div.user-num {
-    min-height: 50px;
+    //min-height: 50px;
 
     div {
       width: 100%;
     }
+
+    h3 {
+      margin: 0;
+    }
   }
 
   div.form-group {
-    margin: 0px;
-  }
-
-  .user-num h3 {
     margin: 0;
   }
 }
@@ -128,7 +157,7 @@ ul.tracks li {
   margin-bottom: 25px;
 
   .image {
-    padding-right: 0px;
+    padding-right: 0;
   }
 
   .title {

@@ -1,8 +1,0 @@
-var div = $('ul.users').children()[<%= @position %>].children[2];
-$(div).empty();
-$(div).append('<div class="form-group has-success has-feedback">\
-<label class="sr-only">Last.fm username</label>\
-<%= text_field_tag(:last_fm_username, @name, class: 'form-control', placeholder: 'Last.fm username', disabled: true, 'aria-describedby' => 'inputSuccess2Status') %>\
-<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>\
-<span id="inputSuccess2Status" class="sr-only">(success)</span>\
-</div>')

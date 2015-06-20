@@ -15,7 +15,7 @@ class PlaylistWorker
     user_sessions = session.user_sessions
     users = []
     user_sessions.each do |us|
-      users << PlaylistHelper::SpotifyLastFmUser.new(user_session: us)
+      users << PlaylistHelper::SpotifyRecommendUser.new(user_session: us)
     end
 
     tracks = Set.new

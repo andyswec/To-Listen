@@ -1,12 +1,3 @@
-<h2 class="step">Step 1:
-  <small>
-    Add at least two persons
-    <i class="glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-container="body"
-       title="Add persons" data-content="You can add persons by logging in with Spotify
-         or by entering your Last.fm user name."></i>
-  </small>
-</h2>
-
 <% unless @alert.nil? %>
     <div class="alert alert-danger alert-dismissible fade in" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -15,57 +6,60 @@
     </div>
 <% end %>
 
-<div class="jumbotron">
-  <ul class="users list-unstyled" id="users">
-    <% @display_users.each_with_index { |user, position| %>
-        <%= render partial: 'users/user', locals: {user: user, position: position} %>
-    <% } %>
-    <li class="row row-flex new-user">
-      <div class="col-sm-2 col-xs-4 user-num row-flex">
-        <div>
-          <h3>
-            <small>#<%= @display_users.length + 1 %></small>
-          </h3>
-        </div>
-      </div>
-      <div class="col-sm-4 col-xs-8">
-        <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
-      </div>
-      <div class="col-sm-4 col-xs-12">
-        <%= form_tag last_fm_users_path, :method => 'post', remote: true, id: "last-fm-form" do %>
-            <div class="form-group">
-              <label class="sr-only">Last.fm username</label>
-              <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
-              <%= submit_tag "", :style => "display: none;" %>
-            </div>
-        <% end %>
-      </div>
-    </li>
-  </ul>
-</div>
-
-<h2>Step 2:
-  <small>Get your playlist</small>
-</h2>
-
-<div class="playlist-progress hidden"></div>
-
-<%
-   disabled = @display_users.length < 2
-   if disabled
-%>
-
-    <div data-toggle="popover" data-trigger="hover" data-placement="auto" data-container="body" title="Get playlist"
-         data-content="You need to add at least two persons">
-      <%=
-          link_to "What To-Listen?", playlist_path, id: 'playlist', class: 'btn btn-primary btn-lg btn-block disabled'
-      %>
+<div class="row">
+  <div class="col-md-8">
+    <h2 class="step">Step 1:
+      <small>
+        Add at least two persons
+        <i class="glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-container="body"
+           title="Add persons" data-content="You can add persons by logging in with Spotify
+         or by entering your Last.fm user name."></i>
+      </small>
+    </h2>
+    <div class="jumbotron">
+      <ul class="users list-unstyled" id="users">
+        <% @display_users.each_with_index { |user, position| %>
+            <%= render partial: 'users/user', locals: {user: user, position: position} %>
+        <% } %>
+        <li class="row row-flex new-user">
+          <div class="col-xs-3 user-num text-center">
+            <h3>
+              <small>#<%= @display_users.length + 1 %></small>
+            </h3>
+          </div>
+          <div class="col-xs-9">
+            <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
+          </div>
+        </li>
+      </ul>
     </div>
-<% else %>
+  </div>
 
-    <%=
-        link_to "What To-Listen?", playlist_path, id: 'playlist', remote: true, method: :post, class: 'btn btn-primary btn-lg btn-block'
+  <div class="col-md-4">
+    <h2>Step 2:
+      <small>Get your playlist</small>
+    </h2>
+
+    <div class="playlist-progress hidden"></div>
+
+    <%
+       disabled = @display_users.length < 2
+       if disabled
     %>
 
-<% end %>
+        <div data-toggle="popover" data-trigger="hover" data-placement="auto" data-container="body" title="Get playlist"
+             data-content="You need to add at least two persons">
+          <%=
+              link_to "What To-Listen?", playlist_path, id: 'playlist', class: 'btn btn-primary btn-lg btn-block disabled'
+          %>
+        </div>
+    <% else %>
+
+        <%=
+            link_to "What To-Listen?", playlist_path, id: 'playlist', remote: true, method: :post, class: 'btn btn-primary btn-lg btn-block'
+        %>
+
+    <% end %>
+  </div>
+</div>
 

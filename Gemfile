@@ -27,7 +27,6 @@ end
 gem 'bootstrap-sass', '3.2.0.0'
 gem 'rspotify'
 gem 'gemcutter'
-gem 'lastfm'
 gem 'sidekiq-status'
 
 # Openshift

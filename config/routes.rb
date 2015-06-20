@@ -13,7 +13,6 @@ Rails.application.routes.draw do
   get 'percentage' => 'playlist#percentage'
 
   resources :users_sessions, only: [:destroy]
-  resources :last_fm_users, only: [:create, :update], controller: 'last_fm'
 
   # resources :sessions, :only => [] do
   #   member do

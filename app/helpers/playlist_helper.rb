@@ -5,8 +5,8 @@ require 'sidekiq-status'
 
 module PlaylistHelper
 
-  class SpotifyLastFmUser
-    attr_reader :spotify_user, :last_fm_user, :tracks, :relevances
+  class SpotifyRecommendUser
+    attr_reader :spotify_user, :tracks, :relevances
 
     # Creates a SpotifyLastFmUser and fetches the songs
     # @param args hash containing :user_session or :spotify_user and last_fm_user
@@ -14,10 +14,8 @@ module PlaylistHelper
       if !args[:user_session].nil?
         user_session = args[:user_session]
         @spotify_user = RSpotify::User.new(user_session.spotify_user.rspotify_hash) unless user_session.spotify_user.nil?
-        @last_fm_user = user_session.last_fm_user.last_fm_hash unless user_session.last_fm_user.nil?
       else
         @spotify_user = RSpotify::User.new(args[:spotify_user].rspotify_hash) unless args[:spotify_user].nil?
-        @last_fm_user = args[:last_fm_user].last_fm_hash unless args[:last_fm_user].nil?
       end
     end
 
@@ -61,23 +59,7 @@ module PlaylistHelper
           }
         end
       end
-
       threads.each { |t| t.join }
-
-      # Fetch last.fm tracks
-      # lastfm_api = Lastfm.new(LAST_FM_API_ID, LAST_FM_CLIENT_SECRET)
-      # @last_fm_tracks = []
-      # unless @last_fm_user.nil?
-      #   @last_fm_tracks = lastfm_api.user.get_top_tracks(user: @last_fm_user['id'], period: '7day')
-      #   added_tracks.each do |lt|
-      #     index = @tracks.index { |st| st.object.name == lt['name'] && st.object.artists.any? { |sa| sa.name == lt['artist']['name'] } }
-      #     if index.nil?
-      #       puts 'Not found: ' + lt['artist']['name'] + ' - ' + lt['name']
-      #     else
-      #       puts 'Found: ' + @tracks[index].artists.first.name + ' - ' + @tracks[index].name
-      #     end
-      #   end
-      # end
 
       tracks
     end

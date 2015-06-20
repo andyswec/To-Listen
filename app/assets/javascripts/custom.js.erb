@@ -16,8 +16,8 @@ $(function () {
 
     displayLoading = function () {
         $(this).addClass('has-feedback')
-            .append('<span class="glyphicon glyphicon-refresh glyphicon-spin form-control-feedback" aria-hidden="true"></span>')
-            .append('<span id="inputLoadingStatus" class="sr-only">(error)</span>');
+                .append('<span class="glyphicon glyphicon-refresh glyphicon-spin form-control-feedback" aria-hidden="true"></span>')
+                .append('<span id="inputLoadingStatus" class="sr-only">(error)</span>');
     };
 
     enableInput = function () {
@@ -44,6 +44,7 @@ $(function () {
 var job_id = null;
 var playlistFailed = false;
 var playlistAlertDisplayed = false;
+var done = false;
 
 $(function () {
     $('a#playlist').bind('ajax:beforeSend', function () {
@@ -63,6 +64,7 @@ $(function () {
         job_id = data['job_id'];
         queryForPercentage();
     }).bind('ajax:error', function () {
+        playlistFailed = true;
         playlistDisplayError();
     });
 });
@@ -70,30 +72,31 @@ $(function () {
 var queryForPercentage = function () {
     if (job_id != null) {
         $.ajax('percentage?job_id=' + job_id)
-            .done(function (data) {
-                if (data['status'] == 'failed') {
-                    playlistFailed = true;
-                    job_id = null;
+                .done(function (data) {
+                    if (data['status'] == 'failed') {
+                        playlistFailed = true;
+                        job_id = null;
 
-                    if (!playlistAlertDisplayed) {
-                        playlistDisplayError(data['error']);
-                        $('button.close').click(function () {
-                            playlistFailed = false;
-                            playlistAlertDisplayed = false;
-                        });
+                        if (!playlistAlertDisplayed) {
+                            playlistDisplayError(data['error']);
+                            $('button.close').click(function () {
+                                playlistFailed = false;
+                                playlistAlertDisplayed = false;
+                            });
+                        }
                     }
-                }
-                else if (data['status'] == 'queued') {
-                    setProgress(data['percent'], 'Waiting in queue')
-                }
-                else if (data['status'] == 'complete') {
-                    setProgress(data['percent'], data['message'])
-                    window.location.href = '<%=playlist_path%>';
-                }
-                else if (data['status'] == 'working') {
-                    setProgress(data['percent'], data['message']);
-                }
-            });
+                    else if (data['status'] == 'queued') {
+                        setProgress(data['percent'], 'Waiting in queue')
+                    }
+                    else if (data['status'] == 'complete') {
+                        setProgress(data['percent'], data['message'])
+                        if (!done) window.location.href = '<%=playlist_path%>';
+                        done = true;
+                    }
+                    else if (data['status'] == 'working') {
+                        setProgress(data['percent'], data['message']);
+                    }
+                });
 
         setTimeout(queryForPercentage, 500);
     }
@@ -122,6 +125,6 @@ function playlistDisplayError(message) {
     $(progress).addClass('hidden');
     $(progress).empty();
     $(progress).after('<div class="alert alert-danger alert-dismissible fade in" role="alert">' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-        '<strong>Error creating playlist.</strong> ' + (message != undefined ? message : 'Something went wrong') + '</div>');
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            '<strong>Error creating playlist.</strong> ' + (message != undefined ? message : 'Something went wrong') + '</div>');
 }

@@ -8,10 +8,17 @@
   <%= csrf_meta_tags %>
 </head>
 <header>
-  <div class="container">
-    <h1>To-Listen<br>
-    <small>Listen together</small></h1>
-  </div>
+  <%= link_to(raw('
+  <div>
+    <div class="img">
+      ' + image_tag("header_background.jpg") + '
+    </div>
+    <div class="container title">
+      <h1>To-Listen<br>
+        <small>Listen together</small>
+      </h1>
+    </div>
+  </div>'), root_path) %>
 </header>
 <body>
 <div class="container">

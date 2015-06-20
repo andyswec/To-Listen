@@ -11,16 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617205428) do
+ActiveRecord::Schema.define(version: 20150620232249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "last_fm_users", force: :cascade do |t|
-    t.text     "last_fm_hash"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
 
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at",                         null: false
@@ -51,16 +45,13 @@ ActiveRecord::Schema.define(version: 20150617205428) do
   create_table "users_sessions", force: :cascade do |t|
     t.string   "session_id", null: false
     t.string   "spotify_id"
-    t.string   "last_fm_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "users_sessions", ["session_id", "last_fm_id"], name: "index_users_sessions_on_session_id_and_last_fm_id", unique: true, using: :btree
   add_index "users_sessions", ["session_id", "spotify_id"], name: "index_users_sessions_on_session_id_and_spotify_id", unique: true, using: :btree
 
   add_foreign_key "tracks_sessions", "sessions"
   add_foreign_key "tracks_sessions", "tracks"
-  add_foreign_key "users_sessions", "last_fm_users", column: "last_fm_id"
   add_foreign_key "users_sessions", "spotify_users", column: "spotify_id"
 end

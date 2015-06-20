@@ -1,29 +1,10 @@
 <li class="row row-flex">
-  <div class="col-sm-2 col-xs-4 img"><%= image_tag(user.image, alt: user.image_alt) %></div>
-  <div class="col-sm-4 col-xs-8">
-    <%= user.name || (link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"),
-                              login_user_path(position)) %>
+  <div class="col-xs-3 text-center"><%= image_tag(user.image, alt: user.image_alt) %></div>
+  <div class="col-xs-7 name">
+    <%= user.name %>
   </div>
-  <div class="col-sm-4 col-xs-12">
-    <% if !user.last_fm_name.nil? %>
-        <div class="form-group has-success has-feedback">
-          <label class="sr-only">Last.fm username</label>
-          <%= text_field_tag(:last_fm_username, user.last_fm_name, class: 'form-control', placeholder: 'Last.fm username', disabled: true, 'aria-describedby' => 'inputSuccess2Status') %>
-          <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-          <span id="inputSuccess2Status" class="sr-only">(success)</span>
-        </div>
-    <% else %>
-        <%= form_tag last_fm_user_path(position), :method => :put, remote: true, class: "new_user", id: "last-fm-form" do %>
-            <div class="form-group">
-              <label class="sr-only">Last.fm username</label>
-              <%= text_field_tag(:last_fm_username, nil, class: "form-control", placeholder: "Last.fm username") %>
-              <%= submit_tag "", :style => 'display: none;' %>
-            </div>
-        <% end %>
-    <% end %>
-  </div>
-  <div class="col-sm-2 col-xs-12">
-    <%= link_to "Delete", users_session_path(position), method: :delete, class: "btn btn-danger btn-block",
-                data: {confirm: "Are you sure?"} %>
+  <div class="col-xs-2 delete">
+    <%= link_to raw('<span aria-hidden="true">&times;</span></button>'), users_session_path(user.id), method: :delete,
+                class: 'close', 'aria-label' => 'Delete', data: {confirm: "Are you sure?"} %>
   </div>
 </li>
