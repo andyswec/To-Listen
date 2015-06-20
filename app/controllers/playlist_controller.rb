@@ -43,10 +43,18 @@ class PlaylistController < ApplicationController
       render :json => {:status => 'queued'}.to_json
     elsif Sidekiq::Status::complete?(job_id)
       warning = Sidekiq::Status::get(job_id, :warning)
+      data = Sidekiq::Status::get_all(job_id)
+      if (data['total'].to_i == 0)
+        percent = 0
+      else
+        percent = 100 * data['at'].to_i / data['total'].to_i
+      end
+      message = data['message']
+
       if warning
         flash[:warning] = warning
       end
-      render :json => {:status => 'complete'}.to_json
+      render :json => {:status => 'complete', :percent => percent, :message => message}.to_json
     elsif Sidekiq::Status::working?(job_id)
       data = Sidekiq::Status::get_all(job_id)
       if (data['total'].to_i == 0)
