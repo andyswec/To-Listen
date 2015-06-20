@@ -17,12 +17,14 @@ class PlaylistController < ApplicationController
     session_id = session[:session_id]
     session = Session.find_by(id: session_id)
     @tracks = session.track_sessions.order(:position).collect { |ts| ts.track.rspotify_hash }
+    @users = session.user_sessions.order(:created_at).collect { |us| DisplayUser.new(us) }
     @warning = flash[:warning]
   end
 
   def play
     session_id = session[:session_id]
-    user = UserSession.where(session_id: session_id).order(:created_at).first.spotify_user
+    user_id = params[:user_id]
+    user = SpotifyUser.find(user_id)
     user = RSpotify::User.new(user.rspotify_hash)
     playlist = user.create_playlist!(Time.now.utc.localtime.strftime('%F %R - To-Listen'), public: false)
 

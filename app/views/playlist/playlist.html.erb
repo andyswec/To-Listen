@@ -1,7 +1,7 @@
 <h2>Playlist</h2>
 
 <div class="text-center play">
-  <%= link_to image_tag('spotify_listen-desktop.png', alt: 'Listen on Spotify'), play_path, method: :post %>
+  <%= content_tag :a, image_tag('spotify_listen-desktop.png', alt: 'Listen on Spotify'), {id: 'play', type: 'button', 'data-toggle' => 'modal', 'data-target' => '#usersModal'} %>
 </div>
 
 <% if @warning %>
@@ -20,3 +20,27 @@
     <% end %>
   </ul>
 </div>
+
+<div class="modal fade" id="usersModal" role="dialog" aria-labelledby="usersModalTitle">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="usersModalTitle">Create playlist in:</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row row-flex users">
+          <% @users.each do |user| %>
+              <div class="col-md-3 col-xs-6 text-center">
+                <div><%= link_to image_tag(user.image, alt: user.image_alt), play_path(user.id), method: :post %></div>
+                <div><%= user.name %></div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div><!-- /.modal -->

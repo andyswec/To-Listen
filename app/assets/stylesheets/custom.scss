@@ -101,7 +101,7 @@ div.playlist-progress {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  
+
   -webkit-transition: max-height 0.2s ease-in, opacity 0.2s ease;
   -moz-transition: max-height 0.2s ease-in, opacity 0.2s ease;
   -ms-transition: max-height 0.2s ease-in, opacity 0.2s ease;
@@ -137,5 +137,16 @@ ul.tracks li {
 
   * {
     max-width: 100%;
+  }
+}
+
+a#play {
+  cursor: pointer;
+}
+
+div.modal-body div.row.users {
+  img {
+    max-height: 64px;
+    max-width: 64px;
   }
 }
