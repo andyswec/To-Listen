@@ -9,7 +9,8 @@ class PlaylistController < ApplicationController
     session.generated_playlist = true
     session.save
 
-    @job_id = PlaylistWorker.perform_async(session_id)
+    job_id = PlaylistWorker.perform_async(session_id)
+    render :json => {:job_id => job_id}.to_json
   end
 
   def playlist
@@ -32,13 +33,20 @@ class PlaylistController < ApplicationController
 
   def percentage
     job_id = params[:job_id]
-    data = Sidekiq::Status::get_all(job_id)
-    if (data['total'].to_i == 0)
-      percent = 0
+
+    if Sidekiq::Status::failed?(job_id)
+      render :json => {:status => 'failed'}.to_json
+    elsif Sidekiq::Status::queued?(job_id)
+      render :json => {:status => 'queued'}.to_json
     else
-      percent = 100 * data['at'].to_i / data['total'].to_i
+      data = Sidekiq::Status::get_all(job_id)
+      if (data['total'].to_i == 0)
+        percent = 0
+      else
+        percent = 100 * data['at'].to_i / data['total'].to_i
+      end
+      message = data['message']
+      render :json => {:percent => percent, :message => message}.to_json
     end
-    message = data['message']
-    render :json => {:percent => percent, :message => message}.to_json
   end
 end

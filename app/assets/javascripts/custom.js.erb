@@ -1,0 +1,123 @@
+<% environment.context_class.instance_eval { include Rails.application.routes.url_helpers } %>
+
+/* universal */
+
+$(function () {
+    $('[data-toggle="popover"]').popover()
+});
+
+/* users */
+
+$(function () {
+    deleteIcons = function () {
+        $(this).removeClass('has-error has-feedback');
+        $(this).children('span').remove();
+    };
+
+    displayLoading = function () {
+        $(this).addClass('has-feedback')
+            .append('<span class="glyphicon glyphicon-refresh glyphicon-spin form-control-feedback" aria-hidden="true"></span>')
+            .append('<span id="inputLoadingStatus" class="sr-only">(error)</span>');
+    };
+
+    enableInput = function () {
+        $(this).attr('disabled', false);
+    };
+
+    disableInput = function () {
+        $(this).attr('disabled', true);
+    };
+
+    $('ul.users li input#last_fm_username[type=text]').on('input', function () {
+        deleteIcons.call($(this).parent());
+    });
+
+    $('ul.users li form#last-fm-form').bind('ajax:beforeSend', function () {
+        disableInput.call($(this).find('input#last_fm_username[type=text]'));
+        deleteIcons.call($(this).find('div.form-group'));
+        displayLoading.call($(this).find('div.form-group'));
+    });
+});
+
+/* playlist */
+
+var job_id = null;
+var playlist_failed = false;
+var playlist_alert_displayed = false;
+
+$(function () {
+    $('a#playlist').bind('ajax:beforeSend', function () {
+        var progress = $('div.playlist-progress');
+        $('a#playlist').addClass('disabled');
+        $(progress).append('<div class="message"></div><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div>');
+        $(progress).removeClass('hidden');
+        $(progress).css('max-height');
+        $(progress).css('opacity');
+        $(progress).css({
+            'max-height': 100,
+            'opacity': 1
+        });
+        setProgress(0, 'Initializing');
+    }).bind('ajax:success', function (e, data) {
+        console.log("Success, data: " + data);
+        console.log("Success, jobId: " + data['job_id']);
+        job_id = data['job_id'];
+        queryForPercentage();
+    }).bind('ajax:error', function () {
+        playlistDisplayError();
+    });
+});
+
+var queryForPercentage = function () {
+    if (job_id != null) {
+        $.ajax('percentage?job_id=' + job_id)
+            .done(function (data) {
+                if (data['status'] == 'failed') {
+                    playlist_failed = true;
+                    job_id = null;
+                    playlistDisplayError();
+
+                    if (!playlist_alert_displayed) {
+                        playlistDisplayError();
+                        $('button.close').click(function () {
+                            playlist_failed = false;
+                            playlist_alert_displayed = false;
+                        });
+                    }
+                }
+                else if (data['status'] == 'queued') {
+                    setProgress(data['percent'], 'Waiting in queue')
+                }
+                else {
+                    setProgress(data['percent'], data['message']);
+                    if (data['percent'] == 100) {
+                        window.location.href = '<%=playlist_path%>';
+                    }
+                }
+            });
+
+        setTimeout(queryForPercentage, 500);
+    }
+};
+
+function setProgress(percent, message) {
+    var messageDiv = $('div.playlist-progress div.message');
+    var progress = $('div.playlist-progress div.progress div.progress-bar');
+
+    if (message != undefined && message != null) messageDiv.text(message);
+    progress.attr('aria-valuenow', (percent != undefined ? percent : '0') + '.0');
+    progress.css('width', percent + '%');
+    progress.text(percent + '%');
+}
+
+function playlistDisplayError() {
+    playlist_alert_displayed = true;
+
+    $('a#playlist').removeClass('disabled');
+    var progress = $('div.playlist-progress');
+    $(progress).addClass('hidden');
+    $(progress).empty();
+    $(progress).after('<div class="alert alert-danger alert-dismissible fade in" role="alert">' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+        '<strong>Error creating playlist.</strong> Something went wrong</div>');
+}

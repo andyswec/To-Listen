@@ -16,3 +16,12 @@ if Rails.env.production? && ENV['OPENSHIFT_REDIS_HOST']
     config.redis = {:host => ENV['OPENSHIFT_REDIS_HOST'], :port => ENV['OPENSHIFT_REDIS_PORT'], :password => ENV['REDIS_PASSWORD']}
   end
 end
+
+Sidekiq.configure_server do |config|
+  config.server_middleware do |chain|
+    chain.add Sidekiq::Status::ServerMiddleware, expiration: 30.minutes # default
+  end
+  config.client_middleware do |chain|
+    chain.add Sidekiq::Status::ClientMiddleware
+  end
+end
