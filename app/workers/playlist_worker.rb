@@ -3,6 +3,8 @@ class PlaylistWorker
   include Sidekiq::Status::Worker
   sidekiq_options retry: false
 
+  @@playlist_size = 30
+
   def perform(session_id)
     RSpotify::authenticate(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
 
@@ -26,7 +28,10 @@ class PlaylistWorker
     end
     threads.each { |t| t.join }
 
-    at 30, 'Applying black magic to create your playlist'
+    if tracks.count == 0
+      store error: 'You have no song or playlist in your Spotify accounts. We cannot find out what music you like.'
+      raise StandardError, 'No song in Spotify accounts'
+    end
 
     threads = []
     count = users.count
@@ -78,7 +83,7 @@ class PlaylistWorker
     at 95, 'Finalizing'
 
     i = 0
-    until i >= 20 do
+    until i >= 30 do
       t = tracks[i]
       break if t.nil?
 
@@ -97,7 +102,14 @@ class PlaylistWorker
       end
     end
 
-    tracks = tracks[0..19]
+    if tracks.count == 0
+      store error: 'You have no song or playlist in your Spotify accounts. We cannot find out what music you like.'
+      raise StandardError
+    elsif tracks.count < @@playlist_size
+      store warning: 'You do not have enough tracks or playlists in your Spotify accounts. Add more tracks to get a better playlist.'
+    end
+
+    tracks = tracks[0..(@@playlist_size - 1)]
 
     session.track_sessions.destroy_all
     tracks = tracks.each_with_index do |t, i|
@@ -105,7 +117,6 @@ class PlaylistWorker
       ts = TrackSession.new(session: session, track: track, position: i)
       ts.save
     end
-
 
     at 100, 'Done'
   end

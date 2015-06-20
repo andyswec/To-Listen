@@ -17,6 +17,7 @@ class PlaylistController < ApplicationController
     session_id = session[:session_id]
     session = Session.find_by(id: session_id)
     @tracks = session.track_sessions.order(:position).collect { |ts| ts.track.rspotify_hash }
+    @warning = flash[:warning]
   end
 
   def play
@@ -35,10 +36,16 @@ class PlaylistController < ApplicationController
     job_id = params[:job_id]
 
     if Sidekiq::Status::failed?(job_id)
-      render :json => {:status => 'failed'}.to_json
+      render :json => {:status => 'failed', :error => Sidekiq::Status::get(job_id, :error)}.to_json
     elsif Sidekiq::Status::queued?(job_id)
       render :json => {:status => 'queued'}.to_json
-    else
+    elsif Sidekiq::Status::complete?(job_id)
+      warning = Sidekiq::Status::get(job_id, :warning)
+      if warning
+        flash[:warning] = warning
+      end
+      render :json => {:status => 'complete'}.to_json
+    elsif Sidekiq::Status::working?(job_id)
       data = Sidekiq::Status::get_all(job_id)
       if (data['total'].to_i == 0)
         percent = 0
@@ -46,7 +53,7 @@ class PlaylistController < ApplicationController
         percent = 100 * data['at'].to_i / data['total'].to_i
       end
       message = data['message']
-      render :json => {:percent => percent, :message => message}.to_json
+      render :json => {:status => 'working', :percent => percent, :message => message}.to_json
     end
   end
 end

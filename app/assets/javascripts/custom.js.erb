@@ -42,13 +42,14 @@ $(function () {
 /* playlist */
 
 var job_id = null;
-var playlist_failed = false;
-var playlist_alert_displayed = false;
+var playlistFailed = false;
+var playlistAlertDisplayed = false;
 
 $(function () {
     $('a#playlist').bind('ajax:beforeSend', function () {
         var progress = $('div.playlist-progress');
         $('a#playlist').addClass('disabled');
+        playlistHideError();
         $(progress).append('<div class="message"></div><div class="progress"><div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div>');
         $(progress).removeClass('hidden');
         $(progress).css('max-height');
@@ -59,8 +60,6 @@ $(function () {
         });
         setProgress(0, 'Initializing');
     }).bind('ajax:success', function (e, data) {
-        console.log("Success, data: " + data);
-        console.log("Success, jobId: " + data['job_id']);
         job_id = data['job_id'];
         queryForPercentage();
     }).bind('ajax:error', function () {
@@ -73,25 +72,26 @@ var queryForPercentage = function () {
         $.ajax('percentage?job_id=' + job_id)
             .done(function (data) {
                 if (data['status'] == 'failed') {
-                    playlist_failed = true;
+                    playlistFailed = true;
                     job_id = null;
 
-                    if (!playlist_alert_displayed) {
-                        playlistDisplayError();
+                    if (!playlistAlertDisplayed) {
+                        playlistDisplayError(data['error']);
                         $('button.close').click(function () {
-                            playlist_failed = false;
-                            playlist_alert_displayed = false;
+                            playlistFailed = false;
+                            playlistAlertDisplayed = false;
                         });
                     }
                 }
                 else if (data['status'] == 'queued') {
                     setProgress(data['percent'], 'Waiting in queue')
                 }
-                else {
+                else if (data['status'] == 'complete') {
+                    setProgress(data['percent'], data['message'])
+                    window.location.href = '<%=playlist_path%>';
+                }
+                else if (data['status'] == 'working') {
                     setProgress(data['percent'], data['message']);
-                    if (data['percent'] == 100) {
-                        window.location.href = '<%=playlist_path%>';
-                    }
                 }
             });
 
@@ -109,8 +109,13 @@ function setProgress(percent, message) {
     progress.text(percent + '%');
 }
 
-function playlistDisplayError() {
-    playlist_alert_displayed = true;
+function playlistHideError() {
+    playlistAlertDisplayed = false;
+    $('div.alert').remove();
+}
+
+function playlistDisplayError(message) {
+    playlistAlertDisplayed = true;
 
     $('a#playlist').removeClass('disabled');
     var progress = $('div.playlist-progress');
@@ -118,5 +123,5 @@ function playlistDisplayError() {
     $(progress).empty();
     $(progress).after('<div class="alert alert-danger alert-dismissible fade in" role="alert">' +
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-        '<strong>Error creating playlist.</strong> Something went wrong</div>');
+        '<strong>Error creating playlist.</strong> ' + (message != undefined ? message : 'Something went wrong') + '</div>');
 }
