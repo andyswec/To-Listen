@@ -7,13 +7,12 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-8 users">
     <h2 class="step">Step 1:
       <small>
         Add at least two persons
         <i class="glyphicon glyphicon-question-sign" data-toggle="popover" data-trigger="hover" data-container="body"
-           title="Add persons" data-content="You can add persons by logging in with Spotify
-         or by entering your Last.fm user name."></i>
+           title="Add persons" data-content="You can add persons by logging in with Spotify."></i>
       </small>
     </h2>
     <div class="jumbotron">
@@ -23,9 +22,7 @@
         <% } %>
         <li class="row row-flex new-user">
           <div class="col-xs-3 user-num text-center">
-            <h3>
-              <small>#<%= @display_users.length + 1 %></small>
-            </h3>
+            #<%= @display_users.length + 1 %>
           </div>
           <div class="col-xs-9">
             <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>

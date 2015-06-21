@@ -37,6 +37,8 @@ $(function () {
         deleteIcons.call($(this).find('div.form-group'));
         displayLoading.call($(this).find('div.form-group'));
     });
+
+    $('div.content').css('min-height', 'calc(100% - ' + $('header').height() + 'px)');
 });
 
 /* playlist */

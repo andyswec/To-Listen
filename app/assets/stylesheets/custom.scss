@@ -1,24 +1,43 @@
+/* colors */
+
+$body-bg: #282828;
+$text-color: #cccccc;
+$headings-color: #eeeeee;
+$jumbotron-bg: #999999;
+$jumbotron-color: #333333;
+
+$popover-color: #333333;
+$modal-color: $popover-color;
+$border-jumbotron: solid 1px #777777;
+$border-users: solid 2px #333333;
+
+/* bootstrap */
+
 @import "bootstrap-sprockets";
 @import "bootstrap";
 
 /* universal */
 
-body {
-  padding-bottom: 10px;
+div.content {
+  border-top: $border-users;
 }
 
 .row-flex {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  &:before, &.after {
+  &:before, &:after {
     content: none;
   }
 }
 
-//.container {
-//  max-width: 860px;
-//}
+.popover, h1.popover-title, h2.popover-title, h3.popover-title, h4.popover-title, h5.popover-title, h6.popover-title {
+  color: $popover-color;
+}
+
+.modal-content, h1.modal-title, h2.modal-title, h3.modal-title, h4.modal-title, h5.modal-title, h6.modal-title {
+  color: $modal-color;
+}
 
 .glyphicon-spin {
   //-webkit-transform-origin: 50% 50%;
@@ -65,7 +84,7 @@ header {
 
   img {
     max-width: 100%;
-    min-height: 150px;
+    min-height: 200px;
     object-fit: cover;
     object-position: 100% 0;
     right: 0;
@@ -75,11 +94,12 @@ header {
     position: absolute;
     z-index: 1;
     bottom: 0;
-    padding: 15px;
     left: 0;
     right: 0;
 
-    color: #EEEEEE;
+    @media(min-width: 992px) {
+      padding: 15px;
+    }
   }
 }
 
@@ -90,11 +110,11 @@ ul.users {
 }
 
 ul.users li {
-  margin-bottom: 25px;
+  //margin-bottom: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   > div {
-    margin-bottom: 15px;
-
     * {
       max-height: 50px;
       max-width: 100%;
@@ -110,7 +130,6 @@ ul.users li {
   }
 
   div.user-num {
-    //min-height: 50px;
 
     div {
       width: 100%;
@@ -124,6 +143,10 @@ ul.users li {
   div.form-group {
     margin: 0;
   }
+}
+
+a#playlist {
+  margin-bottom: 10px;
 }
 
 div.playlist-progress {
@@ -142,7 +165,7 @@ div.playlist-progress {
   }
 }
 
-/* tracks */
+/* playlist */
 
 div.play {
   margin-bottom: 25px;
@@ -154,10 +177,19 @@ div.play {
 }
 
 ul.tracks li {
-  margin-bottom: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  @media(min-width: 768px) {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
 
   .image {
     padding-right: 0;
+    img {
+      max-height: 50px;
+    }
   }
 
   .title {

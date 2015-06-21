@@ -15,8 +15,8 @@
 
 <div class="jumbotron">
   <ul class="list-unstyled tracks">
-    <% @tracks.each do |track| %>
-        <%= render partial: 'playlist/track', locals: {track: track} %>
+    <% @tracks.each_with_index do |track, index| %>
+        <%= render partial: 'playlist/track', locals: {track: track, position: index + 1} %>
     <% end %>
   </ul>
 </div>
@@ -33,7 +33,7 @@
         <div class="row row-flex users">
           <% @users.each do |user| %>
               <div class="col-md-3 col-xs-6 text-center">
-                <div><%= link_to image_tag(user.image, alt: user.image_alt), play_path(user.id), method: :post %></div>
+                <div><%= link_to image_tag(user.image, alt: user.image_alt), play_path(user.spotify_id), method: :post %></div>
                 <div><%= user.name %></div>
               </div>
           <% end %>

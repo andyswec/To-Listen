@@ -3,7 +3,7 @@ class PlaylistWorker
   include Sidekiq::Status::Worker
   sidekiq_options retry: false
 
-  @@playlist_size = 30
+  @@playlist_size = 40
 
   def perform(session_id)
     RSpotify::authenticate(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
@@ -38,13 +38,13 @@ class PlaylistWorker
     users.each_with_index do |user, index|
       # threads << Thread.new {
       percent = (30 + (((70 - 30) * index).to_f / count)).to_i
-      at percent, 'Applying black magic to create your playlist'
+      at percent, 'Our monkeys are working on your playlist'
       user.calculateRelevances(tracks)
       # }
     end
     # threads.each { |t| t.join }
 
-    at 70, 'Applying black magic to create your playlist'
+    at 70, 'Our monkeys are working on your playlist'
 
     sums = Hash.new
     tracks.each do |t|
@@ -83,7 +83,7 @@ class PlaylistWorker
     at 95, 'Finalizing'
 
     i = 0
-    until i >= 30 do
+    until i >= @@playlist_size do
       t = tracks[i]
       break if t.nil?
 
