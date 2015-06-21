@@ -37,8 +37,6 @@ $(function () {
         deleteIcons.call($(this).find('div.form-group'));
         displayLoading.call($(this).find('div.form-group'));
     });
-
-    $('div.content').css('min-height', 'calc(100% - ' + $('header').height() + 'px)');
 });
 
 /* playlist */
@@ -130,3 +128,35 @@ function playlistDisplayError(message) {
             '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
             '<strong>Error creating playlist.</strong> ' + (message != undefined ? message : 'Something went wrong') + '</div>');
 }
+
+
+/* tracks */
+
+$(function () {
+    var selectedUserId = null;
+    var timeId = null
+
+    $('a#play').click(function () {
+        var div = $('div.create-playlist');
+        $(div).css('max-height', 'none');
+        $(div).removeClass('hidden');
+        var height = $(div).height();
+        $(div).css('max-height', 0);
+        $(div).css('opacity');
+        $(div).css({
+            'max-height': height,
+            'opacity': 1
+        });
+    });
+
+    $('a.user').click(function () {
+        selectedUserId = $(this).attr('id');
+    });
+
+    $('ul.times a').click(function() {
+        if (timeId == null) {
+            timeId = $(this).attr('id');
+            
+        }
+    })
+});

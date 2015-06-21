@@ -1,11 +1,3 @@
-<% unless @alert.nil? %>
-    <div class="alert alert-danger alert-dismissible fade in" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span></button>
-      <strong>Error.</strong> <%= @alert %>
-    </div>
-<% end %>
-
 <div class="row">
   <div class="col-md-8 users">
     <h2 class="step">Step 1:
@@ -15,6 +7,15 @@
            title="Add persons" data-content="You can add persons by logging in with Spotify."></i>
       </small>
     </h2>
+
+    <% if @alert %>
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <strong>Error.</strong> <%= @alert %>
+        </div>
+    <% end %>
+
     <div class="jumbotron">
       <ul class="users list-unstyled" id="users">
         <% @display_users.each_with_index { |user, position| %>

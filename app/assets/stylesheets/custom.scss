@@ -7,7 +7,6 @@ $jumbotron-bg: #999999;
 $jumbotron-color: #333333;
 
 $popover-color: #333333;
-$modal-color: $popover-color;
 $border-jumbotron: solid 1px #777777;
 $border-users: solid 2px #333333;
 
@@ -33,10 +32,6 @@ div.content {
 
 .popover, h1.popover-title, h2.popover-title, h3.popover-title, h4.popover-title, h5.popover-title, h6.popover-title {
   color: $popover-color;
-}
-
-.modal-content, h1.modal-title, h2.modal-title, h3.modal-title, h4.modal-title, h5.modal-title, h6.modal-title {
-  color: $modal-color;
 }
 
 .glyphicon-spin {
@@ -154,11 +149,11 @@ div.playlist-progress {
   max-height: 0;
   opacity: 0;
 
-  -webkit-transition: max-height 0.2s ease-in, opacity 0.2s ease;
-  -moz-transition: max-height 0.2s ease-in, opacity 0.2s ease;
-  -ms-transition: max-height 0.2s ease-in, opacity 0.2s ease;
-  -o-transition: max-height 0.2s ease-in, opacity 0.2s ease;
-  transition: max-height 0.2s ease-in, opacity 0.2s ease;
+  -webkit-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -moz-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -ms-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -o-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
 
   div.progress div.progress-bar {
     min-width: 2em;
@@ -205,9 +200,20 @@ a#play {
   cursor: pointer;
 }
 
-div.modal-body div.row.users {
-  img {
-    max-height: 64px;
-    max-width: 64px;
+div.create-playlist {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+
+  -webkit-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -moz-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -ms-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  -o-transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+  transition: max-height 0.2s ease-in, opacity 0.2s ease-in;
+
+  ul.users-playlist {
+    img {
+      max-height: 50px;
+    }
   }
 }
