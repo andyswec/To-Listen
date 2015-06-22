@@ -64,5 +64,7 @@ class PlaylistController < ApplicationController
       message = data['message']
       render :json => {:status => 'working', :percent => percent, :message => message}.to_json
     end
+
+    render nothing: true
   end
 end

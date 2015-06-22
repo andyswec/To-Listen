@@ -28,6 +28,7 @@ gem 'bootstrap-sass', '3.2.0.0'
 gem 'rspotify'
 gem 'gemcutter'
 gem 'sidekiq-status'
+gem 'rollbar', '~> 1.5.3'
 
 # Openshift
 # gem 'turbo-sprockets-rails3'
