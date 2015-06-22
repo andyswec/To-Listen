@@ -147,16 +147,25 @@ $(function () {
             'max-height': height,
             'opacity': 1
         });
+
+        var durations = $(div).css('transition-duration');
+        durations = durations.split(", ");
+        var duration = durations[0];
+        duration = duration.substr(0, duration.length - 1) * 1000;
+
+        setTimeout(function () {
+            $(div).css('max-height', 'none');
+        }, duration);
     });
 
     $('a.user').click(function () {
         selectedUserId = $(this).attr('id');
     });
 
-    $('ul.times a').click(function() {
+    $('ul.times a').click(function () {
         if (timeId == null) {
             timeId = $(this).attr('id');
-            
+
         }
     })
 });

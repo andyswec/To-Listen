@@ -3,7 +3,7 @@
 $body-bg: #282828;
 $text-color: #cccccc;
 $headings-color: #eeeeee;
-$jumbotron-bg: #999999;
+$jumbotron-bg: #c4c5e2;
 $jumbotron-color: #333333;
 
 $popover-color: #333333;
@@ -100,6 +100,10 @@ header {
 
 /* users */
 
+div.instructions {
+  padding: 10px 0;
+}
+
 ul.users {
   margin-bottom: 0;
 }
@@ -111,7 +115,7 @@ ul.users li {
 
   > div {
     * {
-      max-height: 50px;
+      max-height: 40px;
       max-width: 100%;
     }
 
