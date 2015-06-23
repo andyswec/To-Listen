@@ -1,5 +1,7 @@
 <div class="instructions">
-  <p class="lead">Welcome to To-Listen, an application that can create a playlist for a group of people. All you need is add persons through their <strong>Spotify account</strong> and get your playlist.</p>
+  <p class="lead"><strong>Welcome to To-Listen</strong>, an application able to create a custom-made playlist for every group of people.<br>
+    All you need is to add persons through their <strong>Spotify account</strong> and click
+    <strong>What To-Listen?</strong></p>
 </div>
 
 <div class="row">
@@ -30,7 +32,7 @@
             #<%= @display_users.length + 1 %>
           </div>
           <div class="col-xs-9">
-            <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path %>
+            <%= link_to image_tag("spotify_log_in-desktop.png", alt: "Log in with Spotify"), login_path, id: 'login' %>
           </div>
         </li>
       </ul>
