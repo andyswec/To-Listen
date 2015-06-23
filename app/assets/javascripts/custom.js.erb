@@ -9,6 +9,10 @@ $(function () {
 /* users */
 
 $(function () {
+    $('a#login').click(function () {
+        ga('send', 'event', 'button', 'click', 'login', 1);
+    });
+
     deleteIcons = function () {
         $(this).removeClass('has-error has-feedback');
         $(this).children('span').remove();

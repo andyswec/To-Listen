@@ -1,4 +1,3 @@
-
 class SpotifyController < ApplicationController
   def login
     position = params[:id] # TODO change id to position as it is a position in fact
@@ -37,6 +36,12 @@ class SpotifyController < ApplicationController
       failure 'Failed to add user. User already added.'
       return
     end
+
+    Thread.new {
+      uri = URI.parse('http://www.google-analytics.com/collect')
+      Net::HTTP.post_form(uri, 'v' => '1', 'tid' => 'UA-64389853-1', 'cid' => SecureRandom.uuid, 't' => 'event',
+                                     'ec' => 'callback', 'ea' => 'success', 'el' => 'spotify-login', 'ev' => '1')
+    }
 
     redirect_to root_path
   end
