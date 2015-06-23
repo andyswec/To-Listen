@@ -22,6 +22,24 @@ module PlaylistHelper
       @tracks ||= fetchTracks
     end
 
+    def calculateRelevances(tracks)
+      @relevances = {}
+      min = nil
+      max = nil
+
+      tracks.each do |t|
+        r = relevance(t)
+        min = r if min.nil? || r < min
+        max = r if max.nil? || r > max
+        @relevances.store(t, r)
+      end
+
+      old_range = (max - min)
+      new_range = 1
+      @relevances = Hash[@relevances.map { |k, v| [k, new_value = ((v - min) * new_range) / old_range] }]
+    end
+
+    private
     def fetchTracks
       # Fetch spotify tracks
       tracks = []
@@ -63,24 +81,6 @@ module PlaylistHelper
       tracks
     end
 
-    def calculateRelevances(tracks)
-      @relevances = {}
-      min = nil
-      max = nil
-
-      tracks.each do |t|
-        r = relevance(t)
-        min = r if min.nil? || r < min
-        max = r if max.nil? || r > max
-        @relevances.store(t, r)
-      end
-
-      old_range = (max - min)
-      new_range = 1
-      @relevances = Hash[@relevances.map { |k, v| [k, new_value = ((v - min) * new_range) / old_range] }]
-    end
-
-    private
     def relevance(track)
       best = 0
       @tracks.each do |t|
@@ -95,8 +95,7 @@ module PlaylistHelper
 
     def self.time_coefficient(date)
       weeks = (Time.now.to_i - date.to_i) / (3600 * 24 * 7).to_f
-      return 1 if weeks / 2 <= 0
-      [1 / (weeks / 2), 1].min
+      [Math.exp(-(weeks-2) / 9), 1].min
     end
   end
 
@@ -124,8 +123,8 @@ module PlaylistHelper
 
     def similarity(o)
       return 1 if self == o
-      return 0.5 if self.artists == o.artists
-      return 0.25 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
+      return 0.33 if self.artists == o.artists
+      return 0.17 if self.artists.product(o.artists).any? { |a1, a2| a1 == a2 }
       0
     end
 
