@@ -9,7 +9,7 @@ class DisplayUser
     @id = user_session.id
     @spotify_id = spotify_user.id
     @name = spotify_user.display_name || spotify_user.id
-    @image = !spotify_user.images.nil? && spotify_user.images.count > 0 ? spotify_user.images[0]['url'] : "user_avatar.png"
-    @image_alt = @image != "user_avatar.png" ? @name + "'s profile image" : "Default profile image"
+    @image = !spotify_user.images.nil? && spotify_user.images.count > 0 ? spotify_user.images[0]['url'] : "user_avatar_bg.png"
+    @image_alt = @image != "user_avatar_bg.png" ? @name + "'s profile image" : "Default profile image"
   end
 end
