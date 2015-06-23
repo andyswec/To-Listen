@@ -47,6 +47,10 @@ var playlistAlertDisplayed = false;
 var done = false;
 
 $(function () {
+    $('a#playlist').click(function () {
+        ga('send', 'event', 'button', 'click', 'playlist', 1);
+    });
+
     $('a#playlist').bind('ajax:beforeSend', function () {
         var progress = $('div.playlist-progress');
         $('a#playlist').addClass('disabled');
@@ -133,9 +137,6 @@ function playlistDisplayError(message) {
 /* tracks */
 
 $(function () {
-    var selectedUserId = null;
-    var timeId = null
-
     $('a#play').click(function () {
         var div = $('div.create-playlist');
         $(div).css('max-height', 'none');
@@ -159,13 +160,6 @@ $(function () {
     });
 
     $('a.user').click(function () {
-        selectedUserId = $(this).attr('id');
+        ga('send', 'event', 'button', 'click', 'play', 1);
     });
-
-    $('ul.times a').click(function () {
-        if (timeId == null) {
-            timeId = $(this).attr('id');
-
-        }
-    })
 });
